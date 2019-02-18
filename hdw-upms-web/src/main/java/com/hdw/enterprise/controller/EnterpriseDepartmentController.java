@@ -74,13 +74,7 @@ public class EnterpriseDepartmentController extends BaseController {
         try {
             //获取企业ID前缀，生成UUID
             ShiroUser shiroUser = ShiroKit.getUser();
-            String prefix = "HDWX";
-            if (shiroUser.getUserType() == 1) {
-                prefix = enterpriseService.getById(ShiroKit.getUser().getEnterpriseId()).getPrefix();
-            } else if (shiroUser.getUserType() == 2) {
-                prefix = enterpriseService.getById(ShiroKit.getEnterpriseIdByUser().get(0)).getPrefix();
-            }
-            enterpriseDepartment.setId(UUIDGenerator.getEnterpriseId(prefix));
+            enterpriseDepartment.setId(UUIDGenerator.getUUID());
             enterpriseDepartment.setCreateTime(new Date());
             enterpriseDepartment.setCreateUser(ShiroKit.getUser().getLoginName());
             enterpriseDepartmentService.save(enterpriseDepartment);
