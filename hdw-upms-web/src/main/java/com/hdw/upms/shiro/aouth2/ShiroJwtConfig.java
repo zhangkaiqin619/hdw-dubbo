@@ -27,7 +27,7 @@ import java.util.Map;
  * @date 2018年5月14日下午7:57:14
  */
 @Configuration
-@ConditionalOnProperty(value ={"upms.jwt.status"}, matchIfMissing = false)
+@ConditionalOnProperty(value = "upms.security.type", havingValue = "jwt", matchIfMissing = false)
 public class ShiroJwtConfig {
 
     @Autowired
