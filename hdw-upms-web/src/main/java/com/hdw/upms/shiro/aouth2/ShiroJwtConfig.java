@@ -170,7 +170,7 @@ public class ShiroJwtConfig {
         //设置cookie
         sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.getSessionIdCookie().setName("session-z-id");
-        sessionManager.getSessionIdCookie().setPath("/RiskCollect");
+        sessionManager.getSessionIdCookie().setPath("/hdw-dubbo");
         sessionManager.getSessionIdCookie().setMaxAge(60 * 60 * 1 * 1);
         sessionManager.getSessionIdCookie().setHttpOnly(true);
         return sessionManager;
