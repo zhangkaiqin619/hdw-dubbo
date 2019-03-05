@@ -111,13 +111,13 @@ public class EnterpriseDepartmentController extends BaseController {
     @ApiOperation(value = "删除企业部门表", notes = "删除企业部门表")
     @PostMapping("/delete")
     @RequiresPermissions("enterprise/enterpriseDepartment/delete")
-    public ResultMap deleteBatchIds(@RequestParam Long[] ids) {
+    public ResultMap deleteBatchIds(@RequestBody String[] ids) {
         try {
-            List<Long> idList = new ArrayList<Long>();
+            List<String> idList = new ArrayList<>();
             Collections.addAll(idList, ids);
             if (idList != null && !idList.isEmpty()) {
                 enterpriseDepartmentService.removeByIds(Arrays.asList(ids));
-                for (Long id : idList) {
+                for (String id : idList) {
                     QueryWrapper<EnterpriseDepartment> wrapper = new QueryWrapper<>();
                     wrapper.eq("parent_id", id);
                     enterpriseDepartmentService.remove(wrapper);
