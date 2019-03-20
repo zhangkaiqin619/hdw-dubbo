@@ -111,7 +111,7 @@
         t.id AS id,
         t.job_name AS name
         FROM
-        t_app_enterprise_job t
+        t_enterprise_job t
         LEFT JOIN t_enterprise_department t2 on t.department_id=t2.id
         LEFT JOIN t_enterprise t3 on t2.enterprise_id=t3.id
         LEFT JOIN t_sys_user t4 on t3.id=t4.enterprise_id
