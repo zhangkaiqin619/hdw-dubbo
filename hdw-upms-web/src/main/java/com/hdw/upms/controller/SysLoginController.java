@@ -14,7 +14,7 @@ import com.hdw.upms.service.ISysResourceService;
 import com.hdw.upms.service.ISysUserService;
 import com.hdw.upms.service.ISysUserTokenService;
 import com.hdw.upms.shiro.ShiroKit;
-import com.hdw.upms.shiro.aouth2.TokenGenerator;
+import com.hdw.upms.shiro.oauth2.TokenGenerator;
 import com.hdw.upms.shiro.form.SysLoginForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

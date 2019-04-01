@@ -1,4 +1,4 @@
-package com.hdw.upms.shiro.aouth2;
+package com.hdw.upms.shiro.oauth2;
 
 import com.hdw.upms.shiro.cache.RedisCacheManager;
 import com.hdw.upms.shiro.cache.RedisSessionDAO;
@@ -13,6 +13,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +31,14 @@ import java.util.Map;
 @ConditionalOnProperty(value = "upms.security.type", havingValue = "jwt", matchIfMissing = false)
 public class ShiroJwtConfig {
 
+    @Value("${hdw.shiro.cookie}")
+    private String shiroCookie;
+
     @Autowired
     private RedisSessionDAO sessionDAO;
 
-    @Bean
-    public RedisCacheManager redisCacheManager() {
-        return new RedisCacheManager();
-    }
+    @Autowired
+    public RedisCacheManager redisCacheManager;
 
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。 注意：单独一个ShiroFilterFactoryBean配置是或报错的，以为在
@@ -103,7 +105,7 @@ public class ShiroJwtConfig {
         // 注入Session管理器
         securityManager.setSessionManager(sessionManager());
         // 注入缓存管理器
-        securityManager.setCacheManager(redisCacheManager());
+        securityManager.setCacheManager(redisCacheManager);
         // 注入记住我管理器
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
@@ -115,7 +117,7 @@ public class ShiroJwtConfig {
     @Bean
     public OAuth2Realm oAuth2Realm() {
         OAuth2Realm oAuth2Realm = new OAuth2Realm();
-        oAuth2Realm.setCacheManager(redisCacheManager());
+        oAuth2Realm.setCacheManager(redisCacheManager);
         // 启用身份验证缓存，即缓存AuthenticationInfo信息，默认false
         oAuth2Realm.setAuthenticationCachingEnabled(true);
         // 缓存AuthenticationInfo信息的缓存名称
@@ -135,7 +137,7 @@ public class ShiroJwtConfig {
         SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
         // 记住我cookie生效时间1小时 ,单位秒
         simpleCookie.setMaxAge(60 * 60 * 1 * 1);
-        simpleCookie.setPath("/RiskCollect");
+        simpleCookie.setPath(shiroCookie);
         simpleCookie.setHttpOnly(true);
         return simpleCookie;
     }
@@ -170,7 +172,7 @@ public class ShiroJwtConfig {
         //设置cookie
         sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.getSessionIdCookie().setName("session-z-id");
-        sessionManager.getSessionIdCookie().setPath("/hdw-dubbo");
+        sessionManager.getSessionIdCookie().setPath(shiroCookie);
         sessionManager.getSessionIdCookie().setMaxAge(60 * 60 * 1 * 1);
         sessionManager.getSessionIdCookie().setHttpOnly(true);
         return sessionManager;

@@ -2,6 +2,7 @@ package com.hdw.job.config;
 
 
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -15,6 +16,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  **/
 @Configuration
 public class TaskExecutorConfig {
+
+    @Value("${hdw.scheduler.name}")
+    private String schedulerName;
+
     @Bean
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -27,7 +32,7 @@ public class TaskExecutorConfig {
         // 设置线程活跃时间（秒）
         executor.setKeepAliveSeconds(60);
         // 设置默认线程名称
-        executor.setThreadNamePrefix("hdw-dubbo-");
+        executor.setThreadNamePrefix(schedulerName);
         // 设置拒绝策略
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         // 等待所有任务结束后再关闭线程池

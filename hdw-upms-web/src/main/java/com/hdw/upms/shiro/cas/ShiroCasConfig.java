@@ -66,13 +66,14 @@ public class ShiroCasConfig {
     @Value("${jwt.salt}")
     private String salt;
 
+    @Value("${hdw.shiro.cookie}")
+    private String shiroCookie;
+
     @Autowired
     private RedisSessionDAO sessionDAO;
 
-    @Bean
-    public RedisCacheManager redisCacheManager() {
-        return new RedisCacheManager();
-    }
+    @Autowired
+    public RedisCacheManager redisCacheManager;
 
     /**
      * JWT Token 生成器，对CommonProfile生成然后每次携带token访问
@@ -179,7 +180,7 @@ public class ShiroCasConfig {
         securityManager.setRealm(pac4jRealm());
         securityManager.setSubjectFactory(pac4jSubjectFactory());
         // 注入缓存管理器
-        securityManager.setCacheManager(redisCacheManager());
+        securityManager.setCacheManager(redisCacheManager);
         // 记住密码管理
         securityManager.setRememberMeManager(rememberMeManager());
         // session管理
@@ -263,7 +264,7 @@ public class ShiroCasConfig {
         SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
         // 记住我cookie生效时间1小时 ,单位秒
         simpleCookie.setMaxAge(60 * 60 * 1 * 1);
-        simpleCookie.setPath("/hdw-dubbo");
+        simpleCookie.setPath(shiroCookie);
         simpleCookie.setHttpOnly(true);
         return simpleCookie;
     }
@@ -298,7 +299,7 @@ public class ShiroCasConfig {
         //设置cookie
         sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.getSessionIdCookie().setName("session-z-id");
-        sessionManager.getSessionIdCookie().setPath("/hdw-dubbo");
+        sessionManager.getSessionIdCookie().setPath(shiroCookie);
         sessionManager.getSessionIdCookie().setMaxAge(60 * 60 * 1 * 1);
         sessionManager.getSessionIdCookie().setHttpOnly(true);
         return sessionManager;

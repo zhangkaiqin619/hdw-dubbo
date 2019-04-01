@@ -28,26 +28,28 @@
             <type>jar</type>
         </dependency>
 
-        <!-- 验证码框架 begin -->
-        <dependency>
-            <groupId>com.github.penggle</groupId>
-            <artifactId>kaptcha</artifactId>
-        </dependency>
-        <!-- 验证码框架 end -->
-
         <!-- shiro begin -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
         </dependency>
-        <!-- shiro end -->
-
-        <!-- thymeleaf-extras-shiro begin -->
         <dependency>
             <groupId>com.github.theborakompanioni</groupId>
             <artifactId>thymeleaf-extras-shiro</artifactId>
         </dependency>
-        <!-- thymeleaf-extras-shiro end -->
+        <!--验证码框架 -->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+        </dependency>
+        <!-- shiro end -->
+
+        <!-- jwt token begin -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
+        <!-- jwt token end -->
 
         <!-- pac4j -->
         <dependency>
@@ -72,17 +74,13 @@
         </dependency>
         <!-- pac4j end -->
 
-        <!-- fastdfs begin-->
-        <dependency>
-            <groupId>com.luhuiguo</groupId>
-            <artifactId>fastdfs-spring-boot-starter</artifactId>
-        </dependency>
-        <!-- fastdfs end-->
-
+        <!-- websocket begin -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-quartz</artifactId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+            <scope>provided</scope>
         </dependency>
+        <!-- websocket end -->
 
         <!-- ActiveMQ begin -->
         <dependency>
@@ -94,14 +92,6 @@
             <artifactId>activemq-pool</artifactId>
         </dependency>
         <!-- ActiveMQ end -->
-
-        <!-- websocket begin -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- websocket end -->
 
         <!-- spring-boot-admin begin -->
         <dependency>
@@ -122,6 +112,17 @@
         <!-- ueditor end -->
 
         <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
@@ -138,7 +139,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

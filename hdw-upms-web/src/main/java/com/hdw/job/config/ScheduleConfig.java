@@ -1,5 +1,7 @@
 package com.hdw.job.config;
 
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -14,6 +16,9 @@ import java.util.Properties;
 @Configuration
 public class ScheduleConfig {
 
+    @Value("${hdw.scheduler.name}")
+    private String schedulerName;
+
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
@@ -21,7 +26,7 @@ public class ScheduleConfig {
 
         //quartz参数
         Properties prop = new Properties();
-        prop.put("org.quartz.scheduler.instanceName", "HDWDubboScheduler");
+        prop.put("org.quartz.scheduler.instanceName", schedulerName + "Scheduler");
         prop.put("org.quartz.scheduler.instanceId", "AUTO");
         //线程池配置
         prop.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
@@ -43,7 +48,7 @@ public class ScheduleConfig {
 
         factory.setQuartzProperties(prop);
 
-        factory.setSchedulerName("HDWDubboScheduler");
+        factory.setSchedulerName(schedulerName + "Scheduler");
         //延时启动
         factory.setStartupDelay(30);
         factory.setApplicationContextSchedulerContextKey("applicationContextKey");

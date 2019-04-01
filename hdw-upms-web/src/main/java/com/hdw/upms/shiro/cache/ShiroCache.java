@@ -17,17 +17,16 @@ import java.util.concurrent.TimeUnit;
  * @Descriptin ShiroCache共享
  * @Date 2018年5月1日 下午3:21:20
  */
-@SuppressWarnings("unchecked")
+
 public class ShiroCache<K, V> implements Cache<K, V> {
 
-    private static final String REDIS_SHIRO_CACHE = "hdw-shiro-cache:" ;
+    private String redis_shiro_cahce = "";
     private String cacheKey;
     private RedisTemplate<K, V> redisTemplate;
     private long globExpire = 30;
 
-    @SuppressWarnings("rawtypes")
-    public ShiroCache(String name, RedisTemplate client) {
-        this.cacheKey = REDIS_SHIRO_CACHE + name + ":" ;
+    public ShiroCache(String redis_shiro_cache, String name, RedisTemplate client) {
+        this.cacheKey = redis_shiro_cache + name + ":";
         this.redisTemplate = client;
     }
 

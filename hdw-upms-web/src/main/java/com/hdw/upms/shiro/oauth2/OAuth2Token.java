@@ -1,4 +1,4 @@
-package com.hdw.upms.shiro.aouth2;
+package com.hdw.upms.shiro.oauth2;
 
 
 import org.apache.shiro.authc.AuthenticationToken;

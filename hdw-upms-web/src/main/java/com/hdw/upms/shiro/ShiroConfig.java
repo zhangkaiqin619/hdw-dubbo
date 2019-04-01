@@ -44,14 +44,14 @@ public class ShiroConfig {
     @Value("${upms.unauthorizedUrl}")
     private String unauthorizedUrl;
 
+    @Value("${hdw.shiro.cookie}")
+    private String shiroCookie;
 
     @Autowired
     private RedisSessionDAO sessionDAO;
 
-    @Bean
-    public RedisCacheManager redisCacheManager() {
-        return new RedisCacheManager();
-    }
+    @Autowired
+    public RedisCacheManager redisCacheManager;
 
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。 注意：单独一个ShiroFilterFactoryBean配置是或报错的，以为在
@@ -126,7 +126,7 @@ public class ShiroConfig {
         // 注入Session管理器
         securityManager.setSessionManager(sessionManager());
         // 注入缓存管理器
-        securityManager.setCacheManager(redisCacheManager());
+        securityManager.setCacheManager(redisCacheManager);
         // 注入记住我管理器;
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
@@ -139,7 +139,7 @@ public class ShiroConfig {
     public ShiroDBRealm shiroDBRealm() {
         ShiroDBRealm shiroDBRealm = new ShiroDBRealm();
         shiroDBRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        shiroDBRealm.setCacheManager(redisCacheManager());
+        shiroDBRealm.setCacheManager(redisCacheManager);
         // 启用身份验证缓存，即缓存AuthenticationInfo信息，默认false
         shiroDBRealm.setAuthenticationCachingEnabled(true);
         // 缓存AuthenticationInfo信息的缓存名称
@@ -155,7 +155,7 @@ public class ShiroConfig {
      */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new RetryLimitCredentialsMatcher(redisCacheManager());
+        HashedCredentialsMatcher hashedCredentialsMatcher = new RetryLimitCredentialsMatcher(redisCacheManager);
         hashedCredentialsMatcher.setHashAlgorithmName("md5");// 散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashIterations(2);// 散列的次数，比如散列两次，相当于md5(md5(""));
         hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);// 表示是否存储散列后的密码为16进制，需要和生成密码时的一样，默认是base64；
@@ -174,7 +174,7 @@ public class ShiroConfig {
         simpleCookie.setMaxAge(60 * 60 * 1 * 1);
         //设置Cookie名字，默认为JSESSIONID
         simpleCookie.setName("session-z-id");
-        simpleCookie.setPath("/hdw");
+        simpleCookie.setPath(shiroCookie);
         simpleCookie.setHttpOnly(true);
         return simpleCookie;
     }
@@ -189,7 +189,7 @@ public class ShiroConfig {
         SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
         // 记住我cookie生效时间1小时 ,单位秒
         simpleCookie.setMaxAge(60 * 60 * 1 * 1);
-        simpleCookie.setPath("/RiskCollect");
+        simpleCookie.setPath(shiroCookie);
         simpleCookie.setHttpOnly(true);
         return simpleCookie;
     }
@@ -224,7 +224,7 @@ public class ShiroConfig {
         //设置cookie
         sessionManager.setSessionIdCookieEnabled(true);
         sessionManager.getSessionIdCookie().setName("session-z-id");
-        sessionManager.getSessionIdCookie().setPath("/hdw-dubbo");
+        sessionManager.getSessionIdCookie().setPath(shiroCookie);
         sessionManager.getSessionIdCookie().setMaxAge(60 * 60 * 1 * 1);
         sessionManager.getSessionIdCookie().setHttpOnly(true);
         return sessionManager;
