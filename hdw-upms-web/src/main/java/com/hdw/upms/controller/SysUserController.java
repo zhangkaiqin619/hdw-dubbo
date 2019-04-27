@@ -141,6 +141,8 @@ public class SysUserController extends BaseController {
                 user.setSalt(salt);
                 String pwd = ShiroKit.md5(user.getPassword(), user.getLoginName() + salt);
                 user.setPassword(pwd);
+            } else {
+                user.setPassword(null);
             }
             user.setUpdateTime(new Date());
             user.setCreateUserId(ShiroKit.getUser().getId());
