@@ -2,8 +2,8 @@ package com.hdw.upms.shiro.oauth2;
 
 
 import com.hdw.common.result.ResultMap;
-import com.hdw.common.util.JacksonUtils;
-import org.apache.commons.lang.StringUtils;
+import com.hdw.common.utils.JacksonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;

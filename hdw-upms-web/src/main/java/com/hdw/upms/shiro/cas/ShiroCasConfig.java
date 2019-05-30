@@ -48,7 +48,7 @@ import java.util.Map;
  * @date 2018年3月5日 上午11:22:21
  */
 @Configuration
-@ConditionalOnProperty(value = "upms.security.type", havingValue = "cas", matchIfMissing = false)
+@ConditionalOnProperty(value = "hdw.upms.type", havingValue = "cas", matchIfMissing = false)
 public class ShiroCasConfig {
 
     @Value("#{ @environment['cas.prefixUrl'] ?: null }")
@@ -63,7 +63,7 @@ public class ShiroCasConfig {
     @Value("#{ @environment['cas.serviceUrl'] ?: null }")
     private String serviceUrl;
 
-    @Value("${jwt.salt}")
+    @Value("${cas.salt}")
     private String salt;
 
     @Value("${hdw.shiro.cookie}")

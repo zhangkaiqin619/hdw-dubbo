@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hdw.common.exception.GlobalException;
 import com.hdw.common.result.PageUtils;
-import com.hdw.common.util.Constant;
+import com.hdw.common.constants.CommonEnum;
 import com.hdw.upms.entity.SysResource;
 import com.hdw.upms.entity.SysUser;
 import com.hdw.upms.entity.vo.UserVo;
@@ -14,7 +14,7 @@ import com.hdw.upms.service.ISysResourceService;
 import com.hdw.upms.service.ISysUserEnterpriseService;
 import com.hdw.upms.service.ISysUserRoleService;
 import com.hdw.upms.service.ISysUserService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 
@@ -129,7 +129,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Set<String> selectUserPermissions(long userId) {
         List<String> permsList;
         //系统管理员，拥有最高权限
-        if(userId == Constant.SUPER_ADMIN){
+        if (userId == CommonEnum.SUPER_ADMIN) {
             List<SysResource> menuList = sysResourceService.list();
             permsList = new ArrayList<>(menuList.size());
             for(SysResource menu : menuList){
@@ -157,7 +157,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return;
         }
         //如果不是超级管理员，则需要判断用户的角色是否自己创建
-        if(user.getCreateUserId() == Constant.SUPER_ADMIN){
+        if (user.getCreateUserId() == CommonEnum.SUPER_ADMIN) {
             return ;
         }
         //查询用户创建的角色列表

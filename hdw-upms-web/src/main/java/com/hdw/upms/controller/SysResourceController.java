@@ -3,7 +3,7 @@ package com.hdw.upms.controller;
 import com.hdw.common.base.BaseController;
 import com.hdw.common.exception.GlobalException;
 import com.hdw.common.result.ResultMap;
-import com.hdw.common.util.Constant;
+import com.hdw.common.constants.CommonEnum;
 import com.hdw.upms.entity.SysResource;
 import com.hdw.upms.service.ISysResourceService;
 import com.hdw.upms.service.ISysUserService;
@@ -152,29 +152,29 @@ public class SysResourceController extends BaseController {
             throw new GlobalException("上级菜单不能为空");
         }
         //菜单
-        if(sysResource.getResourceType() == Constant.MenuType.MENU.getValue()){
+        if (sysResource.getResourceType() == CommonEnum.MenuType.MENU.getValue()) {
             if(StringUtils.isBlank(sysResource.getUrl())){
                 throw new GlobalException("菜单URL不能为空");
             }
         }
         //上级菜单类型
-        int parentType = Constant.MenuType.CATALOG.getValue();
+        int parentType = CommonEnum.MenuType.CATALOG.getValue();
         if(sysResource.getParentId() != 0){
             SysResource parentMenu = sysResourceService.getById(sysResource.getParentId());
             parentType = parentMenu.getResourceType();
         }
         //目录、菜单
-        if(sysResource.getResourceType() == Constant.MenuType.CATALOG.getValue() ||
-                sysResource.getResourceType() == Constant.MenuType.MENU.getValue()){
-            if(parentType != Constant.MenuType.CATALOG.getValue()){
+        if (sysResource.getResourceType() == CommonEnum.MenuType.CATALOG.getValue() ||
+                sysResource.getResourceType() == CommonEnum.MenuType.MENU.getValue()) {
+            if (parentType != CommonEnum.MenuType.CATALOG.getValue()) {
                 throw new GlobalException("上级菜单只能为目录类型");
             }
             return ;
         }
 
         //按钮
-        if(sysResource.getResourceType() == Constant.MenuType.BUTTON.getValue()){
-            if(parentType != Constant.MenuType.MENU.getValue()){
+        if (sysResource.getResourceType() == CommonEnum.MenuType.BUTTON.getValue()) {
+            if (parentType != CommonEnum.MenuType.MENU.getValue()) {
                 throw new GlobalException("上级菜单只能为菜单类型");
             }
             return ;

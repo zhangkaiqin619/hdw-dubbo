@@ -20,8 +20,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 1800)
-@EnableAsync
-@EnableScheduling
 public class UpmsServiceApplication extends SpringBootServletInitializer {
 
     protected final static Logger logger = LoggerFactory.getLogger(UpmsServiceApplication.class);

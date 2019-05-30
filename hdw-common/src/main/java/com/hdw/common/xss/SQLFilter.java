@@ -1,7 +1,8 @@
 package com.hdw.common.xss;
 
 import com.hdw.common.exception.GlobalException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * @Description SQL过滤

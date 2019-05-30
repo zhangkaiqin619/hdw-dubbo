@@ -19,10 +19,8 @@ public class TreeNode implements Serializable {
 
     private String name;//节点名称
 
-    private Boolean open;//是否打开节点
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<?> list;
+    private List<TreeNode> children;
 
     public String getId() {
         return id;
@@ -48,27 +46,22 @@ public class TreeNode implements Serializable {
         this.name = name;
     }
 
-    public Boolean getOpen() {
-        return open;
+    public List<TreeNode> getChildren() {
+        return children;
     }
 
-    public void setOpen(Boolean open) {
-        this.open = open;
+    public void setChildren(List<TreeNode> children) {
+        this.children = children;
     }
 
-    public List<?> getList() {
-        return list;
-    }
-
-    public void setList(List<?> list) {
-        this.list = list;
+    public void add(TreeNode node) {
+        children.add(node);
     }
 
     public static TreeNode createParent() {
         TreeNode treeNode = new TreeNode();
         treeNode.setId("0");
         treeNode.setName("顶级");
-        treeNode.setOpen(true);
         treeNode.setParentId("0");
         return treeNode;
     }

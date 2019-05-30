@@ -1,6 +1,6 @@
 package com.hdw.upms.shiro;
 
-import com.hdw.common.util.JacksonUtils;
+import com.hdw.common.utils.JacksonUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;

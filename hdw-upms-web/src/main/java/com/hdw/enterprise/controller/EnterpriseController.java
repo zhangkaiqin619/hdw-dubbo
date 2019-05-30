@@ -6,7 +6,7 @@ import com.hdw.common.result.PageUtils;
 import com.hdw.common.result.ResultMap;
 import com.hdw.common.result.SelectTreeNode;
 import com.hdw.common.result.TreeNode;
-import com.hdw.common.util.UUIDGenerator;
+import com.hdw.common.utils.UUIDGenerator;
 import com.hdw.enterprise.entity.Enterprise;
 import com.hdw.enterprise.service.IEnterpriseService;
 import com.hdw.upms.controller.UpLoadController;
@@ -17,7 +17,7 @@ import com.hdw.upms.shiro.ShiroKit;
 import com.hdw.upms.shiro.ShiroUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,7 +82,7 @@ public class EnterpriseController extends UpLoadController {
     @RequiresPermissions("enterprise/enterprise/save")
     public Object save(@Valid @RequestBody Enterprise enterprise) {
         try {
-            enterprise.setId(UUIDGenerator.getOrderNo());
+            enterprise.setId(UUIDGenerator.getUUID());
             enterprise.setCreateTime(new Date());
             enterprise.setCreateUser(ShiroKit.getUser().getLoginName());
             boolean b = enterpriseService.save(enterprise);

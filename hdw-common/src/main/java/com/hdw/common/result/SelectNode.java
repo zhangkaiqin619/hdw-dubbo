@@ -1,7 +1,7 @@
 package com.hdw.common.result;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.hdw.common.util.JacksonUtils;
+import com.hdw.common.utils.JacksonUtils;
 
 import java.io.Serializable;
 import java.util.List;

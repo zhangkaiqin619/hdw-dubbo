@@ -1,7 +1,7 @@
 package com.hdw.upms.entity.vo;
 
 
-import com.hdw.common.util.JacksonUtils;
+import com.hdw.common.utils.JacksonUtils;
 import com.hdw.upms.entity.SysRole;
 import com.hdw.upms.entity.SysUser;
 

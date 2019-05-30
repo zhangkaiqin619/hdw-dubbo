@@ -1,7 +1,7 @@
 package com.hdw.job.utils;
 
 import com.hdw.common.exception.GlobalException;
-import com.hdw.common.util.Constant;
+import com.hdw.common.constants.CommonEnum;
 import com.hdw.job.entity.ScheduleJobEntity;
 import org.quartz.*;
 
@@ -59,7 +59,7 @@ public class ScheduleUtils {
             scheduler.scheduleJob(jobDetail, trigger);
 
             //暂停任务
-            if (scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()) {
+            if (scheduleJob.getStatus() == CommonEnum.ScheduleStatus.PAUSE.getValue()) {
                 pauseJob(scheduler, scheduleJob.getJobId());
             }
         } catch (SchedulerException e) {
@@ -89,7 +89,7 @@ public class ScheduleUtils {
             scheduler.rescheduleJob(triggerKey, trigger);
 
             //暂停任务
-            if (scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()) {
+            if (scheduleJob.getStatus() == CommonEnum.ScheduleStatus.PAUSE.getValue()) {
                 pauseJob(scheduler, scheduleJob.getJobId());
             }
 

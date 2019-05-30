@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hdw.common.result.PageUtils;
-import com.hdw.common.util.Constant;
+import com.hdw.common.constants.CommonEnum;
 import com.hdw.job.entity.ScheduleJobEntity;
 import com.hdw.job.entity.ScheduleJobLogEntity;
 import com.hdw.job.mapper.ScheduleJobMapper;
 import com.hdw.job.service.IScheduleJobService;
 import com.hdw.job.utils.ScheduleUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
 	@Transactional(rollbackFor = Exception.class)
     public void insert(ScheduleJobEntity scheduleJob) {
 		scheduleJob.setCreateTime(new Date());
-        scheduleJob.setStatus(Constant.ScheduleStatus.NORMAL.getValue());
+        scheduleJob.setStatus(CommonEnum.ScheduleStatus.NORMAL.getValue());
         this.save(scheduleJob);
 
 		ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
@@ -107,7 +107,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
             ScheduleUtils.pauseJob(scheduler, jobId);
         }
 
-        updateBatch(jobIds, Constant.ScheduleStatus.PAUSE.getValue());
+        updateBatch(jobIds, CommonEnum.ScheduleStatus.PAUSE.getValue());
     }
 
 	@Override
@@ -117,7 +117,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
             ScheduleUtils.resumeJob(scheduler, jobId);
         }
 
-        updateBatch(jobIds, Constant.ScheduleStatus.NORMAL.getValue());
+        updateBatch(jobIds, CommonEnum.ScheduleStatus.NORMAL.getValue());
     }
 
 }

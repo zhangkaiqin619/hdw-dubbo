@@ -7,10 +7,12 @@
     <parent>
         <groupId>com.hdw</groupId>
         <artifactId>hdw-dubbo</artifactId>
-        <version>1.2.0</version>
-        <relativePath>../pom.xml</relativePath>
+        <version>1.3.0</version>
     </parent>
+
+    <groupId>com.hdw</groupId>
     <artifactId>hdw-upms-service</artifactId>
+    <version>1.3.0</version>
     <packaging>jar</packaging>
 
     <name>hdw-upms-service</name>
@@ -24,17 +26,12 @@
         <dependency>
             <groupId>com.hdw</groupId>
             <artifactId>hdw-upms-api</artifactId>
-            <version>1.2.0</version>
-            <type>jar</type>
+            <version>${hdw-upms-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <dependency>
@@ -42,13 +39,7 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- JUnit test dependency -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -70,6 +61,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
+                    <include>**/*</include>
                     <include>application.properties</include>
                     <include>application-${profileActive}.properties</include>
                     <include>application.yml</include>
@@ -77,28 +69,22 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.yml</include>
-                    <include>**/*.json</include>
-                    <include>static/**</include>
-                    <include>static/fonts/**</include>
-                    <include>templates/**</include>
-                    <include>quartz.properties</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
         </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!--fork : 如果没有该项配置，devtools不会起作用，即应用不会restart -->
                     <fork>true</fork>
+                    <outputDirectory>../docker/service</outputDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

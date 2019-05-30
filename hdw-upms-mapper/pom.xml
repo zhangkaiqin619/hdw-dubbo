@@ -6,11 +6,12 @@
 	<parent>
 		<groupId>com.hdw</groupId>
 		<artifactId>hdw-dubbo</artifactId>
-		<version>1.2.0</version>
-		<relativePath>../pom.xml</relativePath>
+        <version>1.3.0</version>
 	</parent>
 
+    <groupId>com.hdw</groupId>
 	<artifactId>hdw-upms-mapper</artifactId>
+    <version>${hdw-upms-mapper.version}</version>
 	<packaging>jar</packaging>
 
 	<name>hdw-upms-mapper</name>
@@ -20,8 +21,7 @@
 		<dependency>
 			<groupId>com.hdw</groupId>
 			<artifactId>hdw-common</artifactId>
-			<version>1.2.0</version>
-			<type>jar</type>
+            <version>${hdw-common.version}</version>
 		</dependency>
 	</dependencies>
 </project>

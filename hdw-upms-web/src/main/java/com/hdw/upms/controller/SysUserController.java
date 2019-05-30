@@ -4,7 +4,7 @@ import com.hdw.common.base.BaseController;
 import com.hdw.common.result.PageUtils;
 import com.hdw.common.result.ResultMap;
 import com.hdw.common.result.SelectTreeNode;
-import com.hdw.common.util.Constant;
+import com.hdw.common.constants.CommonEnum;
 import com.hdw.common.validator.Assert;
 import com.hdw.upms.entity.SysUser;
 import com.hdw.upms.entity.vo.UserVo;
@@ -15,10 +15,9 @@ import com.hdw.upms.shiro.ShiroKit;
 import com.hdw.upms.shiro.form.PasswordForm;
 import io.swagger.annotations.Api;
 import com.alibaba.dubbo.config.annotation.Reference;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,7 +50,7 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys/user/list")
     public ResultMap list(@RequestParam Map<String, Object> params){
         //只有超级管理员，才能查看所有管理员列表
-        if(ShiroKit.getUser().getId() != Constant.SUPER_ADMIN){
+        if (ShiroKit.getUser().getId() != CommonEnum.SUPER_ADMIN) {
             params.put("userId", ShiroKit.getUser().getId());
         }
         PageUtils page = sysUserService.selectDataGrid(params);
@@ -160,7 +159,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/delete")
     @RequiresPermissions("sys/user/delete")
     public ResultMap delete(@RequestBody Long[] userIds){
-        if(ArrayUtils.contains(userIds, Constant.SUPER_ADMIN)){
+        if (ArrayUtils.contains(userIds, CommonEnum.SUPER_ADMIN)) {
             return ResultMap.error("系统管理员不能删除");
         }
         if(ArrayUtils.contains(userIds, ShiroKit.getUser().getId())){

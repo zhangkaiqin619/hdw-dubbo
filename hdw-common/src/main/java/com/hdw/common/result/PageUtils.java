@@ -5,7 +5,7 @@ package com.hdw.common.result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hdw.common.util.JacksonUtils;
+import com.hdw.common.utils.JacksonUtils;
 import com.hdw.common.xss.SQLFilter;
 import org.apache.commons.lang3.StringUtils;
 

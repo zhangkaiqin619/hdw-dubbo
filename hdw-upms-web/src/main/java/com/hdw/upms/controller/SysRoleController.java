@@ -4,7 +4,7 @@ import com.hdw.common.base.BaseController;
 import com.hdw.common.result.PageUtils;
 import com.hdw.common.result.ResultMap;
 import com.hdw.common.result.SelectTreeNode;
-import com.hdw.common.util.Constant;
+import com.hdw.common.constants.CommonEnum;
 import com.hdw.common.validator.ValidatorUtils;
 import com.hdw.upms.entity.SysRole;
 import com.hdw.upms.service.ISysRoleResourceService;
@@ -41,7 +41,7 @@ public class SysRoleController extends BaseController {
     @RequiresPermissions("sys/role/list")
     public ResultMap list(@RequestParam Map<String, Object> params){
         //如果不是超级管理员，则只查询自己创建的角色列表
-        if(ShiroKit.getUser().getId() != Constant.SUPER_ADMIN){
+        if (ShiroKit.getUser().getId() != CommonEnum.SUPER_ADMIN) {
             params.put("createUserId", ShiroKit.getUser().getId());
         }
         PageUtils page = sysRoleService.selectDataGrid(params);
@@ -56,7 +56,7 @@ public class SysRoleController extends BaseController {
     public ResultMap select(){
         Map<String, Object> map = new HashMap<>();
         //如果不是超级管理员，则只查询自己所拥有的角色列表
-        if(ShiroKit.getUser().getId() != Constant.SUPER_ADMIN){
+        if (ShiroKit.getUser().getId() != CommonEnum.SUPER_ADMIN) {
             map.put("createUserId", ShiroKit.getUser().getId());
         }
         List<SysRole> list = sysRoleService.selectSysRoleList(map);

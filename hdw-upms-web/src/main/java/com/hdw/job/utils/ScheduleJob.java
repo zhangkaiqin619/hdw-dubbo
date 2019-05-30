@@ -1,12 +1,12 @@
 
 package com.hdw.job.utils;
 
-import com.hdw.common.util.SpringContextUtils;
+import com.hdw.common.utils.SpringContextUtils;
 import com.hdw.job.entity.ScheduleJobEntity;
 import com.hdw.job.entity.ScheduleJobLogEntity;
 import com.hdw.job.service.IScheduleJobLogService;
 import com.hdw.job.service.IScheduleJobService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;

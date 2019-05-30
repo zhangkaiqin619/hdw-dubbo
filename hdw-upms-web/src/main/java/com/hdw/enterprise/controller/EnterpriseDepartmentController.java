@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hdw.common.base.BaseController;
 import com.hdw.common.result.ResultMap;
 import com.hdw.common.result.TreeNode;
-import com.hdw.common.util.UUIDGenerator;
+import com.hdw.common.utils.UUIDGenerator;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
 import com.hdw.enterprise.service.IEnterpriseDepartmentService;
 import com.hdw.enterprise.service.IEnterpriseService;

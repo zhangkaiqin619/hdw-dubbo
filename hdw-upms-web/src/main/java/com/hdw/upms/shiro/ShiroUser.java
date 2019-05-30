@@ -1,6 +1,6 @@
 package com.hdw.upms.shiro;
 
-import com.hdw.common.util.JacksonUtils;
+import com.hdw.common.utils.JacksonUtils;
 
 import java.io.Serializable;
 import java.util.List;

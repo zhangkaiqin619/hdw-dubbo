@@ -32,16 +32,16 @@ import java.util.Map;
  * @date 2018年5月14日下午7:57:14
  */
 @Configuration
-@ConditionalOnProperty(value = "upms.security.type", havingValue = "shiro", matchIfMissing = false)
+@ConditionalOnProperty(value = "hdw.upms.type", havingValue = "shiro", matchIfMissing = false)
 public class ShiroConfig {
 
-    @Value("${upms.loginUrl}")
+    @Value("${hdw.upms.loginUrl}")
     private String loginUrl;
 
-    @Value("${upms.successUrl}")
+    @Value("${hdw.upms.successUrl}")
     private String successUrl;
 
-    @Value("${upms.unauthorizedUrl}")
+    @Value("${hdw.upms.unauthorizedUrl}")
     private String unauthorizedUrl;
 
     @Value("${hdw.shiro.cookie}")
@@ -100,9 +100,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/ws/**", "anon");
         filterChainDefinitionMap.put("/qr/**", "anon");
         filterChainDefinitionMap.put("/test/**", "anon");
-        filterChainDefinitionMap.put("/notice/sysNews/getNewsInfo", "anon");
-        filterChainDefinitionMap.put("/notice/sysNotice/getNoticeInfo", "anon");
-        filterChainDefinitionMap.put("/notice/sysIsuse/saveMsg", "anon");
 
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/**", "authc");

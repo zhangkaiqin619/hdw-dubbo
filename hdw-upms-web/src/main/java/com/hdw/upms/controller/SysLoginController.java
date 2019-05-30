@@ -6,6 +6,7 @@ import com.google.code.kaptcha.Producer;
 import com.hdw.common.base.BaseController;
 import com.hdw.common.config.redis.IRedisService;
 import com.hdw.common.result.ResultMap;
+import com.hdw.common.utils.JwtUtils;
 import com.hdw.enterprise.entity.Enterprise;
 import com.hdw.enterprise.service.IEnterpriseService;
 import com.hdw.upms.entity.SysUserToken;
@@ -14,7 +15,6 @@ import com.hdw.upms.service.ISysResourceService;
 import com.hdw.upms.service.ISysUserService;
 import com.hdw.upms.service.ISysUserTokenService;
 import com.hdw.upms.shiro.ShiroKit;
-import com.hdw.upms.shiro.oauth2.TokenGenerator;
 import com.hdw.upms.shiro.form.SysLoginForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Description 登录退出Controller
@@ -144,7 +146,10 @@ public class SysLoginController extends BaseController {
     @PostMapping("/sys/logout")
     public ResultMap logout() {
         //生成一个token
-        String token = TokenGenerator.generateValue();
+        JwtUtils jwtUtils = new JwtUtils();
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", ShiroKit.getUser().getId());
+        String token = jwtUtils.generateToken(params, "hdwdubbo", EXPIRE);
         //修改token
         SysUserToken tokenEntity = new SysUserToken();
         tokenEntity.setUserId(ShiroKit.getUser().getId());
@@ -153,9 +158,12 @@ public class SysLoginController extends BaseController {
         return ResultMap.ok();
     }
 
-    public ResultMap createToken(long userId) {
+    public ResultMap createToken(Long userId) {
         //生成一个token
-        String token = TokenGenerator.generateValue();
+        JwtUtils jwtUtils = new JwtUtils();
+        Map<String, Object> params = new HashMap<>();
+        params.put("token", userId);
+        String token = jwtUtils.generateToken(params, "hdwdubbo", EXPIRE);
         //当前时间
         Date now = new Date();
         //过期时间

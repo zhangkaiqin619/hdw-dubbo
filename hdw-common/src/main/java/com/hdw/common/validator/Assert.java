@@ -1,7 +1,8 @@
 package com.hdw.common.validator;
 
 import com.hdw.common.exception.GlobalException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * 数据校验
