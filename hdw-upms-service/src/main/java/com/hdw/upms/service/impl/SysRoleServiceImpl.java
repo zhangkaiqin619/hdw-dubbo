@@ -3,6 +3,7 @@ package com.hdw.upms.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hdw.common.constants.CommonConstants;
 import com.hdw.common.exception.GlobalException;
 import com.hdw.common.result.PageUtils;
 import com.hdw.common.constants.CommonEnum;
@@ -95,7 +96,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      */
     private void checkPrems(SysRole role){
         //如果不是超级管理员，则需要判断角色的权限是否超过自己的权限
-        if (role.getCreateUserId() == CommonEnum.SUPER_ADMIN) {
+        if (role.getCreateUserId() == CommonConstants.SUPER_ADMIN) {
             return ;
         }
         //查询用户所拥有的菜单列表

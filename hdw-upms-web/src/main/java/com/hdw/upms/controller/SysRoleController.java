@@ -41,7 +41,7 @@ public class SysRoleController extends BaseController {
     @RequiresPermissions("sys/role/list")
     public ResultMap list(@RequestParam Map<String, Object> params){
         //如果不是超级管理员，则只查询自己创建的角色列表
-        if (ShiroKit.getUser().getId() != CommonEnum.SUPER_ADMIN) {
+        if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
             params.put("createUserId", ShiroKit.getUser().getId());
         }
         PageUtils page = sysRoleService.selectDataGrid(params);
@@ -56,7 +56,7 @@ public class SysRoleController extends BaseController {
     public ResultMap select(){
         Map<String, Object> map = new HashMap<>();
         //如果不是超级管理员，则只查询自己所拥有的角色列表
-        if (ShiroKit.getUser().getId() != CommonEnum.SUPER_ADMIN) {
+        if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
             map.put("createUserId", ShiroKit.getUser().getId());
         }
         List<SysRole> list = sysRoleService.selectSysRoleList(map);

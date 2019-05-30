@@ -50,7 +50,7 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys/user/list")
     public ResultMap list(@RequestParam Map<String, Object> params){
         //只有超级管理员，才能查看所有管理员列表
-        if (ShiroKit.getUser().getId() != CommonEnum.SUPER_ADMIN) {
+        if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
             params.put("userId", ShiroKit.getUser().getId());
         }
         PageUtils page = sysUserService.selectDataGrid(params);
@@ -159,7 +159,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/delete")
     @RequiresPermissions("sys/user/delete")
     public ResultMap delete(@RequestBody Long[] userIds){
-        if (ArrayUtils.contains(userIds, CommonEnum.SUPER_ADMIN)) {
+        if (ArrayUtils.contains(userIds, CommonConstants.SUPER_ADMIN)) {
             return ResultMap.error("系统管理员不能删除");
         }
         if(ArrayUtils.contains(userIds, ShiroKit.getUser().getId())){

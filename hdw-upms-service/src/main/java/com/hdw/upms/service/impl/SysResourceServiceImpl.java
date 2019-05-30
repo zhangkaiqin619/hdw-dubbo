@@ -2,6 +2,7 @@ package com.hdw.upms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hdw.common.constants.CommonConstants;
 import com.hdw.common.constants.CommonEnum;
 import com.hdw.upms.entity.SysResource;
 import com.hdw.upms.mapper.SysResourceMapper;
@@ -35,7 +36,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     @Override
     public List<SysResource> selectUserResourceListByUserId(Long userId) {
         //系统管理员，拥有最高权限
-        if (userId == CommonEnum.SUPER_ADMIN) {
+        if (userId == CommonConstants.SUPER_ADMIN) {
             return selectMenuList(null);
         }
         //用户菜单列表

@@ -7,8 +7,6 @@ package com.hdw.common.constants;
  * @date 2018年4月19日 下午3:57:46
  */
 public class CommonEnum {
-	/** 超级管理员ID */
-	public static final int SUPER_ADMIN = 1;
 
 	/**
 	 * 菜单类型

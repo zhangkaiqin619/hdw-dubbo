@@ -3,6 +3,7 @@ package com.hdw.upms.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hdw.common.constants.CommonConstants;
 import com.hdw.common.exception.GlobalException;
 import com.hdw.common.result.PageUtils;
 import com.hdw.common.constants.CommonEnum;
@@ -129,7 +130,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Set<String> selectUserPermissions(long userId) {
         List<String> permsList;
         //系统管理员，拥有最高权限
-        if (userId == CommonEnum.SUPER_ADMIN) {
+        if (userId == CommonConstants.SUPER_ADMIN) {
             List<SysResource> menuList = sysResourceService.list();
             permsList = new ArrayList<>(menuList.size());
             for(SysResource menu : menuList){
@@ -157,7 +158,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return;
         }
         //如果不是超级管理员，则需要判断用户的角色是否自己创建
-        if (user.getCreateUserId() == CommonEnum.SUPER_ADMIN) {
+        if (user.getCreateUserId() == CommonConstants.SUPER_ADMIN) {
             return ;
         }
         //查询用户创建的角色列表

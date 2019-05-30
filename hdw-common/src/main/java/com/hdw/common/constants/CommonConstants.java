@@ -14,6 +14,9 @@ public class CommonConstants {
     public static final String X_ERROR_MESSAGE = "x.servlet.exception.message";
     public static final String X_ACCESS_DENIED = "x.access.denied";
 
+    /** 超级管理员ID */
+    public static final int SUPER_ADMIN = 1;
+
     /**
      * 客户端ID KEY
      */
