@@ -48,14 +48,6 @@
         </dependency>
         <!-- shiro end -->
 
-        <!-- jwt token begin -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
-        </dependency>
-        <!-- jwt token end -->
-
         <!-- pac4j -->
         <dependency>
             <groupId>io.buji</groupId>
