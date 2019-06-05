@@ -150,7 +150,7 @@
     <logger name="druid.sql" level="INFO"/>
     <logger name="org.apache.shiro" level="INFO"/>
     <logger name="org.apache.velocity" level="INFO"/>
-    <logger name="com.hdw" level="INFO"></logger>
+    <logger name="com.hdw" level="INFO"/>
 
     <springProfile name="dev">
         <root level="${logLevel}">
