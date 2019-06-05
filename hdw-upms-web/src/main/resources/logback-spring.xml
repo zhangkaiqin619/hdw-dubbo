@@ -44,6 +44,7 @@
             <maxFileSize>${max.file.size}</maxFileSize>
             <maxHistory>${max.history}</maxHistory>
             <totalSizeCap>${total.size.cap}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${out.pattern}</pattern>
@@ -65,6 +66,7 @@
             <maxFileSize>${max.file.size}</maxFileSize>
             <maxHistory>${max.history}</maxHistory>
             <totalSizeCap>${total.size.cap}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${out.pattern}</pattern>
@@ -86,6 +88,7 @@
             <maxFileSize>${max.file.size}</maxFileSize>
             <maxHistory>${max.history}</maxHistory>
             <totalSizeCap>${total.size.cap}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${out.pattern}</pattern>
@@ -100,6 +103,7 @@
             <fileNamePattern>${logPath}/${logName}.other.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>${max.history}</maxHistory>
             <totalSizeCap>${total.size.cap}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${out.pattern}</pattern>
@@ -139,38 +143,14 @@
         <appender-ref ref="OTHER_FILE"/>
     </appender>
 
-    <!-- show parameters for hibernate sql 专为 Hibernate 定制 -->
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
-    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="DEBUG"/>
-    <logger name="org.hibernate.SQL" level="DEBUG"/>
-    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG"/>
-    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG"/>
-
-    <!--myibatis log configure-->
-    <logger name="com.apache.ibatis" level="TRACE"/>
+    <!--mybatis log-->
     <logger name="java.sql.Connection" level="DEBUG"/>
     <logger name="java.sql.Statement" level="DEBUG"/>
     <logger name="java.sql.PreparedStatement" level="DEBUG"/>
-
-    <!-- 减少部分debug日志 -->
-    <logger name="org.springframework" level="INFO"/>
-    <logger name="org.springframework.context" level="WARN"/>
-    <logger name="org.springframework.beans" level="WARN"/>
-    <logger name="org.mybatis.spring" level="INFO"/>
-    <logger name="com.baomidou.mybatisplus" level="INFO"/>
-    <logger name="org.apache.ibatis.io" level="INFO"/>
     <logger name="druid.sql" level="INFO"/>
     <logger name="org.apache.shiro" level="INFO"/>
     <logger name="org.apache.velocity" level="INFO"/>
-    <!-- cache INFO -->
-    <logger name="net.sf.ehcache" level="INFO"/>
-    <logger name="org.springframework.cache" level="INFO"/>
-
-    <!-- 业务debug日志 -->
-    <logger name="com.hdw" level="INFO">
-        <appender-ref ref="ASYNC_LOG_OTHER"/>
-    </logger>
-
+    <logger name="com.hdw" level="INFO"></logger>
 
     <springProfile name="dev">
         <root level="${logLevel}">

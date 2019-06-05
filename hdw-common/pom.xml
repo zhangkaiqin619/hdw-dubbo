@@ -254,6 +254,14 @@
         </dependency>
         <!-- jwt token end -->
 
+        <!-- jaxb-api begin -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb-api.version}</version>
+        </dependency>
+        <!-- jaxb-api end -->
+
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

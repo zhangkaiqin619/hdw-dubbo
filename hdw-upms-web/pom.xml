@@ -76,14 +76,6 @@
         </dependency>
         <!-- pac4j end -->
 
-        <!-- ueditor begin -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20180130</version>
-        </dependency>
-        <!-- ueditor end -->
-
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
