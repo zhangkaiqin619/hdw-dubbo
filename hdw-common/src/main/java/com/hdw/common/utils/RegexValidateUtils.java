@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  * @Author ChenShi
  * @Date 2018/5/29 20:43
  */
-public class RegexValidateUtil {
+public class RegexValidateUtils {
 
     static boolean flag = false;
     static String regex = "";

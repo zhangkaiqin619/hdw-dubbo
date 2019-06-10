@@ -137,12 +137,10 @@ dubbo:
   application:
     id: hdw-upms-consumer
     name: ${dubbo.application.id}
-    qos-enable: true
-    qos-port: 22222
   protocol:
     id: dubbo
     name: dubbo
-    port: 20881
+    port: -1
     status: client
     threadpool: fixed
     threads: 200
