@@ -60,5 +60,9 @@ public class ActiveMQConfig {
         factory.setPubSubDomain(false);
         configurer.configure(factory, cachingConnectionFactory());
         return factory;
+
+
     }
+
+
 }
