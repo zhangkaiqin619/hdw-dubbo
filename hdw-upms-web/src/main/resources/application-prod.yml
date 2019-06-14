@@ -137,6 +137,8 @@ dubbo:
   application:
     id: hdw-upms-consumer
     name: ${dubbo.application.id}
+    qos:
+      enable: false
   protocol:
     id: dubbo
     name: dubbo
@@ -228,5 +230,3 @@ cas:
   callbackUrl: ${cas.serviceUrl}/callback
   salt: 12345678901234567890123456789012
   serverUrlPrefix: http://127.0.0.1:8443/cas
-
-

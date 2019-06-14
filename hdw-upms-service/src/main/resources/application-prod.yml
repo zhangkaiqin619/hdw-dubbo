@@ -112,6 +112,8 @@ dubbo:
   application:
     id: hdw-upms-provider
     name: ${dubbo.application.id}
+    qos:
+      enable: false
   protocol:
     id: dubbo
     name: dubbo

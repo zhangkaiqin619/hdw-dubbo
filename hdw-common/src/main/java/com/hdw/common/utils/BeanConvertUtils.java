@@ -2,7 +2,6 @@ package com.hdw.common.utils;
 
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -191,20 +190,16 @@ public class BeanConvertUtils {
      * map转化为对象
      *
      * @param map   源map
-     * @param clazz 目标对象
+     * @param t 目标对象
      * @param <T>
      * @return
      */
-    public static <T> T mapToObject(Map<String, Object> map, Class<T> clazz) {
-        if (MapUtils.isEmpty(map)) {
-            return null;
-        }
+    public static <T> T mapToObject(Map<String, Object> map, Class<T> t) {
         try {
-            T instance = clazz.newInstance();
+            T instance = t.newInstance();
             org.apache.commons.beanutils.BeanUtils.populate(instance, map);
             return instance;
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
