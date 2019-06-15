@@ -29,13 +29,8 @@ public class ActiveMQSendMsgService {
      * @param message   消息
      */
     public void sendMessage(final String queueName, final String message) {
-        Destination mQueue = new ActiveMQQueue(queueName);
-        jmsTemplate.send(mQueue, new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                return session.createTextMessage(message);
-            }
-        });
+        Destination destination = new ActiveMQQueue(queueName);
+        jmsTemplate.convertAndSend(destination, message);
     }
 
     /**
@@ -46,26 +41,9 @@ public class ActiveMQSendMsgService {
      * @param obj       对象
      */
     public void sendObjectMessage(final String queueName, final Serializable obj) {
-        Destination mQueue = new ActiveMQQueue(queueName);
-        jmsTemplate.send(mQueue, new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                return session.createObjectMessage(obj);
-            }
-        });
+        Destination destination = new ActiveMQQueue(queueName);
+        jmsTemplate.convertAndSend(destination, obj);
     }
-
-
-    public void delaySend(final String queueName, final Serializable obj) {
-        Destination mQueue = new ActiveMQQueue(queueName);
-        jmsTemplate.send(mQueue, new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                return session.createObjectMessage(obj);
-            }
-        });
-    }
-
 
     /**
      * 订阅模式
@@ -75,12 +53,7 @@ public class ActiveMQSendMsgService {
      * @param obj
      */
     public void sendObjectMessageOfTopic(final String topicName, final Serializable obj) {
-        Destination mQueue = new ActiveMQTopic(topicName);
-        jmsTemplate.send(mQueue, new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                return session.createObjectMessage(obj);
-            }
-        });
+        Destination destination = new ActiveMQTopic(topicName);
+        jmsTemplate.convertAndSend(destination,obj );
     }
 }

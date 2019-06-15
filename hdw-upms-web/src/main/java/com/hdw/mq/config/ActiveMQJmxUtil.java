@@ -2,15 +2,10 @@ package com.hdw.mq.config;
 
 import com.hdw.mq.entity.MqModel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.broker.Connection;
 import org.apache.activemq.broker.jmx.BrokerViewMBean;
-import org.apache.activemq.broker.jmx.ConnectionViewMBean;
 import org.apache.activemq.broker.jmx.QueueViewMBean;
-import org.apache.activemq.broker.region.policy.ConstantPendingMessageLimitStrategy;
-import org.apache.activemq.broker.region.policy.PolicyEntry;
-import org.apache.activemq.broker.region.policy.PolicyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.management.MBeanServerConnection;
@@ -22,9 +17,7 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Descripton com.hdw.mq.config
@@ -35,7 +28,8 @@ import java.util.Set;
 @Slf4j
 public class ActiveMQJmxUtil {
 
-    protected String bindAddress = "tcp://localhost:61619";
+    @Value("${spring.activemq.broker-url}")
+    private String brokerUrl;
 
     @Autowired
     private ActiveMQJmxConfig activeMQRemoteConfig;

@@ -47,22 +47,19 @@ public class ActiveMQConfig {
 
 
     @Bean(name = "topicJmsListenerContainerFactory")
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(DefaultJmsListenerContainerFactoryConfigurer configurer) {
+    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setPubSubDomain(true);
-        configurer.configure(factory, cachingConnectionFactory());
+        factory.setConnectionFactory(cachingConnectionFactory());
         return factory;
     }
 
     @Bean(name = "queueJmsListenerContainerFactory")
-    public JmsListenerContainerFactory<?> queueJmsListenerContainerFactory(DefaultJmsListenerContainerFactoryConfigurer configurer) {
+    public JmsListenerContainerFactory<?> queueJmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setPubSubDomain(false);
-        configurer.configure(factory, cachingConnectionFactory());
+        factory.setConnectionFactory(cachingConnectionFactory());
         return factory;
-
-
     }
-
 
 }
