@@ -42,7 +42,10 @@ public class ActiveMQConfig {
 
     @Bean
     public JmsTemplate jmsTemplate() {
-        return new JmsTemplate(cachingConnectionFactory());
+        JmsTemplate jmsTemplate = new JmsTemplate();
+        jmsTemplate.setDeliveryMode(2);//进行持久化配置 1表示非持久化，2表示持久化
+        jmsTemplate.setConnectionFactory(cachingConnectionFactory());
+        return jmsTemplate;
     }
 
 
