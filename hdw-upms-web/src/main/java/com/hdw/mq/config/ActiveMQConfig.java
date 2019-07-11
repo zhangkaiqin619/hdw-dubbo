@@ -2,7 +2,6 @@ package com.hdw.mq.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
@@ -64,5 +63,4 @@ public class ActiveMQConfig {
         factory.setConnectionFactory(cachingConnectionFactory());
         return factory;
     }
-
 }

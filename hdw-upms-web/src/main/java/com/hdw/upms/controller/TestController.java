@@ -2,7 +2,6 @@ package com.hdw.upms.controller;
 
 import com.hdw.common.base.BaseController;
 import com.hdw.common.result.ResultMap;
-import com.hdw.mq.config.ActiveMQJmxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

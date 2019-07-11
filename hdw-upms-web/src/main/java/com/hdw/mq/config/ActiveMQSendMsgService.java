@@ -3,11 +3,10 @@ package com.hdw.mq.config;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.jms.*;
+import javax.jms.Destination;
 import java.io.Serializable;
 
 /**

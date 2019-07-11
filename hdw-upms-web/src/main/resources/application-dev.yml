@@ -220,12 +220,6 @@ hdw:
     server: http://127.0.0.1
   redisson:
     model: single
-  activemq-jmx:
-    connectorPort: 11099
-    connectorPath: /jmxrmi
-    jmxDomain: org.apache.activemq
-    connectorIp: 127.0.0.1
-    brokerName: localhost
 
 #CAS Config
 cas:
