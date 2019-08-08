@@ -29,7 +29,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
         //获取请求token
         String token = getRequestToken((HttpServletRequest) request);
 
-        if(StringUtils.isBlank(token)){
+        if (StringUtils.isBlank(token)) {
             return null;
         }
 
@@ -38,7 +38,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        if(((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name())){
+        if (((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name())) {
             return true;
         }
 
@@ -49,8 +49,8 @@ public class OAuth2Filter extends AuthenticatingFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token，如果token不存在，直接返回401
         String token = getRequestToken((HttpServletRequest) request);
-        System.out.println("token:"+token);
-        if(StringUtils.isBlank(token)){
+        System.out.println("token:" + token);
+        if (StringUtils.isBlank(token)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
@@ -76,10 +76,10 @@ public class OAuth2Filter extends AuthenticatingFilter {
         try {
             //处理登录失败的异常
             Throwable throwable = e.getCause() == null ? e : e.getCause();
-            String json =JacksonUtils.toJson(ResultMap.error(HttpStatus.SC_UNAUTHORIZED, throwable.getMessage()));
+            String json = JacksonUtils.toJson(ResultMap.error(HttpStatus.SC_UNAUTHORIZED, throwable.getMessage()));
             httpResponse.getWriter().print(json);
         } catch (IOException e1) {
-
+            e.printStackTrace();
         }
 
         return false;
@@ -88,12 +88,12 @@ public class OAuth2Filter extends AuthenticatingFilter {
     /**
      * 获取请求的token
      */
-    private String getRequestToken(HttpServletRequest httpRequest){
+    private String getRequestToken(HttpServletRequest httpRequest) {
         //从header中获取token
         String token = httpRequest.getHeader("token");
 
         //如果header中不存在token，则从参数中获取token
-        if(StringUtils.isBlank(token)){
+        if (StringUtils.isBlank(token)) {
             token = httpRequest.getParameter("token");
         }
 

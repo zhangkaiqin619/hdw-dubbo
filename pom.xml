@@ -6,7 +6,7 @@
 
     <groupId>com.hdw</groupId>
     <artifactId>hdw-dubbo</artifactId>
-    <version>1.3.0</version>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -29,27 +29,23 @@
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
 
-        <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
-        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
-        <spring.platform.version>Cairo-SR8</spring.platform.version>
-        <spring-cloud-alibaba.version>0.2.2.RELEASE</spring-cloud-alibaba.version>
+        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
         <!-- springboot-admin -->
-        <spring-boot-admin.version>2.1.4</spring-boot-admin.version>
+        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
         <!-- dubbo -->
-        <dubbo.version>2.6.5</dubbo.version>
-        <dubbo-spring-boot-starter.version>0.2.1.RELEASE</dubbo-spring-boot-starter.version>
-        <curator-framework.version>4.2.0</curator-framework.version>
+        <dubbo.version>2.7.3</dubbo.version>
+        <dubbo-spring-boot.version>2.7.1</dubbo-spring-boot.version>
 
         <!-- commons-io -->
         <commons-lang3.version>3.1</commons-lang3.version>
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
-        <commons-codec.version>1.9</commons-codec.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-net.version>3.6</commons-net.version>
         <commons-text.version>1.6</commons-text.version>
-        <commons-pool2.version>2.5.0</commons-pool2.version>
-        <httpclient.version>4.5.3</httpclient.version>
+        <httpclient.version>4.5.9</httpclient.version>
         <!-- pinyin4j -->
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <!-- zxing -->
@@ -62,19 +58,18 @@
         <pdfbox.version>2.0.12</pdfbox.version>
         <!-- hutool -->
         <hutool.version>4.3.1</hutool.version>
-        <!-- guava -->
-        <guava.version>27.1-jre</guava.version>
         <!-- fastjson -->
-        <fastjson.version>1.2.54</fastjson.version>
+        <fastjson.version>1.2.58</fastjson.version>
         <!-- fastdfs-spring-boot-starter -->
         <fastdfs-spring-boot-starter.version>0.2.0</fastdfs-spring-boot-starter.version>
         <!-- springfox.swagger2 -->
         <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
+        <swagger-bootstrap-ui.version>1.9.4</swagger-bootstrap-ui.version>
 
         <!-- mybatis-plus -->
-        <druid-spring-boot-starter.version>1.1.16</druid-spring-boot-starter.version>
-        <mybatis-plus-boot-starter.version>3.1.1</mybatis-plus-boot-starter.version>
-        <dynamic-datasource-spring-boot-starter.version>2.5.4</dynamic-datasource-spring-boot-starter.version>
+        <druid-spring-boot-starter.version>1.1.18</druid-spring-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.1.2</mybatis-plus-boot-starter.version>
+        <dynamic-datasource-spring-boot-starter.version>2.5.5</dynamic-datasource-spring-boot-starter.version>
 
         <!-- shiro -->
         <shiro.version>1.4.0</shiro.version>
@@ -85,16 +80,13 @@
         <thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
 
-        <jaxb-api.version>2.3.1</jaxb-api.version>
-
-        <hdw-common.version>1.3.0</hdw-common.version>
-        <hdw-upms-mapper.version>1.3.0</hdw-upms-mapper.version>
-        <hdw-upms-api.version>1.3.0</hdw-upms-api.version>
+        <hdw-common.version>2.0.0</hdw-common.version>
+        <hdw-upms-mapper.version>2.0.0</hdw-upms-mapper.version>
+        <hdw-upms-api.version>2.0.0</hdw-upms-api.version>
 
     </properties>
 
     <dependencyManagement>
-
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -111,14 +103,7 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>io.spring.platform</groupId>
-                <artifactId>platform-bom</artifactId>
-                <version>${spring.platform.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
+                <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
                 <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
@@ -131,9 +116,10 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- Dubbo dependencies -->
+
+            <!-- Apache Dubbo  -->
             <dependency>
-                <groupId>com.alibaba</groupId>
+                <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-dependencies-bom</artifactId>
                 <version>${dubbo.version}</version>
                 <type>pom</type>

@@ -2,17 +2,20 @@ package com.hdw.upms.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.hdw.common.base.BaseController;
+import com.google.common.collect.Maps;
+import com.hdw.common.base.controller.BaseController;
 import com.hdw.common.result.ResultMap;
 import com.hdw.common.result.SelectNode;
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.SelectTreeNode;
 import com.hdw.enterprise.service.IEnterpriseService;
 import com.hdw.upms.entity.SysDic;
 import com.hdw.upms.service.ISysDicService;
 import com.hdw.upms.shiro.ShiroKit;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.*;
 
@@ -54,15 +57,25 @@ public class SysDicController extends BaseController {
      *
      * @return
      */
-    @GetMapping("/select/{pid}")
-    public ResultMap select(@PathVariable("pid") Long pid) {
-        Map<String, Object> par = new HashMap<>();
-        if (pid != null && 0 != pid) {
-            par.put("parentId", pid);
+    @GetMapping("/select/{parentId}")
+    public ResultMap select(@PathVariable("parentId") Long parentId) {
+        Map<String, Object> params = Maps.newHashMap();
+        if (parentId != null && 0 != parentId) {
+            params.put("parentId", parentId);
         }
-        List<TreeNode> tree = sysDicService.selectTree(par);
-        tree.add(TreeNode.createParent());
-        return ResultMap.ok().put("dicList", tree);
+        List<SysDic> dicList = sysDicService.selectDicList(params);
+        List<SelectTreeNode> treeNodeList= Lists.newArrayList();
+        if(!dicList.isEmpty()){
+            dicList.forEach(dic ->{
+                SelectTreeNode selectTreeNode=new SelectTreeNode();
+                selectTreeNode.setId(dic.getId().toString());
+                selectTreeNode.setParentId(dic.getParentId().toString());
+                selectTreeNode.setName(dic.getVarName());
+                treeNodeList.add(selectTreeNode);
+            });
+        }
+        treeNodeList.add(SelectTreeNode.createParent());
+        return ResultMap.ok().put("dicList", treeNodeList);
     }
 
     @GetMapping("/info/{dicId}")

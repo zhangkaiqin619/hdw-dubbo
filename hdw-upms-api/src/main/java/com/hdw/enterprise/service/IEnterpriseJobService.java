@@ -1,8 +1,7 @@
 package com.hdw.enterprise.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.PageUtils;
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.PageParams;
 import com.hdw.enterprise.entity.EnterpriseJob;
 
 import java.util.List;
@@ -17,27 +16,20 @@ import java.util.Map;
 public interface IEnterpriseJobService extends IService<EnterpriseJob> {
 
     /**
-    * 多表页面信息查询
-    * @param params
-    * @return
-    */
-    PageUtils selectDataGrid(Map<String, Object> params);
-
-    /**
-    * 多表信息查询
-    * @param params
-    * @return
-    */
-    List<Map<String, Object>> selectEnterpriseJobList(Map<String, Object> params);
-
-    /**
-     * 根据企业职位获取职位树
+     * 多表页面信息查询
      *
      * @param params
      * @return
      */
-    List<TreeNode> selectTree(Map<String, Object> params);
+    PageParams selectDataGrid(Map<String, Object> params);
 
+    /**
+     * 自定义查询
+     *
+     * @param params
+     * @return
+     */
+    List<EnterpriseJob> selectEnterpriseJobList(Map<String, Object> params);
 
 }
 

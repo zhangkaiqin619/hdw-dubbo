@@ -1,9 +1,8 @@
 package com.hdw.common.csrf;
 
-import java.io.Serializable;
-
-
 import org.springframework.util.Assert;
+
+import java.io.Serializable;
 
 /**
  * @author TuMinglong

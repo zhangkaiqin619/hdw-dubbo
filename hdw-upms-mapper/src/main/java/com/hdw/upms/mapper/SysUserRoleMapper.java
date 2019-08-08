@@ -10,13 +10,14 @@ import java.util.List;
 
 /**
  * 用户角色表
- * 
+ *
  * @author TuMinglong
  * @date 2018-12-11 11:35:15
  */
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
     /**
      * 根据用户查找用户角色集合
+     *
      * @param userId
      * @return
      */
@@ -26,15 +27,17 @@ public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
     /**
      * 根据用户批量删除
+     *
      * @param userIds
      */
     void deleteBatchByUserIds(Long[] userIds);
 
     /**
      * 根据角色批量删除
+     *
      * @param roleIds
      */
     void deleteBatchByRoleIds(Long[] roleIds);
 
-	
+
 }

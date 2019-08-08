@@ -21,6 +21,7 @@ public interface ISysResourceService extends IService<SysResource> {
 
     /**
      * 根据父ID和资源ID集合查找资源集合
+     *
      * @param parentId
      * @param menuIdList
      * @return
@@ -29,13 +30,15 @@ public interface ISysResourceService extends IService<SysResource> {
 
     /**
      * 根据父ID查找资源集合
+     *
      * @param parentId
      * @return
      */
     List<SysResource> selectListByParentId(Long parentId);
 
     /**
-     *  查找非按钮资源集合
+     * 查找非按钮资源集合
+     *
      * @return
      */
     List<SysResource> selectNotButtonList();

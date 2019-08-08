@@ -1,7 +1,7 @@
 package com.hdw.upms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.SelectTreeNode;
 import com.hdw.upms.entity.SysDic;
 
 import java.util.List;
@@ -24,15 +24,16 @@ public interface ISysDicService extends IService<SysDic> {
     List<Map<String, Object>> selectTreeGrid(Map<String, Object> par);
 
     /**
-     * 获取数据字典树
+     * 自定义查询
      *
-     * @param par
+     * @param params
      * @return
      */
-    List<TreeNode> selectTree(Map<String, Object> par);
+    List<SysDic> selectDicList(Map<String, Object> params);
 
     /**
      * 根据父ID获取变量
+     *
      * @param par
      * @return
      */

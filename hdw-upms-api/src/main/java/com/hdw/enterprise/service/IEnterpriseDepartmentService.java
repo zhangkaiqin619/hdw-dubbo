@@ -1,7 +1,6 @@
 package com.hdw.enterprise.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.TreeNode;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
 
 import java.util.List;
@@ -16,19 +15,19 @@ import java.util.Map;
 public interface IEnterpriseDepartmentService extends IService<EnterpriseDepartment> {
 
     /**
-     *  树表
+     * 树表
+     *
      * @param params
      * @return
      */
     List<Map<String, Object>> selectTreeGrid(Map<String, Object> params);
 
     /**
-     * 根据企业部门获取部门树
+     * 自定义查询
      *
      * @param params
      * @return
      */
-    List<TreeNode> selectTree(Map<String, Object> params);
-
+    List<EnterpriseDepartment> selectEnterpriseDepartmentList(Map<String, Object> params);
 }
 

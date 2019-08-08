@@ -9,5 +9,5 @@ import com.hdw.job.entity.ScheduleJobLogEntity;
  * @Date 2018/12/13 10:44
  */
 public interface ScheduleJobLogMapper extends BaseMapper<ScheduleJobLogEntity> {
-	
+
 }

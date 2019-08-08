@@ -5,7 +5,7 @@ package com.hdw.common.exception;
  * @Author TuMinglong
  * @Date 2018/12/10 13:59
  */
-public class GlobalException extends RuntimeException{
+public class GlobalException extends RuntimeException {
     private String msg;
     private int code = 500;
 

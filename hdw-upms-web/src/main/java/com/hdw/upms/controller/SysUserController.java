@@ -1,11 +1,10 @@
 package com.hdw.upms.controller;
 
-import com.hdw.common.base.BaseController;
+import com.hdw.common.base.controller.BaseController;
 import com.hdw.common.constants.CommonConstants;
-import com.hdw.common.result.PageUtils;
+import com.hdw.common.result.PageParams;
 import com.hdw.common.result.ResultMap;
-import com.hdw.common.result.SelectTreeNode;
-import com.hdw.common.constants.CommonEnum;
+import com.hdw.common.result.SelectNode;
 import com.hdw.common.validator.Assert;
 import com.hdw.upms.entity.SysUser;
 import com.hdw.upms.entity.vo.UserVo;
@@ -15,13 +14,15 @@ import com.hdw.upms.service.ISysUserService;
 import com.hdw.upms.shiro.ShiroKit;
 import com.hdw.upms.shiro.form.PasswordForm;
 import io.swagger.annotations.Api;
-import com.alibaba.dubbo.config.annotation.Reference;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +50,12 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("/list")
     @RequiresPermissions("sys/user/list")
-    public ResultMap list(@RequestParam Map<String, Object> params){
+    public ResultMap list(@RequestParam Map<String, Object> params) {
         //只有超级管理员，才能查看所有管理员列表
         if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
             params.put("userId", ShiroKit.getUser().getId());
         }
-        PageUtils page = sysUserService.selectDataGrid(params);
+        PageParams page = sysUserService.selectDataGrid(params);
 
         return ResultMap.ok().put("page", page);
     }
@@ -63,23 +64,23 @@ public class SysUserController extends BaseController {
      * 获取登录的用户信息
      */
     @GetMapping("/info")
-    public ResultMap info(){
-        return ResultMap.ok().put("user",ShiroKit.getUser());
+    public ResultMap info() {
+        return ResultMap.ok().put("user", ShiroKit.getUser());
     }
 
     /**
      * 修改登录用户密码
      */
     @PostMapping("/password")
-    public ResultMap password(@RequestBody PasswordForm form){
+    public ResultMap password(@RequestBody PasswordForm form) {
         Assert.isBlank(form.getNewPassword(), "新密码不为能空");
 
-        SysUser user=sysUserService.getById(ShiroKit.getUser().getId());
-        String password=ShiroKit.md5(form.getPassword(), user.getLoginName() + user.getSalt());
-        if(!user.getPassword().equals(password)){
+        SysUser user = sysUserService.getById(ShiroKit.getUser().getId());
+        String password = ShiroKit.md5(form.getPassword(), user.getLoginName() + user.getSalt());
+        if (!user.getPassword().equals(password)) {
             return ResultMap.error("原密码不正确");
         }
-        String newPassword=ShiroKit.md5(form.getNewPassword(), user.getLoginName() + user.getSalt());
+        String newPassword = ShiroKit.md5(form.getNewPassword(), user.getLoginName() + user.getSalt());
         user.setPassword(newPassword);
         user.setUpdateTime(new Date());
         sysUserService.updateById(user);
@@ -91,14 +92,12 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("/info/{userId}")
     @RequiresPermissions("sys/user/info")
-    public ResultMap info(@PathVariable("userId") Long userId){
+    public ResultMap info(@PathVariable("userId") Long userId) {
         SysUser user = sysUserService.getById(userId);
         List<Long> roleIdList = sysUserRoleService.selectRoleIdListByUserId(userId);
         user.setRoleIdList(roleIdList);
         List<String> enterpriseIdList = sysUserEnterpriseService.selectEnterpriseIdByUserId(userId);
         user.setEnterpriseIdList(enterpriseIdList);
-        List<SelectTreeNode> enterpriseNodeList = sysUserEnterpriseService.selectEnterpriseNodeListByUserId(userId);
-        user.setEnterpriseNodeList(enterpriseNodeList);
         return ResultMap.ok().put("user", user);
 
     }
@@ -108,7 +107,7 @@ public class SysUserController extends BaseController {
      */
     @PostMapping("/save")
     @RequiresPermissions("sys/user/save")
-    public ResultMap save(@Valid @RequestBody SysUser user){
+    public ResultMap save(@Valid @RequestBody SysUser user) {
         try {
             UserVo u = sysUserService.selectByLoginName(user.getLoginName());
             if (u != null) {
@@ -134,7 +133,7 @@ public class SysUserController extends BaseController {
      */
     @PostMapping("/update")
     @RequiresPermissions("sys/user/update")
-    public ResultMap update(@Valid @RequestBody SysUser user){
+    public ResultMap update(@Valid @RequestBody SysUser user) {
         try {
             if (StringUtils.isNotBlank(user.getPassword())) {
                 String salt = ShiroKit.getRandomSalt(16);
@@ -159,14 +158,37 @@ public class SysUserController extends BaseController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("sys/user/delete")
-    public ResultMap delete(@RequestBody Long[] userIds){
+    public ResultMap delete(@RequestBody Long[] userIds) {
         if (ArrayUtils.contains(userIds, CommonConstants.SUPER_ADMIN)) {
             return ResultMap.error("系统管理员不能删除");
         }
-        if(ArrayUtils.contains(userIds, ShiroKit.getUser().getId())){
+        if (ArrayUtils.contains(userIds, ShiroKit.getUser().getId())) {
             return ResultMap.error("当前用户不能删除");
         }
         sysUserService.deleteBatch(userIds);
         return ResultMap.ok();
+    }
+
+    /**
+     * 用户选择树
+     * @return
+     */
+    @ApiOperation(value = "用户选择树", notes = "用户选择树")
+    @GetMapping("/getUserTree")
+    public Object getUserTree() {
+        try {
+            List<SelectNode> nodeList = new ArrayList<>();
+            List<SysUser> list = sysUserService.list();
+            list.forEach(baseUser -> {
+                SelectNode node = new SelectNode();
+                node.setLabel(baseUser.getName());
+                node.setValue(baseUser.getId().toString());
+                nodeList.add(node);
+            });
+            return ResultMap.ok().put("list", nodeList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMap.error("运行异常，请联系管理员");
+        }
     }
 }

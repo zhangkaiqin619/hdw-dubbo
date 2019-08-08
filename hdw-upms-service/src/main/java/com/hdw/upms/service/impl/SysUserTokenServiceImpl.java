@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hdw.upms.entity.SysUserToken;
 import com.hdw.upms.mapper.SysUserTokenMapper;
 import com.hdw.upms.service.ISysUserTokenService;
-import com.alibaba.dubbo.config.annotation.Service;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -14,7 +16,9 @@ import com.alibaba.dubbo.config.annotation.Service;
  * @author TuMinglong
  * @since 2018-06-11
  */
+@Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenMapper, SysUserToken> implements ISysUserTokenService {
 
     @Override

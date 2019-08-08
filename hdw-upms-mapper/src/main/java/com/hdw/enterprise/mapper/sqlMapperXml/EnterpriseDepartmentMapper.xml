@@ -3,20 +3,24 @@
 
 <mapper namespace="com.hdw.enterprise.mapper.EnterpriseDepartmentMapper">
 
-	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hdw.enterprise.entity.EnterpriseDepartment" >
-        <result column="id" property="id" />
-        <result column="parent_id" property="parentId" />
-        <result column="enterprise_id" property="enterpriseId" />
-        <result column="department_code" property="departmentCode" />
-        <result column="department_name" property="departmentName" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_user" property="createUser" />
-        <result column="update_user" property="updateUser" />
-        <result column="parameter1" property="parameter1" />
-        <result column="parameter2" property="parameter2" />
-        <result column="is_sync" property="isSync" />
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hdw.enterprise.entity.EnterpriseDepartment">
+        <result column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="enterprise_id" property="enterpriseId"/>
+        <result column="department_code" property="departmentCode"/>
+        <result column="department_name" property="departmentName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="parameter1" property="parameter1"/>
+        <result column="parameter2" property="parameter2"/>
+        <result column="is_sync" property="isSync"/>
+        <association property="enterprise" javaType="com.hdw.enterprise.entity.Enterprise">
+            <id column="unitId" property="id"/>
+            <result column="enterprise_name" property="enterpriseName"/>
+        </association>
     </resultMap>
 
     <select id="selectTreeGrid" parameterType="map" resultType="map">
@@ -61,17 +65,29 @@
         </where>
         order by t.department_code
     </select>
-
-    <select id="selectTree" parameterType="map" resultType="com.hdw.common.result.TreeNode">
+    
+    
+    <select id="selectEnterpriseDepartmentList" resultType="map" resultMap="BaseResultMap">
         SELECT DISTINCT
-        t.id AS id,
-        t.department_name AS name,
-        t.parent_id as parentId
+        t.id,
+        t.parent_id,
+        t.enterprise_id,
+        t.department_code,
+        t.department_name,
+        t.create_time,
+        t.update_time,
+        t.create_user,
+        t.update_user,
+        t.parameter1,
+        t.parameter2,
+        t.is_sync,
+        t2.id as unitId,
+        t2.enterprise_name
         FROM
         t_enterprise_department t
-        LEFT JOIN t_enterprise t2 ON t.enterprise_id = t2.id
-        LEFT JOIN t_sys_user t3 ON t2.id = t3.enterprise_id
-        LEFT JOIN t_sys_user_enterprise t4 ON t3.id = t4.user_id
+        LEFT JOIN t_enterprise t2 ON t.enterprise_id= t2.id
+        LEFT JOIN t_sys_user t3 on t2.id=t3.enterprise_id
+        LEFT JOIN t_sys_user_enterprise t4 on t3.id=t4.user_id
         <where>
             <if test="id!=null and id!=''">
                 t.id=#{id}
@@ -94,5 +110,4 @@
         </where>
         order by t.department_code
     </select>
-
 </mapper>

@@ -15,6 +15,7 @@ public interface ISysUserRoleService extends IService<SysUserRole> {
 
     /**
      * 根据用户ID或者拥有角色ID集合
+     *
      * @param userId
      * @return
      */
@@ -22,6 +23,7 @@ public interface ISysUserRoleService extends IService<SysUserRole> {
 
     /**
      * 保存或修改用户与角色关系
+     *
      * @param userId
      * @param roleIdList
      */
@@ -29,12 +31,14 @@ public interface ISysUserRoleService extends IService<SysUserRole> {
 
     /**
      * 根据用户批量删除
+     *
      * @param userIds
      */
     void deleteBatchByUserIds(Long[] userIds);
 
     /**
      * 根据角色批量删除
+     *
      * @param roleIds
      */
     void deleteBatchByRoleIds(Long[] roleIds);

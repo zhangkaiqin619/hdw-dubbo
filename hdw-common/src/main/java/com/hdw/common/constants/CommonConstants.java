@@ -14,7 +14,9 @@ public class CommonConstants {
     public static final String X_ERROR_MESSAGE = "x.servlet.exception.message";
     public static final String X_ACCESS_DENIED = "x.access.denied";
 
-    /** 超级管理员ID */
+    /**
+     * 超级管理员ID
+     */
     public static final int SUPER_ADMIN = 1;
 
     /**
@@ -43,4 +45,39 @@ public class CommonConstants {
      * 签名结果 KEY
      */
     public static final String SIGN_SIGN_KEY = "sign";
+
+
+    /**
+     * 默认最小页码
+     */
+    public static final long MIN_PAGE = 0;
+    /**
+     * 最大显示条数
+     */
+    public static final long MAX_LIMIT = 1000;
+    /**
+     * 默认页码
+     */
+    public static final long DEFAULT_PAGE = 1;
+    /**
+     * 默认显示条数
+     */
+    public static final long DEFAULT_LIMIT = 10;
+    /**
+     * 页码 KEY
+     */
+    public static final String PAGE_KEY = "page";
+    /**
+     * 显示条数 KEY
+     */
+    public static final String PAGE_LIMIT_KEY = "limit";
+    /**
+     * 排序字段 KEY
+     */
+    public static final String PAGE_SORT_KEY = "sort";
+    /**
+     * 排序方向 KEY
+     */
+    public static final String PAGE_ORDER_KEY = "order";
+
 }

@@ -1,7 +1,7 @@
 package com.hdw.upms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.PageUtils;
+import com.hdw.common.result.PageParams;
 import com.hdw.upms.entity.SysRole;
 import com.hdw.upms.entity.vo.RoleVo;
 
@@ -17,17 +17,19 @@ import java.util.Map;
 public interface ISysRoleService extends IService<SysRole> {
 
     /**
-    * 多表页面信息查询
-    * @param params
-    * @return
-    */
-    PageUtils selectDataGrid(Map<String, Object> params);
+     * 多表页面信息查询
+     *
+     * @param params
+     * @return
+     */
+    PageParams selectDataGrid(Map<String, Object> params);
 
     /**
-    * 多表信息查询
-    * @param par
-    * @return
-    */
+     * 多表信息查询
+     *
+     * @param par
+     * @return
+     */
     List<SysRole> selectSysRoleList(Map<String, Object> par);
 
     RoleVo selectByUserId(Long userId);

@@ -53,6 +53,6 @@ public class ActiveMQSendMsgService {
      */
     public void sendObjectMessageOfTopic(final String topicName, final Serializable obj) {
         Destination destination = new ActiveMQTopic(topicName);
-        jmsTemplate.convertAndSend(destination,obj );
+        jmsTemplate.convertAndSend(destination, obj);
     }
 }

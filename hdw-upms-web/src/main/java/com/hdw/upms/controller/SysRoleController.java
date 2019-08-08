@@ -1,20 +1,22 @@
 package com.hdw.upms.controller;
 
-import com.hdw.common.base.BaseController;
+import com.hdw.common.base.controller.BaseController;
 import com.hdw.common.constants.CommonConstants;
-import com.hdw.common.result.PageUtils;
+import com.hdw.common.result.PageParams;
 import com.hdw.common.result.ResultMap;
-import com.hdw.common.result.SelectTreeNode;
-import com.hdw.common.constants.CommonEnum;
+import com.hdw.common.result.TreeNode;
 import com.hdw.common.validator.ValidatorUtils;
 import com.hdw.upms.entity.SysRole;
+import com.hdw.upms.entity.SysRoleResource;
 import com.hdw.upms.service.ISysRoleResourceService;
 import com.hdw.upms.service.ISysRoleService;
 import com.hdw.upms.shiro.ShiroKit;
 import io.swagger.annotations.Api;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.commons.compress.utils.Lists;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,12 +42,12 @@ public class SysRoleController extends BaseController {
      */
     @GetMapping("/list")
     @RequiresPermissions("sys/role/list")
-    public ResultMap list(@RequestParam Map<String, Object> params){
+    public ResultMap list(@RequestParam Map<String, Object> params) {
         //如果不是超级管理员，则只查询自己创建的角色列表
         if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
             params.put("createUserId", ShiroKit.getUser().getId());
         }
-        PageUtils page = sysRoleService.selectDataGrid(params);
+        PageParams page = sysRoleService.selectDataGrid(params);
         return ResultMap.ok().put("page", page);
     }
 
@@ -54,7 +56,7 @@ public class SysRoleController extends BaseController {
      */
     @GetMapping("/select")
     @RequiresPermissions("sys/role/select")
-    public ResultMap select(){
+    public ResultMap select() {
         Map<String, Object> map = new HashMap<>();
         //如果不是超级管理员，则只查询自己所拥有的角色列表
         if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
@@ -70,13 +72,22 @@ public class SysRoleController extends BaseController {
      */
     @GetMapping("/info/{roleId}")
     @RequiresPermissions("sys/role/info")
-    public ResultMap info(@PathVariable("roleId") Long roleId){
+    public ResultMap info(@PathVariable("roleId") Long roleId) {
         SysRole role = sysRoleService.getById(roleId);
         //查询角色对应的菜单
-        List<Long> resourceIdList=sysRoleResourceService.selectResourceIdListByRoleId(roleId);
+        List<Long> resourceIdList = sysRoleResourceService.selectResourceIdListByRoleId(roleId);
         role.setResourceIdList(resourceIdList);
-        List<SelectTreeNode> resourceNodeList = sysRoleResourceService.selectResourceNodeListByRoleId(roleId);
-        role.setResourceNodeList(resourceNodeList);
+        List<SysRoleResource> roleResourceList=sysRoleResourceService.selectResourceNodeListByRoleId(roleId);
+        List<TreeNode> treeNodeList= Lists.newArrayList();
+        if(!roleResourceList.isEmpty()){
+            roleResourceList.forEach(roleResource ->{
+                TreeNode treeNode=new TreeNode();
+                treeNode.setId(roleResource.getResourceId().toString());
+                treeNode.setLabel(roleResource.getResource().getName());
+                treeNodeList.add(treeNode);
+            });
+        }
+        role.setResourceNodeList(treeNodeList);
         return ResultMap.ok().put("role", role);
     }
 
@@ -85,7 +96,7 @@ public class SysRoleController extends BaseController {
      */
     @PostMapping("/save")
     @RequiresPermissions("sys/role/save")
-    public ResultMap save(@RequestBody SysRole role){
+    public ResultMap save(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         role.setCreateTime(new Date());
         role.setCreateUserId(ShiroKit.getUser().getId());
@@ -99,7 +110,7 @@ public class SysRoleController extends BaseController {
      */
     @PostMapping("/update")
     @RequiresPermissions("sys/role/update")
-    public ResultMap update(@RequestBody SysRole role){
+    public ResultMap update(@RequestBody SysRole role) {
         ValidatorUtils.validateEntity(role);
         role.setUpdateTime(new Date());
         role.setCreateUserId(ShiroKit.getUser().getId());
@@ -113,7 +124,7 @@ public class SysRoleController extends BaseController {
      */
     @PostMapping("/delete")
     @RequiresPermissions("sys/role/delete")
-    public ResultMap delete(@RequestBody Long[] roleIds){
+    public ResultMap delete(@RequestBody Long[] roleIds) {
         sysRoleService.deleteBatch(roleIds);
         return ResultMap.ok();
     }

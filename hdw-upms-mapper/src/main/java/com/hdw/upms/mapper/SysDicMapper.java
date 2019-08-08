@@ -2,7 +2,7 @@ package com.hdw.upms.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.SelectTreeNode;
 import com.hdw.upms.entity.SysDic;
 
 import java.util.List;
@@ -26,15 +26,16 @@ public interface SysDicMapper extends BaseMapper<SysDic> {
     List<Map<String, Object>> selectTreeGrid(Map<String, Object> par);
 
     /**
-     * 获取数据字典树
+     * 自定义查询
      *
-     * @param par
+     * @param params
      * @return
      */
-    List<TreeNode> selectTree(Map<String, Object> par);
+    List<SysDic> selectDicList(Map<String, Object> params);
 
     /**
      * 根据父ID获取变量
+     *
      * @param par
      * @return
      */

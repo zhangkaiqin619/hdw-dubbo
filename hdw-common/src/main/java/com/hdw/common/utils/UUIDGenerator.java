@@ -1,7 +1,5 @@
 package com.hdw.common.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 
@@ -13,6 +11,7 @@ import java.util.UUID;
 public class UUIDGenerator {
     /**
      * 获取32位随机字符串
+     *
      * @return
      */
     public static String getUUID() {

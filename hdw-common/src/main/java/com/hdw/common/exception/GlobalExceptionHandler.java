@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
      * 处理自定义异常
      */
     @ExceptionHandler(GlobalException.class)
-    public ResultMap handleGlobalException(GlobalException e){
+    public ResultMap handleGlobalException(GlobalException e) {
         ResultMap r = new ResultMap();
         r.put("code", e.getCode());
         r.put("msg", e.getMessage());
@@ -51,19 +51,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    public ResultMap handleDuplicateKeyException(DuplicateKeyException e){
+    public ResultMap handleDuplicateKeyException(DuplicateKeyException e) {
         logger.error(e.getMessage(), e);
         return ResultMap.error("数据库中已存在该记录");
     }
 
     @ExceptionHandler(Exception.class)
-    public ResultMap handleException(Exception e){
+    public ResultMap handleException(Exception e) {
         logger.error(e.getMessage(), e);
         return ResultMap.error();
     }
 
     /**
      * 运行异常
+     *
      * @param e
      * @return
      */
@@ -75,6 +76,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 空指针异常
+     *
      * @param e
      * @return
      */
@@ -86,6 +88,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 类型转换异常
+     *
      * @param e
      * @return
      */
@@ -97,6 +100,7 @@ public class GlobalExceptionHandler {
 
     /**
      * IO异常
+     *
      * @param e
      * @return
      */
@@ -108,6 +112,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 未知方法异常
+     *
      * @param e
      * @return
      */
@@ -119,6 +124,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 数组越界异常
+     *
      * @param e
      * @return
      */
@@ -130,6 +136,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 400错误
+     *
      * @param e
      * @return
      */
@@ -141,6 +148,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 类型匹配异常
+     *
      * @param e
      * @return
      */
@@ -152,6 +160,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 错误服务请求参数异常
+     *
      * @param e
      * @return
      */
@@ -162,7 +171,8 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     *不支持的request请求异常
+     * 不支持的request请求异常
+     *
      * @param e
      * @return
      */
@@ -174,6 +184,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 不可接受的HTTP协议异常
+     *
      * @param e
      * @return
      */
@@ -185,6 +196,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 转换不支持异常
+     *
      * @param e
      * @return
      */
@@ -196,6 +208,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 栈溢出异常
+     *
      * @param e
      * @return
      */
@@ -207,6 +220,7 @@ public class GlobalExceptionHandler {
 
     /**
      * hibernate validator异常
+     *
      * @param e
      * @return
      */
@@ -218,6 +232,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 数据绑定异常
+     *
      * @param e
      * @return
      */
@@ -229,6 +244,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 超过最大上传数量异常
+     *
      * @param e
      * @return
      */

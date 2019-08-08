@@ -7,17 +7,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @Description vue select 插件的节点
- * @Author ChenShi
+ * @Description vue select选择器对象
+ * @Author TuMinglong
  * @Date 2018/6/20 10:38
  */
 public class SelectNode implements Serializable {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
     /**
      * value
      */

@@ -1,9 +1,8 @@
 package com.hdw.upms.controller;
 
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.code.kaptcha.Producer;
-import com.hdw.common.base.BaseController;
+import com.hdw.common.base.controller.BaseController;
 import com.hdw.common.config.redis.IRedisService;
 import com.hdw.common.result.ResultMap;
 import com.hdw.common.utils.JwtUtils;
@@ -20,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

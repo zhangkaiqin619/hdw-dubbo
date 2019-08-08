@@ -1,7 +1,7 @@
 package com.hdw.upms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.PageUtils;
+import com.hdw.common.result.PageParams;
 import com.hdw.upms.entity.SysFile;
 
 import java.util.List;
@@ -25,10 +25,11 @@ public interface ISysFileService extends IService<SysFile> {
 
     /**
      * 获取附件信息页
+     *
      * @param params
      * @return
      */
-    PageUtils<SysFile> selectSysFilePage(Map<String, Object> params);
+    PageParams selectSysFilePage(Map<String, Object> params);
 
 
 }

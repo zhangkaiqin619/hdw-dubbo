@@ -1,17 +1,15 @@
 package com.hdw.common.constants;
 
 /**
- * @author TuMinglong
- * @version 1.0.0
- * @description 常量
- * @date 2018年4月19日 下午3:57:46
+ * @Description 常量
+ * @Author TuMinglong
+ * @Date 2018年4月19日 下午3:57:46
  */
 public class CommonEnum {
 
-	/**
-	 * 菜单类型
-	 *
-	 */
+    /**
+     * 菜单类型
+     */
     public enum MenuType {
         /**
          * 目录
@@ -44,18 +42,18 @@ public class CommonEnum {
         /**
          * 正常
          */
-    	NORMAL(0),
+        NORMAL(0),
         /**
          * 暂停
          */
-    	PAUSE(1);
+        PAUSE(1);
 
         private int value;
 
         ScheduleStatus(int value) {
             this.value = value;
         }
-        
+
         public int getValue() {
             return value;
         }

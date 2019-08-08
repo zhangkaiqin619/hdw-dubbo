@@ -1,6 +1,6 @@
 package com.hdw.common.utils;
 
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.SelectTreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class TreeUtils {
      * @param treeNodes 传入的树节点列表
      * @return
      */
-    public static <T extends TreeNode> List<T> bulid(List<T> treeNodes, Object root) {
+    public static <T extends SelectTreeNode> List<T> bulid(List<T> treeNodes, Object root) {
 
         List<T> trees = new ArrayList<T>();
 
@@ -30,7 +30,7 @@ public class TreeUtils {
             for (T it : treeNodes) {
                 if (it.getParentId() == treeNode.getId()) {
                     if (treeNode.getChildren() == null) {
-                        treeNode.setChildren(new ArrayList<TreeNode>());
+                        treeNode.setChildren(new ArrayList<SelectTreeNode>());
                     }
                     treeNode.add(it);
                 }
@@ -45,7 +45,7 @@ public class TreeUtils {
      * @param treeNodes
      * @return
      */
-    public static <T extends TreeNode> List<T> buildByRecursive(List<T> treeNodes, Object root) {
+    public static <T extends SelectTreeNode> List<T> buildByRecursive(List<T> treeNodes, Object root) {
         List<T> trees = new ArrayList<T>();
         for (T treeNode : treeNodes) {
             if (root.equals(treeNode.getParentId())) {
@@ -61,11 +61,11 @@ public class TreeUtils {
      * @param treeNodes
      * @return
      */
-    public static <T extends TreeNode> T findChildren(T treeNode, List<T> treeNodes) {
+    public static <T extends SelectTreeNode> T findChildren(T treeNode, List<T> treeNodes) {
         for (T it : treeNodes) {
             if (treeNode.getId() == it.getParentId()) {
                 if (treeNode.getChildren() == null) {
-                    treeNode.setChildren(new ArrayList<TreeNode>());
+                    treeNode.setChildren(new ArrayList<SelectTreeNode>());
                 }
                 treeNode.add(findChildren(it, treeNodes));
             }

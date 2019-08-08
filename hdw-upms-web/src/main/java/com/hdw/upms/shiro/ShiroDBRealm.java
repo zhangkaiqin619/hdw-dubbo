@@ -1,6 +1,5 @@
 package com.hdw.upms.shiro;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.hdw.common.utils.JacksonUtils;
 import com.hdw.upms.entity.SysResource;
 import com.hdw.upms.entity.SysRole;
@@ -10,6 +9,7 @@ import com.hdw.upms.service.ISysUserEnterpriseService;
 import com.hdw.upms.service.ISysUserService;
 import com.hdw.upms.service.ISysUserTokenService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -151,7 +151,7 @@ public class ShiroDBRealm extends AuthorizingRealm {
             if (rvList != null && !rvList.isEmpty()) {
                 for (SysRole rv : rvList) {
                     roles.add(rv.getName());
-                    List<SysResource> rList =sysRoleService.selectByRoleId(rv.getId()).getPermissions();
+                    List<SysResource> rList = sysRoleService.selectByRoleId(rv.getId()).getPermissions();
                     if (rList != null && !rList.isEmpty()) {
                         for (SysResource r : rList) {
                             if (StringUtils.isNotBlank(r.getUrl())) {
@@ -163,12 +163,12 @@ public class ShiroDBRealm extends AuthorizingRealm {
             }
             su.setRoles(roles);
             su.setUrlSet(urlSet);
-            List<String> enterpriseIdList=new ArrayList<>();
+            List<String> enterpriseIdList = new ArrayList<>();
             List<String> enterpriseIds = sysUserEnterpriseService.selectEnterpriseIdByUserId(userVo.getId());
-            if(enterpriseIds!=null && enterpriseIds.size()>0){
+            if (enterpriseIds != null && enterpriseIds.size() > 0) {
                 enterpriseIdList.addAll(enterpriseIds);
             }
-            if(StringUtils.isNotBlank(userVo.getEnterpriseId())){
+            if (StringUtils.isNotBlank(userVo.getEnterpriseId())) {
                 enterpriseIdList.add(userVo.getEnterpriseId());
             }
             su.setEnterpriseIdList(removeDuplicate(enterpriseIdList));

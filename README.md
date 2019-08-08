@@ -42,7 +42,6 @@
 
 ## 开发计划
 - elasticsearch集成
-- activeMQ 、WebSocket消息推送
 - 分布式事物处理
 
 ## 技术交流
@@ -63,4 +62,9 @@
 
 
 ## 更新日志
-每个版本的详细更改都记录在[release notes](https://github.com/tumao2/hdw-dubbo/releases)中。
+ v2.0.0 
+  - SpringBoot更新到2.1.6
+  - Dubbo 更新到2.7.3
+  - 加入消息推送功能
+  - 优化自定义分页参数工具类
+  - 重构代码

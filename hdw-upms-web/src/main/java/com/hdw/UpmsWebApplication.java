@@ -1,12 +1,14 @@
 package com.hdw;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -20,11 +22,13 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * @date 2017年9月5日下午8:55:08
  */
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
+@EnableCaching
 @EnableAspectJAutoProxy
 @EnableAsync
 @EnableScheduling
 @EnableJms
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 1800)
+@EnableDubbo
 public class UpmsWebApplication extends SpringBootServletInitializer {
 
     protected final static Logger logger = LoggerFactory.getLogger(UpmsWebApplication.class);

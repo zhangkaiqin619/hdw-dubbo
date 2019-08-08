@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hdw.upms.entity.SysUserRole;
 import com.hdw.upms.mapper.SysUserRoleMapper;
 import com.hdw.upms.service.ISysUserRoleService;
-import com.alibaba.dubbo.config.annotation.Service;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,9 @@ import java.util.Map;
  * @author TuMinglong
  * @date 2018-12-11 11:35:15
  */
+@Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements ISysUserRoleService {
 
     @Override
@@ -28,21 +32,21 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     @Override
     public void saveOrUpdateUserRole(Long userId, List<Long> roleIdList) {
         //先删除用户与角色关系
-        Map<String,Object> params=new HashMap<>();
-        params.put("user_id",userId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", userId);
         this.removeByMap(params);
-        if(roleIdList == null || roleIdList.size() == 0){
-            return ;
+        if (roleIdList == null || roleIdList.size() == 0) {
+            return;
         }
         //保存用户与角色关系
-            List<SysUserRole> list = new ArrayList<>(roleIdList.size());
-            for(Long roleId : roleIdList){
-                SysUserRole sysUserRole = new SysUserRole();
-                sysUserRole.setUserId(userId);
-                sysUserRole.setRoleId(roleId);
-                list.add(sysUserRole);
-            }
-            this.saveBatch(list);
+        List<SysUserRole> list = new ArrayList<>(roleIdList.size());
+        for (Long roleId : roleIdList) {
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(userId);
+            sysUserRole.setRoleId(roleId);
+            list.add(sysUserRole);
+        }
+        this.saveBatch(list);
     }
 
     @Override

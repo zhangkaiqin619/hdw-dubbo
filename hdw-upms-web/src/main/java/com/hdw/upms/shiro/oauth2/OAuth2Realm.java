@@ -1,7 +1,6 @@
 package com.hdw.upms.shiro.oauth2;
 
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.hdw.common.utils.JacksonUtils;
 import com.hdw.upms.entity.SysResource;
 import com.hdw.upms.entity.SysRole;
@@ -13,6 +12,7 @@ import com.hdw.upms.service.ISysUserService;
 import com.hdw.upms.service.ISysUserTokenService;
 import com.hdw.upms.shiro.ShiroUser;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -124,7 +124,7 @@ public class OAuth2Realm extends AuthorizingRealm {
             if (rvList != null && !rvList.isEmpty()) {
                 for (SysRole rv : rvList) {
                     roles.add(rv.getName());
-                    List<SysResource> rList =sysRoleService.selectByRoleId(rv.getId()).getPermissions();
+                    List<SysResource> rList = sysRoleService.selectByRoleId(rv.getId()).getPermissions();
                     if (rList != null && !rList.isEmpty()) {
                         for (SysResource r : rList) {
                             if (StringUtils.isNotBlank(r.getUrl())) {
@@ -136,12 +136,12 @@ public class OAuth2Realm extends AuthorizingRealm {
             }
             su.setRoles(roles);
             su.setUrlSet(urlSet);
-            List<String> enterpriseIdList=new ArrayList<>();
+            List<String> enterpriseIdList = new ArrayList<>();
             List<String> enterpriseIds = sysUserEnterpriseService.selectEnterpriseIdByUserId(userVo.getId());
-            if(enterpriseIds!=null && enterpriseIds.size()>0){
+            if (enterpriseIds != null && enterpriseIds.size() > 0) {
                 enterpriseIdList.addAll(enterpriseIds);
             }
-            if(StringUtils.isNotBlank(userVo.getEnterpriseId())){
+            if (StringUtils.isNotBlank(userVo.getEnterpriseId())) {
                 enterpriseIdList.add(userVo.getEnterpriseId());
             }
             su.setEnterpriseIdList(removeDuplicate(enterpriseIdList));

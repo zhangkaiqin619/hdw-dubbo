@@ -3,48 +3,48 @@
 
 <mapper namespace="com.hdw.upms.mapper.SysUserMapper">
 
-	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysUser" >
-        <result column="id" property="id" />
-        <result column="login_name" property="loginName" />
-        <result column="name" property="name" />
-        <result column="password" property="password" />
-        <result column="salt" property="salt" />
-        <result column="sex" property="sex" />
-        <result column="phone" property="phone" />
-        <result column="email" property="email" />
-        <result column="user_type" property="userType" />
-        <result column="status" property="status" />
-        <result column="expired" property="expired" />
-        <result column="enterprise_id" property="enterpriseId" />
-        <result column="department_id" property="departmentId" />
-        <result column="job_id" property="jobId" />
-        <result column="is_leader" property="isLeader" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysUser">
+        <result column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="user_type" property="userType"/>
+        <result column="status" property="status"/>
+        <result column="expired" property="expired"/>
+        <result column="enterprise_id" property="enterpriseId"/>
+        <result column="department_id" property="departmentId"/>
+        <result column="job_id" property="jobId"/>
+        <result column="is_leader" property="isLeader"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <resultMap id="UserVoResultMap" type="com.hdw.upms.entity.vo.UserVo" >
-        <result column="id" property="id" />
-        <result column="login_name" property="loginName" />
-        <result column="name" property="name" />
-        <result column="password" property="password" />
-        <result column="salt" property="salt" />
-        <result column="sex" property="sex" />
-        <result column="phone" property="phone" />
-        <result column="email" property="email" />
-        <result column="user_type" property="userType" />
-        <result column="status" property="status" />
-        <result column="expired" property="expired" />
-        <result column="enterprise_id" property="enterpriseId" />
-        <result column="department_id" property="departmentId" />
-        <result column="job_id" property="jobId" />
-        <result column="is_leader" property="isLeader" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="enterpriseName" property="enterpriseName" />
-        <result column="departmentName" property="departmentName" />
-        <result column="jobName" property="jobName" />
+    <resultMap id="UserVoResultMap" type="com.hdw.upms.entity.vo.UserVo">
+        <result column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="user_type" property="userType"/>
+        <result column="status" property="status"/>
+        <result column="expired" property="expired"/>
+        <result column="enterprise_id" property="enterpriseId"/>
+        <result column="department_id" property="departmentId"/>
+        <result column="job_id" property="jobId"/>
+        <result column="is_leader" property="isLeader"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="enterpriseName" property="enterpriseName"/>
+        <result column="departmentName" property="departmentName"/>
+        <result column="jobName" property="jobName"/>
 
         <collection property="roles" ofType="com.hdw.upms.entity.SysRole">
             <id column="roleId" property="id"/>
@@ -104,7 +104,8 @@
                 and t.department_id= #{params.departmentId}
             </if>
             <if test=" params.startTime != null and params.starTime !='' and params.endTime !=null and params.endTime!=''">
-                and (t.create_time between concat(#{params.startTime},'00:00:00') and concat(#{params.endTime},"00:00:00"))
+                and (t.create_time between concat(#{params.startTime},'00:00:00') and
+                concat(#{params.endTime},"00:00:00"))
             </if>
         </where>
         GROUP BY t.id
@@ -165,7 +166,7 @@
         GROUP BY t.id
     </select>
 
-    <select id="selectByUserId"  resultMap="UserVoResultMap" parameterType="java.lang.Long">
+    <select id="selectByUserId" resultMap="UserVoResultMap" parameterType="java.lang.Long">
         SELECT DISTINCT
         t.id,
         t.login_name,
@@ -206,7 +207,7 @@
         </where>
     </select>
 
-    <select id="selectByLoginName"  resultMap="UserVoResultMap" parameterType="java.lang.String">
+    <select id="selectByLoginName" resultMap="UserVoResultMap" parameterType="java.lang.String">
         SELECT DISTINCT
         t.id,
         t.login_name,

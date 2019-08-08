@@ -125,7 +125,6 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: id_worker
-      field-strategy: not_null
       table-underline: true
       logic-delete-value: 1
       logic-not-delete-value: 0
@@ -143,7 +142,6 @@ dubbo:
     id: dubbo
     name: dubbo
     port: -1
-    status: client
     threadpool: fixed
     threads: 200
     payload: 52428800
@@ -156,14 +154,12 @@ dubbo:
     check: true
   consumer:
     id: ${dubbo.application.id}
-    protocol: ${dubbo.protocol.id}
     group: hdw-upms
     version: 1.0.0
     timeout: 60000
     loadbalance: roundrobin
     retries: 2
     actives: 200
-    executes: 200
 
 management:
   endpoints:

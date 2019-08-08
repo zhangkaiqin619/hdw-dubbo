@@ -3,21 +3,21 @@
 
 <mapper namespace="com.hdw.upms.mapper.SysFileMapper">
 
-	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysFile" >
-        <result column="id" property="id" />
-        <result column="table_id" property="tableId" />
-        <result column="record_id" property="recordId" />
-        <result column="attachment_group" property="attachmentGroup" />
-        <result column="attachment_name" property="attachmentName" />
-        <result column="attachment_path" property="attachmentPath" />
-        <result column="attachment_type" property="attachmentType" />
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysFile">
+        <result column="id" property="id"/>
+        <result column="table_id" property="tableId"/>
+        <result column="record_id" property="recordId"/>
+        <result column="attachment_group" property="attachmentGroup"/>
+        <result column="attachment_name" property="attachmentName"/>
+        <result column="attachment_path" property="attachmentPath"/>
+        <result column="attachment_type" property="attachmentType"/>
         <result column="save_type" property="saveType"/>
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_user" property="createUser" />
-        <result column="update_user" property="updateUser" />
-        <result column="is_sync" property="isSync" />
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="is_sync" property="isSync"/>
     </resultMap>
 
     <select id="selectSysFilePage" parameterType="map" resultMap="BaseResultMap">

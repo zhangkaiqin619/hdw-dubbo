@@ -1,7 +1,7 @@
 package com.hdw.job.utils;
 
-import com.hdw.common.exception.GlobalException;
 import com.hdw.common.constants.CommonEnum;
+import com.hdw.common.exception.GlobalException;
 import com.hdw.job.entity.ScheduleJobEntity;
 import org.quartz.*;
 
@@ -106,7 +106,7 @@ public class ScheduleUtils {
             //参数
             JobDataMap dataMap = new JobDataMap();
             dataMap.put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJob);
-        	
+
             scheduler.triggerJob(getJobKey(scheduleJob.getJobId()), dataMap);
         } catch (SchedulerException e) {
             throw new GlobalException("立即执行定时任务失败", e);

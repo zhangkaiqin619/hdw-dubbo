@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisServiceImpl implements IRedisService {
 
-    @Resource(name = "redisTemplate")
+    @Resource(name = "jsonRedisTemplate")
     private RedisTemplate<String, Object> redisTemplate;
 
     @Value("${hdw.expire}")

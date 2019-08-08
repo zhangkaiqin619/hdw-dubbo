@@ -11,25 +11,27 @@ import java.util.Map;
 
 /**
  * 系统日志表
- * 
+ *
  * @author TuMinglong
  * @date 2018-12-11 11:35:15
  */
 public interface SysLogMapper extends BaseMapper<SysLog> {
 
     /**
-    * 多表页面信息查询
-    * @param page
-    * @param params
-    * @return
-    */
+     * 多表页面信息查询
+     *
+     * @param page
+     * @param params
+     * @return
+     */
     IPage<SysLog> selectSysLogPage(Page page, @Param("params") Map<String, Object> params);
 
     /**
      * 多表信息查询
+     *
      * @param params
      * @return
      */
     List<SysLog> selectSysLogList(Map<String, Object> params);
-	
+
 }

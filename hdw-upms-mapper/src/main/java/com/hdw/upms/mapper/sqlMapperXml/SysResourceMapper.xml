@@ -3,21 +3,21 @@
 
 <mapper namespace="com.hdw.upms.mapper.SysResourceMapper">
 
-	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysResource" >
-        <result column="id" property="id" />
-        <result column="parent_id" property="parentId" />
-        <result column="name" property="name" />
-        <result column="url" property="url" />
-        <result column="description" property="description" />
-        <result column="icon" property="icon" />
-        <result column="seq" property="seq" />
-        <result column="resource_type" property="resourceType" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_user" property="createUser" />
-        <result column="update_user" property="updateUser" />
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysResource">
+        <result column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+        <result column="description" property="description"/>
+        <result column="icon" property="icon"/>
+        <result column="seq" property="seq"/>
+        <result column="resource_type" property="resourceType"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
     </resultMap>
 
     <select id="selectResourceList" parameterType="map" resultMap="BaseResultMap">

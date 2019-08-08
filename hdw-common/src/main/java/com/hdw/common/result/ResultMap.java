@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description 操作结果集（用于Uvue.js）
+ * @Description 操作结果集
  * @Author TuMinglong
  * @Date 2018/6/12 15:13
  */

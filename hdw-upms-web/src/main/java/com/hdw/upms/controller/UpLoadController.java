@@ -1,6 +1,6 @@
 package com.hdw.upms.controller;
 
-import com.hdw.common.base.BaseController;
+import com.hdw.common.base.controller.BaseController;
 import com.hdw.common.result.ResultMap;
 import com.hdw.common.utils.DateUtils;
 import com.hdw.common.utils.QRCodeUtils;
@@ -25,9 +25,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author TuMinglong

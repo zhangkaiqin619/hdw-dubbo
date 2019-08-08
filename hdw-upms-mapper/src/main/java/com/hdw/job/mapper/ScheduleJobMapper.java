@@ -12,9 +12,9 @@ import java.util.Map;
  * @Date 2018/12/13 10:44
  */
 public interface ScheduleJobMapper extends BaseMapper<ScheduleJobEntity> {
-	
-	/**
-	 * 批量更新状态
-	 */
-	int updateBatch(Map<String, Object> map);
+
+    /**
+     * 批量更新状态
+     */
+    int updateBatch(Map<String, Object> map);
 }

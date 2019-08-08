@@ -39,7 +39,7 @@ public class ShiroUser implements Serializable {
     private String jobId;
 
     /**
-     *  角色管理的企业ID集合
+     * 角色管理的企业ID集合
      */
     private List<String> enterpriseIdList;
 

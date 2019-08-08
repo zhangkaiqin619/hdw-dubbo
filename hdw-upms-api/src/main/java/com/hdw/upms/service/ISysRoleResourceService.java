@@ -1,10 +1,10 @@
 package com.hdw.upms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.SelectTreeNode;
 import com.hdw.upms.entity.SysRoleResource;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -17,16 +17,28 @@ public interface ISysRoleResourceService extends IService<SysRoleResource> {
 
     /**
      * 根据角色查找菜单ID集合
+     *
      * @param roleId
      * @return
      */
-   List<Long> selectResourceIdListByRoleId(Long roleId);
+    List<Long> selectResourceIdListByRoleId(Long roleId);
 
-   void saveOrUpdateRoleResource(Long roleId, List<Long> resourceIdList);
+    void saveOrUpdateRoleResource(Long roleId, List<Long> resourceIdList);
 
-   void deleteBatch(Long[] roleIds);
+    void deleteBatch(Long[] roleIds);
 
-    List<SelectTreeNode> selectResourceNodeListByRoleId(Long roleId);
+    /**
+     * 自定义查询
+     * @param params
+     * @return
+     */
+    List<SysRoleResource> selectResourceList(Map<String,Object> params);
 
+    /**
+     * 查询选中node
+     * @param roleId
+     * @return
+     */
+    List<SysRoleResource> selectResourceNodeListByRoleId(Long roleId);
 }
 

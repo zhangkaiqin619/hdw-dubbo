@@ -1,11 +1,10 @@
 package com.hdw.enterprise.controller;
 
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.hdw.common.result.PageUtils;
+import com.google.common.collect.Lists;
+import com.hdw.common.result.PageParams;
 import com.hdw.common.result.ResultMap;
-import com.hdw.common.result.SelectTreeNode;
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.SelectNode;
 import com.hdw.common.utils.UUIDGenerator;
 import com.hdw.enterprise.entity.Enterprise;
 import com.hdw.enterprise.service.IEnterpriseService;
@@ -16,8 +15,11 @@ import com.hdw.upms.service.ISysFileService;
 import com.hdw.upms.shiro.ShiroKit;
 import com.hdw.upms.shiro.ShiroUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,11 +28,11 @@ import javax.validation.Valid;
 import java.util.*;
 
 /**
- * @Description com.hdw.enterprise.controller
+ * @Description 企业Controller
  * @Author TuMinglong
  * @Date 2018/12/17 11:14
  */
-@Api(value = "企业表接口", tags = {"企业表接口"})
+@Api(value = "企业接口", tags = {"企业接口"})
 @RestController
 @RequestMapping("/enterprise")
 public class EnterpriseController extends UpLoadController {
@@ -46,20 +48,20 @@ public class EnterpriseController extends UpLoadController {
     private Map<String, List<Map<String, String>>> uploadFileUrls = new HashMap<String, List<Map<String, String>>>();
 
     /**
-     * 数据字典树表
+     * 企业列表
      *
      * @return
      */
-    @ApiOperation(value = "企业表列表", notes = "企业表列表")
+    @ApiOperation(value = "企业列表", notes = "企业列表")
     @GetMapping("/list")
     @RequiresPermissions("enterprise/enterprise/list")
-    public Object treeGrid(@RequestParam Map<String,Object> params) {
+    public Object treeGrid(@RequestParam Map<String, Object> params) {
         ShiroUser shiroUser = ShiroKit.getUser();
         // 不是管理员
         if (shiroUser.getUserType() != 0) {
             params.put("userId", ShiroKit.getUser().getId());
         }
-        PageUtils<Map<String, Object>> page = enterpriseService.selectDataGrid(params);
+        PageParams page = enterpriseService.selectDataGrid(params);
         return ResultMap.ok().put("page", page);
     }
 
@@ -67,8 +69,8 @@ public class EnterpriseController extends UpLoadController {
     @GetMapping("/info/{id}")
     @RequiresPermissions("enterprise/enterprise/info")
     public ResultMap info(@PathVariable("id") String id) {
-       Enterprise enterprise=enterpriseService.getById(id);
-       return ResultMap.ok().put("enterprise", enterprise);
+        Enterprise enterprise = enterpriseService.getById(id);
+        return ResultMap.ok().put("enterprise", enterprise);
     }
 
     /**
@@ -77,7 +79,7 @@ public class EnterpriseController extends UpLoadController {
      * @param
      * @return
      */
-    @ApiOperation(value = "保存企业表信息", notes = "保存企业表信息")
+    @ApiOperation(value = "保存企业信息", notes = "保存企业信息")
     @PostMapping("/save")
     @RequiresPermissions("enterprise/enterprise/save")
     public Object save(@Valid @RequestBody Enterprise enterprise) {
@@ -100,7 +102,7 @@ public class EnterpriseController extends UpLoadController {
 
     }
 
-    @ApiOperation(value = "修改企业表信息", notes = "修改企业表信息")
+    @ApiOperation(value = "修改企业信息", notes = "修改企业信息")
     @PostMapping("/update")
     @RequiresPermissions("enterprise/enterprise/update")
     public Object update(@Valid @RequestBody Enterprise enterprise) {
@@ -126,7 +128,7 @@ public class EnterpriseController extends UpLoadController {
      * @param ids
      * @return
      */
-    @ApiOperation(value = "删除企业表信息", notes = "删除企业表信息")
+    @ApiOperation(value = "删除企业信息", notes = "删除企业信息")
     @PostMapping("/delete")
     @RequiresPermissions("enterprise/enterprise/delete")
     public ResultMap deleteBatchIds(@RequestParam Long[] ids) {
@@ -135,127 +137,44 @@ public class EnterpriseController extends UpLoadController {
     }
 
     /**
-     * 选择企业（根据区域选择）
+     * 企业选择
      *
+     * @param areaCode
+     * @param industryCode
      * @return
      */
-    @ApiOperation(value = "根据区域选择企业", notes = "根据区域选择企业")
-    @GetMapping("/select/areaCode/{areaCode}")
-    public ResultMap selectByAreaCode(@PathVariable("areaCode") Long areaCode) {
-        Map<String,Object> params=new HashMap<>();
-        ShiroUser shiroUser = ShiroKit.getUser();
-        // 不是管理员
-        if (shiroUser.getUserType() != 0) {
-            params.put("userId", ShiroKit.getUser().getId());
-        }
-        params.put("areaCode",areaCode);
-        List<Map<String,Object>> list=enterpriseService.selectEnterpriseList(params);
-        return ResultMap.ok().put("list", list);
-    }
-
-    /**
-     * 选择企业（根据行业选择）
-     *
-     * @return
-     */
-    @ApiOperation(value = "根据行业选择企业", notes = "根据行业选择企业")
-    @GetMapping("/select/industryCode/{industryCode}")
-    public ResultMap selectByIndustryCode(@PathVariable("industryCode") Long industryCode) {
-        Map<String,Object> params=new HashMap<>();
-        ShiroUser shiroUser = ShiroKit.getUser();
-        // 不是管理员
-        if (shiroUser.getUserType() != 0) {
-            params.put("userId", ShiroKit.getUser().getId());
-        }
-        params.put("industryCode",industryCode);
-        List<Map<String,Object>> list=enterpriseService.selectEnterpriseList(params);
-        return ResultMap.ok().put("list", list);
-    }
-
-
-    /**
-     * 企业树（按行业）
-     *
-     * @return
-     */
-    @ApiOperation(value = "企业树（按行业）", notes = "企业树（按行业）")
-    @GetMapping("/selectTreeByAreaCode")
-    public ResultMap selectTreeByAreaCode() {
-        ShiroUser shiroUser = ShiroKit.getUser();
-        List<TreeNode> treeNodeList=new ArrayList<>();
-        Map<String,Object> params=new HashMap<>();
-        params.put("parentId","16");
-        List<Map<String,Object>> dicList=sysDicService.selectTreeByParentId(params);
-        if(!dicList.isEmpty() && dicList.size()>0){
-            for (Map<String,Object> map: dicList) {
-                TreeNode treeNode=new TreeNode();
-                treeNode.setId(map.get("id").toString());
-                treeNode.setParentId("0");
-                treeNode.setName(map.get("varName").toString());
-
-                params.clear();
-                // 不是管理员
-                if (shiroUser.getUserType() != 0) {
-                    params.put("userId", ShiroKit.getUser().getId());
-                }
-                params.put("areaCode",treeNode.getId());
-                List<Map<String,Object>> list=enterpriseService.selectEnterpriseList(params);
-                if(!list.isEmpty()&&list.size()>0){
-                    for (Map<String,Object> par: list) {
-                        TreeNode childNode=new TreeNode();
-                        childNode.setId(par.get("id").toString());
-                        childNode.setParentId(treeNode.getId());
-                        childNode.setName(par.get("enterpriseName").toString());
-                        treeNodeList.add(childNode);
-                    }
-                }
-                treeNodeList.add(treeNode);
+    @ApiOperation(value = "企业选择", notes = "企业选择")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "areaCode", value = "区域ID", required = false, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "industryCode", value = "行业ID", required = false, dataType = "Integer", paramType = "query")
+    })
+    @GetMapping("/getEnterpriseTree")
+    public ResultMap getEnterpriseTree(@RequestParam(required = false, value = "areaCode") Long areaCode,
+                                       @RequestParam(required = false, value = "industryCode") Long industryCode) {
+        try {
+            List<SelectNode> nodeList = Lists.newArrayList();
+            Map<String, Object> params = new HashMap<>();
+            ShiroUser shiroUser = ShiroKit.getUser();
+            // 不是管理员
+            if (shiroUser.getUserType() != 0) {
+                params.put("userId", ShiroKit.getUser().getId());
             }
-        }
-        return ResultMap.ok().put("list", treeNodeList);
-    }
-
-    /**
-     * 企业树（按行业）
-     *
-     * @return
-     */
-    @ApiOperation(value = "企业树（按行业）", notes = "企业树（按行业）")
-    @GetMapping("/selectTreeNodeByAreaCode")
-    public ResultMap selectTreeNodeByAreaCode() {
-        ShiroUser shiroUser = ShiroKit.getUser();
-        List<SelectTreeNode> treeNodeList = new ArrayList<>();
-        Map<String, Object> params = new HashMap<>();
-        params.put("parentId", "16");
-        List<Map<String, Object>> dicList = sysDicService.selectTreeByParentId(params);
-        if (!dicList.isEmpty() && dicList.size() > 0) {
-            for (Map<String, Object> map : dicList) {
-                SelectTreeNode treeNode = new SelectTreeNode();
-                treeNode.setId(map.get("id").toString());
-                treeNode.setLabel(map.get("varName").toString());
-                List<SelectTreeNode> childList = new ArrayList<>();
-                params.clear();
-                // 不是管理员
-                if (shiroUser.getUserType() != 0) {
-                    params.put("userId", ShiroKit.getUser().getId());
-                }
-                params.put("areaCode", treeNode.getId());
-                List<Map<String, Object>> list = enterpriseService.selectEnterpriseList(params);
-                if (!list.isEmpty() && list.size() > 0) {
-                    for (Map<String, Object> par : list) {
-                        SelectTreeNode childNode = new SelectTreeNode();
-                        childNode.setId(par.get("id").toString());
-                        childNode.setLabel(par.get("enterpriseName").toString());
-                        childList.add(childNode);
-                    }
-                }
-                treeNode.setChildren(childList);
-                treeNodeList.add(treeNode);
+            params.put("industryCode", industryCode);
+            List<Map<String, Object>> list = enterpriseService.selectEnterpriseList(params);
+            if (!list.isEmpty()) {
+                list.forEach(map -> {
+                    SelectNode selectNode = new SelectNode();
+                    selectNode.setValue(map.get("id").toString());
+                    selectNode.setLabel(map.get("enterpriseName").toString());
+                    nodeList.add(selectNode);
+                });
             }
+            return ResultMap.ok().put("list", nodeList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMap.error("运行异常，请联系管理员");
         }
-        return ResultMap.ok().put("list", treeNodeList);
     }
-
 
     /**
      * 上传附件

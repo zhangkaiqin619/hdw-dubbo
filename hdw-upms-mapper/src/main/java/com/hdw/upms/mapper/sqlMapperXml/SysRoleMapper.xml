@@ -3,41 +3,41 @@
 
 <mapper namespace="com.hdw.upms.mapper.SysRoleMapper">
 
-	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysRole" >
-        <result column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="seq" property="seq" />
-        <result column="description" property="description" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_user_id" property="createUserId" />
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysRole">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="seq" property="seq"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user_id" property="createUserId"/>
     </resultMap>
 
-    <resultMap id="RoleVoResultMap" type="com.hdw.upms.entity.vo.RoleVo" >
-        <result column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="seq" property="seq" />
-        <result column="description" property="description" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_user_id" property="createUserId" />
+    <resultMap id="RoleVoResultMap" type="com.hdw.upms.entity.vo.RoleVo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="seq" property="seq"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user_id" property="createUserId"/>
         <collection property="permissions" ofType="com.hdw.upms.entity.SysResource">
-            <result column="resourceId" property="id" />
-            <result column="resourceParentId" property="parentId" />
-            <result column="resourceName" property="name" />
-            <result column="resourceUrl" property="url" />
-            <result column="resourceDescription" property="description" />
-            <result column="resourceIcon" property="icon" />
-            <result column="resourceSeq" property="seq" />
-            <result column="resourceType" property="resourceType" />
-            <result column="resourceStatus" property="status" />
-            <result column="resourceCreateTime" property="createTime" />
-            <result column="resourceUpdateTime" property="updateTime" />
-            <result column="resourceCreateUser" property="createUser" />
-            <result column="resourceUpdateUser" property="updateUser" />
+            <result column="resourceId" property="id"/>
+            <result column="resourceParentId" property="parentId"/>
+            <result column="resourceName" property="name"/>
+            <result column="resourceUrl" property="url"/>
+            <result column="resourceDescription" property="description"/>
+            <result column="resourceIcon" property="icon"/>
+            <result column="resourceSeq" property="seq"/>
+            <result column="resourceType" property="resourceType"/>
+            <result column="resourceStatus" property="status"/>
+            <result column="resourceCreateTime" property="createTime"/>
+            <result column="resourceUpdateTime" property="updateTime"/>
+            <result column="resourceCreateUser" property="createUser"/>
+            <result column="resourceUpdateUser" property="updateUser"/>
         </collection>
     </resultMap>
 
@@ -53,7 +53,7 @@
         t.update_time,
         t.create_user_id
         FROM
-            t_sys_role t
+        t_sys_role t
         <where>
             <if test="params.createUserId!=null">
                 t.create_user_id = #{params.createUserId}

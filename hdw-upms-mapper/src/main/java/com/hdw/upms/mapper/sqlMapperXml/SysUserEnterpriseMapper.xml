@@ -3,11 +3,11 @@
 
 <mapper namespace="com.hdw.upms.mapper.SysUserEnterpriseMapper">
 
-	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysUserEnterprise" >
-        <result column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="enterprise_id" property="enterpriseId" />
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hdw.upms.entity.SysUserEnterprise">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="enterprise_id" property="enterpriseId"/>
     </resultMap>
 
     <delete id="deleteBatchByUserIds">

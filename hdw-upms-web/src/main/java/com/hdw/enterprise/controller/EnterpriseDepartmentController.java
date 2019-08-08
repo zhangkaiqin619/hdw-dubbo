@@ -1,10 +1,11 @@
 package com.hdw.enterprise.controller;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.hdw.common.base.BaseController;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.hdw.common.base.controller.BaseController;
 import com.hdw.common.result.ResultMap;
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.SelectTreeNode;
 import com.hdw.common.utils.UUIDGenerator;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
 import com.hdw.enterprise.service.IEnterpriseDepartmentService;
@@ -12,8 +13,10 @@ import com.hdw.enterprise.service.IEnterpriseService;
 import com.hdw.upms.shiro.ShiroKit;
 import com.hdw.upms.shiro.ShiroUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,8 +51,8 @@ public class EnterpriseDepartmentController extends BaseController {
         if (shiroUser.getUserType() != 0) {
             params.put("userId", ShiroKit.getUser().getId());
         }
-        List<Map<String, Object>> list=  enterpriseDepartmentService.selectTreeGrid(params);
-        return ResultMap.ok().put("list",list);
+        List<Map<String, Object>> list = enterpriseDepartmentService.selectTreeGrid(params);
+        return ResultMap.ok().put("list", list);
     }
 
 
@@ -128,26 +131,41 @@ public class EnterpriseDepartmentController extends BaseController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e.getMessage());
             return ResultMap.error("批量删除失败，请联系管理员");
         }
     }
 
     /**
-     * 选择企业部门（添加、修改）
+     * 企业部门树形选择
      *
+     * @param enterpriseId
      * @return
      */
-    @ApiOperation(value = "选择企业部门（添加、修改）", notes = "选择企业部门（添加、修改）")
-    @GetMapping("/select/{enterpriseId}")
-    public ResultMap select(@PathVariable("enterpriseId") String enterpriseId) {
-        Map<String, Object> par = new HashMap<>();
-        if (StringUtils.isNotBlank(enterpriseId) && !"0".equals(enterpriseId) && !"undefined".equals(enterpriseId)) {
-            par.put("enterpriseId", enterpriseId);
+    @ApiOperation(value = "企业部门树形选择", notes = "企业部门树形选择")
+    @ApiImplicitParam(name = "enterpriseId", value = "企业ID", required = true, dataType = "String", paramType = "query")
+    @GetMapping("/getDeptSelectTree")
+    public ResultMap getDeptSelectTree(@RequestParam String enterpriseId) {
+        try {
+            List<SelectTreeNode> treeNodeList = Lists.newArrayList();
+            Map<String,Object> params= Maps.newHashMap();
+            if(StringUtils.isNoneBlank(enterpriseId)){
+                params.put("enterpriseId",enterpriseId);
+            }
+            List<EnterpriseDepartment> departmentList = enterpriseDepartmentService.selectEnterpriseDepartmentList(params);
+            if (!departmentList.isEmpty()) {
+                departmentList.forEach(dept -> {
+                    SelectTreeNode selectTreeNode = new SelectTreeNode();
+                    selectTreeNode.setId(dept.getId());
+                    selectTreeNode.setName(dept.getDepartmentName());
+                    selectTreeNode.setParentId(dept.getParentId());
+                    treeNodeList.add(selectTreeNode);
+                });
+            }
+            return ResultMap.ok().put("list", treeNodeList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMap.error("运行异常，请联系管理员");
         }
-        List<TreeNode> tree = enterpriseDepartmentService.selectTree(par);
-        tree.add(TreeNode.createParent());
-        return ResultMap.ok().put("deptList", tree);
     }
 
 }

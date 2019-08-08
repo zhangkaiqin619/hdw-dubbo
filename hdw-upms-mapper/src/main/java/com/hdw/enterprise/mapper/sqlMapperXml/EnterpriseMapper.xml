@@ -3,36 +3,36 @@
 
 <mapper namespace="com.hdw.enterprise.mapper.EnterpriseMapper">
 
-	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.hdw.enterprise.entity.Enterprise" >
-        <result column="id" property="id" />
-        <result column="prefix" property="prefix" />
-        <result column="business_license_number" property="businessLicenseNumber" />
-        <result column="enterprise_code" property="enterpriseCode" />
-        <result column="enterprise_name" property="enterpriseName" />
-        <result column="industry_code" property="industryCode" />
-        <result column="area_code" property="areaCode" />
-        <result column="enterprise_type" property="enterpriseType" />
-        <result column="telephone" property="telephone" />
-        <result column="email" property="email" />
-        <result column="zip_code" property="zipCode" />
-        <result column="legal_person" property="legalPerson" />
-        <result column="main_person" property="mainPerson" />
-        <result column="main_person_mobile" property="mainPersonMobile" />
-        <result column="main_person_telephone" property="mainPersonTelephone" />
-        <result column="safe_person" property="safePerson" />
-        <result column="safe_person_mobile" property="safePersonMobile" />
-        <result column="safe_person_telephone" property="safePersonTelephone" />
-        <result column="map_x" property="mapX" />
-        <result column="map_y" property="mapY" />
-        <result column="map_z" property="mapZ" />
-        <result column="address" property="address" />
-        <result column="is_sync" property="isSync" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_user" property="createUser" />
-        <result column="update_user" property="updateUser" />
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hdw.enterprise.entity.Enterprise">
+        <result column="id" property="id"/>
+        <result column="prefix" property="prefix"/>
+        <result column="business_license_number" property="businessLicenseNumber"/>
+        <result column="enterprise_code" property="enterpriseCode"/>
+        <result column="enterprise_name" property="enterpriseName"/>
+        <result column="industry_code" property="industryCode"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="enterprise_type" property="enterpriseType"/>
+        <result column="telephone" property="telephone"/>
+        <result column="email" property="email"/>
+        <result column="zip_code" property="zipCode"/>
+        <result column="legal_person" property="legalPerson"/>
+        <result column="main_person" property="mainPerson"/>
+        <result column="main_person_mobile" property="mainPersonMobile"/>
+        <result column="main_person_telephone" property="mainPersonTelephone"/>
+        <result column="safe_person" property="safePerson"/>
+        <result column="safe_person_mobile" property="safePersonMobile"/>
+        <result column="safe_person_telephone" property="safePersonTelephone"/>
+        <result column="map_x" property="mapX"/>
+        <result column="map_y" property="mapY"/>
+        <result column="map_z" property="mapZ"/>
+        <result column="address" property="address"/>
+        <result column="is_sync" property="isSync"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
     </resultMap>
 
     <!-- 多表页面信息查询 -->
@@ -163,5 +163,5 @@
         </where>
     </select>
 
-    
+
 </mapper>

@@ -1,15 +1,15 @@
 package com.hdw.upms.controller;
 
 
-import com.hdw.common.base.BaseController;
-import com.hdw.common.result.PageUtils;
+import com.hdw.common.base.controller.BaseController;
+import com.hdw.common.result.PageParams;
 import com.hdw.common.result.ResultMap;
-import com.hdw.upms.entity.SysLog;
 import com.hdw.upms.service.ISysLogService;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Map;
 
 
@@ -28,7 +28,8 @@ public class SysLogController extends BaseController {
 
     @RequestMapping("/list")
     public ResultMap dataGrid(@RequestParam Map<String, Object> params) {
-        PageUtils<SysLog> page = sysLogService.selectDataGrid(params);
+
+        PageParams page = sysLogService.selectDataGrid(params);
         return ResultMap.ok().put("page", page);
     }
 }

@@ -1,7 +1,7 @@
 package com.hdw.upms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.PageUtils;
+import com.hdw.common.result.PageParams;
 import com.hdw.upms.entity.SysLog;
 
 import java.util.List;
@@ -16,17 +16,19 @@ import java.util.Map;
 public interface ISysLogService extends IService<SysLog> {
 
     /**
-    * 多表页面信息查询
-    * @param params
-    * @return
-    */
-    PageUtils selectDataGrid(Map<String, Object> params);
+     * 多表页面信息查询
+     *
+     * @param params
+     * @return
+     */
+    PageParams selectDataGrid(Map<String, Object> params);
 
     /**
-    * 多表信息查询
-    * @param par
-    * @return
-    */
+     * 多表信息查询
+     *
+     * @param par
+     * @return
+     */
     List<SysLog> selectSysLogList(Map<String, Object> par);
 
 

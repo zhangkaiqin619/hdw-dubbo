@@ -11,25 +11,27 @@ import java.util.Map;
 
 /**
  * 企业信息表
- * 
+ *
  * @author TuMinglong
  * @date 2018-12-11 13:49:00
  */
 public interface EnterpriseMapper extends BaseMapper<Enterprise> {
 
     /**
-    * 多表页面信息查询
-    * @param page
-    * @param params
-    * @return
-    */
+     * 多表页面信息查询
+     *
+     * @param page
+     * @param params
+     * @return
+     */
     IPage<Map<String, Object>> selectEnterprisePage(Page page, @Param("params") Map<String, Object> params);
 
     /**
      * 多表信息查询
+     *
      * @param params
      * @return
      */
     List<Map<String, Object>> selectEnterpriseList(@Param("params") Map<String, Object> params);
-	
+
 }

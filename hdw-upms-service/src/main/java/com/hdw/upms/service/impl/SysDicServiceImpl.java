@@ -1,11 +1,14 @@
 package com.hdw.upms.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hdw.common.result.TreeNode;
+import com.hdw.common.result.SelectTreeNode;
 import com.hdw.upms.entity.SysDic;
 import com.hdw.upms.mapper.SysDicMapper;
 import com.hdw.upms.service.ISysDicService;
-import com.alibaba.dubbo.config.annotation.Service;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +20,9 @@ import java.util.Map;
  * @author TuMinglong
  * @since 2018-04-26
  */
+@Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class SysDicServiceImpl extends ServiceImpl<SysDicMapper, SysDic> implements ISysDicService {
 
     @Override
@@ -27,11 +32,9 @@ public class SysDicServiceImpl extends ServiceImpl<SysDicMapper, SysDic> impleme
     }
 
     @Override
-    public List<TreeNode> selectTree(Map<String, Object> par) {
-
-        return this.baseMapper.selectTree(par);
+    public List<SysDic> selectDicList(Map<String, Object> params) {
+        return this.baseMapper.selectDicList(params);
     }
-
 
 
     @Override
