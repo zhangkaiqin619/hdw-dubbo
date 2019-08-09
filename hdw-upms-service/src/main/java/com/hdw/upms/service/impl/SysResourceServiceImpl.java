@@ -70,7 +70,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         QueryWrapper<SysResource> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("parent_id", parentId)
                 .eq("status", 0)
-                .orderByAsc(new String[]{"seq"});
+                .orderByAsc("seq");
         return this.baseMapper.selectList(queryWrapper);
     }
 
@@ -79,7 +79,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         QueryWrapper<SysResource> queryWrapper = new QueryWrapper<>();
         queryWrapper.ne("resource_type", 2)
                 .eq("status", 0)
-                .orderByAsc(new String[]{"seq"});
+                .orderByAsc("seq");
         return this.baseMapper.selectList(queryWrapper);
     }
 

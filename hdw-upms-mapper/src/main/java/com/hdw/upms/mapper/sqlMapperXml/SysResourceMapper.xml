@@ -18,10 +18,17 @@
         <result column="update_time" property="updateTime"/>
         <result column="create_user" property="createUser"/>
         <result column="update_user" property="updateUser"/>
+        <result column="parentName" property="parentName"/>
     </resultMap>
 
     <select id="selectResourceList" parameterType="map" resultMap="BaseResultMap">
-        select * from t_sys_resource t
+        SELECT
+        t.*,
+        t2.`name` AS parentName
+        FROM
+        t_sys_resource t
+        LEFT JOIN
+        t_sys_resource t2 ON t.parent_id = t2.id
         <where>
             <if test="id!=null and id!=''">
                 t.id=#{id}

@@ -55,7 +55,7 @@ public class HomeSmsPushSocket {
     private String userId;
 
     // 控制线程数，最优选择是处理器线程数*3，本机处理器是6线程
-    private final static int THREAD_COUNT = 6;
+    private final static int THREAD_COUNT = Runtime.getRuntime().availableProcessors() * 3;
 
     /**
      * 连接建立成功调用的方法

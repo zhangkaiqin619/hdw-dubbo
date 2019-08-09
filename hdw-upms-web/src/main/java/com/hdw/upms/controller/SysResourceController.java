@@ -31,7 +31,6 @@ public class SysResourceController extends BaseController {
     @Reference
     private ISysUserService sysUserService;
 
-
     /**
      * 导航菜单
      */
@@ -53,12 +52,6 @@ public class SysResourceController extends BaseController {
     public List<SysResource> list() {
         Map<String, Object> params = new HashMap<>();
         List<SysResource> menuList = sysResourceService.selectResourceList(params);
-        for (SysResource sysResource : menuList) {
-            SysResource parentMenuEntity = sysResourceService.getById(sysResource.getParentId());
-            if (parentMenuEntity != null) {
-                sysResource.setParentName(parentMenuEntity.getName());
-            }
-        }
         return menuList;
     }
 
