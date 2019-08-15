@@ -148,7 +148,7 @@ public class EnterpriseDepartmentController extends BaseController {
         try {
             List<SelectTreeNode> treeNodeList = Lists.newArrayList();
             Map<String,Object> params= Maps.newHashMap();
-            if(StringUtils.isNoneBlank(enterpriseId)){
+            if (StringUtils.isNotBlank(enterpriseId)) {
                 params.put("enterpriseId",enterpriseId);
             }
             List<EnterpriseDepartment> departmentList = enterpriseDepartmentService.selectEnterpriseDepartmentList(params);
