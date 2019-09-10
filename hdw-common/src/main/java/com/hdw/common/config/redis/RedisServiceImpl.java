@@ -1,17 +1,21 @@
 package com.hdw.common.config.redis;
 
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Description redis工具类实现类
+ * @Description redis工具接口实现类
  * @Author TuMinglong
- * @Date 2018/5/16 15:09
+ * @Date 2019/9/4 11:57
  */
 @Component
 public class RedisServiceImpl implements IRedisService {
@@ -23,167 +27,377 @@ public class RedisServiceImpl implements IRedisService {
     private Integer EXPIRE;
 
     @Override
-    public boolean exists(String key) {
-
-        return redisTemplate.hasKey(key);
-    }
-
-    @Override
-    public void del(String key) {
-        redisTemplate.delete(key);
-    }
-
-    @Override
-    public void delAll(List<String> keys) {
-        redisTemplate.delete(keys);
-    }
-
-    @Override
-    public boolean expire(String key, int second) {
-        return redisTemplate.expire(key, second, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public boolean exireAt(String key, long unixTime) {
-        return redisTemplate.expireAt(key, new Date(unixTime));
-    }
-
-    @Override
-    public long ttl(String key) {
-        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public long incr(String key, long num) {
-        return redisTemplate.opsForValue().increment(key, num);
-    }
-
-    @Override
-    public Set<String> keys(String pattern) {
-        return redisTemplate.keys(pattern);
-    }
-
-    @Override
-    public String getType(String key) {
-        return redisTemplate.type(key).getClass().getName();
-    }
-
-    @Override
-    public Object get(String key) {
-        return redisTemplate.opsForValue().get(key);
-    }
-
-    @Override
-    public void set(String key, Object value, int seconds) {
-        redisTemplate.opsForValue().set(key, value, seconds, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void set(String key, Object value) {
-        this.set(key, value, EXPIRE);
-    }
-
-    @Override
-    public <T> void ladd(String key, T values, int second) {
-        redisTemplate.opsForList().leftPush(key, values);
-        this.expire(key, second);
-    }
-
-    @Override
-    public <T> void ladd(String key, T values) {
-        this.ladd(key, values, EXPIRE);
-    }
-
-    @Override
-    public <T> void ladd(String key, List<T> values, int second) {
-        for (T t : values) {
-            this.ladd(key, t, second);
-        }
-    }
-
-    @Override
-    public <T> void ladd(String key, List<T> values) {
-        for (T t : values) {
-            this.ladd(key, t, EXPIRE);
-        }
-    }
-
-    @Override
-    public void ltrim(String key, long start, long end) {
-        redisTemplate.opsForList().trim(key, start, end);
-    }
-
-    @Override
-    public Long lsize(String key) {
-        return redisTemplate.opsForList().size(key);
-    }
-
-    @Override
-    public <T> List<T> lget(String key) {
-        return this.lget(key, 0l, -1l);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> List<T> lget(String key, Long start, Long end) {
-        return (List<T>) redisTemplate.opsForList().range(key, start, end);
-    }
-
-    @Override
-    public void sadd(String key, Object value, int second) {
-        redisTemplate.opsForSet().add(key, value);
-        this.expire(key, second);
-    }
-
-    @Override
-    public void sadd(String key, Object value) {
-        this.sadd(key, value, EXPIRE);
-    }
-
-    @Override
-    public Set<Object> sget(String key) {
-        return redisTemplate.opsForSet().members(key);
-    }
-
-    @Override
-    public boolean sdel(String key, Object value) {
-        long flag = redisTemplate.opsForSet().remove(key, value);
-        if (flag == 1) {
+    public Boolean expire(String key, long time) {
+        try {
+            if (time > 0) {
+                redisTemplate.expire(key, time, TimeUnit.SECONDS);
+            }
             return true;
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
 
     @Override
-    public void madd(String key, Map<String, Object> par, int second) {
-        redisTemplate.opsForHash().putAll(key, par);
-        this.expire(key, second);
+    public Long getExpire(String key) {
+        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
     }
 
     @Override
-    public void madd(String key, Map<String, Object> par) {
-        this.madd(key, par, EXPIRE);
-    }
-
-    @Override
-    public Map<String, Object> mget(String key) {
-        Map<Object, Object> resultMap = redisTemplate.opsForHash().entries(key);
-        Map<String, Object> map = new HashMap<String, Object>();
-        for (Object obj : resultMap.keySet()) {
-            map.put(obj.toString(), resultMap.get(obj));
+    public Boolean hasKey(String key) {
+        try {
+            return redisTemplate.hasKey(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return map;
     }
 
     @Override
-    public Object mget(String key, String field) {
-        Object value = redisTemplate.opsForHash().get(key, field);
-        return value;
+    public Boolean del(String... key) {
+        try {
+            if (key != null && key.length > 0) {
+                if (key.length == 0) {
+                    redisTemplate.delete(key[0]);
+                } else {
+                    redisTemplate.delete(CollectionUtils.arrayToList(key));
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public boolean mdel(String key, String field) {
-        return redisTemplate.opsForHash().delete(key, field) == 1;
+    public <T> T get(String key) {
+        return key == null ? null : (T) redisTemplate.boundValueOps(key).get();
+    }
+
+    @Override
+    public String getString(String key) {
+        String str = "";
+        Object obj = redisTemplate.boundValueOps(key).get();
+        if (ObjectUtils.isNotNull(obj)) {
+            str = obj.toString();
+        }
+        return key == null ? null : str;
+    }
+
+    @Override
+    public <T> Boolean set(String key, T value) {
+        try {
+            redisTemplate.boundValueOps(key).set(value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> Boolean set(String key, T value, long time) {
+        try {
+            if (time > 0) {
+                redisTemplate.boundValueOps(key).set(value, time, TimeUnit.SECONDS);
+            } else {
+                set(key, value);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Long incr(String key, long delta) {
+        if (delta < 0) {
+            throw new RuntimeException("递增因子必须大于");
+        }
+        return redisTemplate.opsForValue().increment(key, delta);
+    }
+
+    @Override
+    public Long decr(String key, long delta) {
+        if (delta < 0) {
+            throw new RuntimeException("递减因子必须大于");
+        }
+        return redisTemplate.opsForValue().increment(key, -delta);
+    }
+
+    @Override
+    public Object hGet(String key, String item) {
+        return redisTemplate.boundHashOps(key).get(item);
+    }
+
+    @Override
+    public Map<Object, Object> getMap(String key) {
+        return redisTemplate.boundHashOps(key).entries();
+    }
+
+    @Override
+    public List<Object> hValues(String key) {
+        return redisTemplate.boundHashOps(key).values();
+    }
+
+    @Override
+    public Long hSize(String key) {
+        return redisTemplate.boundHashOps(key).size();
+    }
+
+    @Override
+    public <T> Boolean setMap(String key, String hashKey, T value) {
+        try {
+            redisTemplate.boundHashOps(key).put(hashKey, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> Boolean setMap(String key, String hashKey, T value, long time) {
+        try {
+            redisTemplate.boundHashOps(key).put(hashKey, value);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean setMap(String key, Map<String, Object> map) {
+        try {
+            redisTemplate.boundHashOps(key).putAll(map);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean setMap(String key, Map<String, Object> map, long time) {
+        try {
+            redisTemplate.boundHashOps(key).putAll(map);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Long hDel(String key, Object... hashKeys) {
+
+        return redisTemplate.boundHashOps(key).delete(hashKeys);
+    }
+
+    @Override
+    public Boolean hHasKey(String key, Object hashKey) {
+        return redisTemplate.boundHashOps(key).hasKey(hashKey);
+    }
+
+    @Override
+    public Double hIncr(String key, String hashKey, double delta) {
+        return redisTemplate.boundHashOps(key).increment(hashKey, delta);
+    }
+
+    @Override
+    public Double hDecr(String key, String hashKey, double delta) {
+        return redisTemplate.boundHashOps(key).increment(hashKey, -delta);
+    }
+
+    @Override
+    public Long hIncr(String key, String hashKey, long delta) {
+        return redisTemplate.boundHashOps(key).increment(hashKey, delta);
+    }
+
+    @Override
+    public Long hDecr(String key, String hashKey, long delta) {
+        return redisTemplate.boundHashOps(key).increment(hashKey, -delta);
+    }
+
+    @Override
+    public Set<Object> getSet(String key) {
+        return redisTemplate.opsForSet().members(key);
+    }
+
+    @Override
+    public <T> Boolean sHasKey(String key, T value) {
+        return redisTemplate.boundSetOps(key).isMember(value);
+    }
+
+    @Override
+    public <T> Long sSet(String key, T... values) {
+        try {
+            return redisTemplate.boundSetOps(key).add(values);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
+    @Override
+    public <T> Long sSet(String key, long time, T... values) {
+        try {
+            Long count = redisTemplate.boundSetOps(key).add(values);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
+    @Override
+    public Long sSize(String key) {
+        try {
+            return redisTemplate.boundSetOps(key).size();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
+    @Override
+    public Long sDel(String key, Object... values) {
+        try {
+            Long count = redisTemplate.boundSetOps(key).remove(values);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
+    @Override
+    public List<Object> getList(String key, long start, long end) {
+        try {
+            return redisTemplate.boundListOps(key).range(start, end);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Object> getList(String key) {
+        try {
+            return redisTemplate.boundListOps(key).range(0, -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Long lSize(String key) {
+        try {
+            return redisTemplate.boundListOps(key).size();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
+    @Override
+    public Object lGetIndex(String key, long index) {
+        try {
+            return redisTemplate.boundListOps(key).index(index);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public <T> Boolean setList(String key, T value) {
+        try {
+            redisTemplate.boundListOps(key).rightPush(value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> Boolean setList(String key, T value, long time) {
+        try {
+            redisTemplate.boundListOps(key).rightPush(value);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> Boolean setList(String key, List<T> value) {
+        try {
+            redisTemplate.boundListOps(key).rightPushAll(value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> Boolean setList(String key, List<T> value, long time) {
+        try {
+            redisTemplate.boundListOps(key).rightPushAll(value);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> Boolean lUpdateIndex(String key, long index, T value) {
+        try {
+            redisTemplate.boundListOps(key).set(index, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public <T> Long lDel(String key, long count, T value) {
+        try {
+            Long remove = redisTemplate.boundListOps(key).remove(count, value);
+            return remove;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
+    @Override
+    public void lTrim(String key, long start, long end) {
+        redisTemplate.boundListOps(key).trim(start, end);
     }
 }

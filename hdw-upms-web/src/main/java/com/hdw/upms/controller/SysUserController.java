@@ -13,8 +13,7 @@ import com.hdw.upms.service.ISysUserRoleService;
 import com.hdw.upms.service.ISysUserService;
 import com.hdw.upms.shiro.ShiroKit;
 import com.hdw.upms.shiro.form.PasswordForm;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
@@ -174,6 +173,11 @@ public class SysUserController extends BaseController {
      * @return
      */
     @ApiOperation(value = "用户选择树", notes = "用户选择树")
+    @ApiImplicitParam(paramType = "query", name = "token", value = "token", required = true, dataType = "String")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "success"),
+            @ApiResponse(code = 500, message = "error"),
+    })
     @GetMapping("/getUserTree")
     public Object getUserTree() {
         try {

@@ -10,13 +10,11 @@ import com.hdw.enterprise.entity.Enterprise;
 import com.hdw.enterprise.service.IEnterpriseService;
 import com.hdw.upms.entity.SysUserToken;
 import com.hdw.upms.entity.vo.UserVo;
-import com.hdw.upms.service.ISysResourceService;
 import com.hdw.upms.service.ISysUserService;
 import com.hdw.upms.service.ISysUserTokenService;
 import com.hdw.upms.shiro.ShiroKit;
 import com.hdw.upms.shiro.form.SysLoginForm;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
@@ -41,7 +39,7 @@ import java.util.Map;
  * @Author TuMinglong
  * @Date 2018/6/11 17:07
  */
-@Api(value = "登录退出", tags = {" 登录退出"})
+@Api(value = "认证接口", tags = {" 认证接口"})
 @RestController
 public class SysLoginController extends BaseController {
 
@@ -50,9 +48,6 @@ public class SysLoginController extends BaseController {
 
     @Reference
     private ISysUserTokenService userTokenService;
-
-    @Reference
-    private ISysResourceService resourceService;
 
     @Reference
     private IEnterpriseService enterpriseService;
@@ -91,8 +86,12 @@ public class SysLoginController extends BaseController {
      * 登录
      */
     @ApiOperation(value = "登录", notes = "登录")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "success"),
+            @ApiResponse(code = 500, message = "error"),
+    })
     @PostMapping("/sys/login")
-    public Object login(@RequestBody SysLoginForm form) {
+    public Object login(@RequestBody @ApiParam(name = "用户信息", value = "form", required = true) SysLoginForm form) {
         logger.info("POST请求登录");
         if (StringUtils.isBlank(form.getUsername())) {
             return ResultMap.error("用户名不能为空");
@@ -100,19 +99,19 @@ public class SysLoginController extends BaseController {
         if (StringUtils.isBlank(form.getPassword())) {
             return ResultMap.error("密码不能为空");
         }
-        if (StringUtils.isBlank(form.getCaptcha())) {
-            return ResultMap.error("验证码不能为空");
-        }
-        if (StringUtils.isBlank(form.getUuid())) {
-            return ResultMap.error("uuid不能为空");
-        }
-        String validateCode = (String) redisService.get(form.getUuid());
-        logger.info("session中的图形码字符串:" + validateCode);
-
-        //比对
-        if (StringUtils.isBlank(form.getCaptcha()) || StringUtils.isBlank(validateCode) || !validateCode.equalsIgnoreCase(form.getCaptcha())) {
-            return ResultMap.error("验证码错误");
-        }
+//        if (StringUtils.isBlank(form.getCaptcha())) {
+//            return ResultMap.error("验证码不能为空");
+//        }
+//        if (StringUtils.isBlank(form.getUuid())) {
+//            return ResultMap.error("uuid不能为空");
+//        }
+//        String validateCode = (String) redisService.get(form.getUuid());
+//        logger.info("session中的图形码字符串:" + validateCode);
+//
+//        //比对
+//        if (StringUtils.isBlank(form.getCaptcha()) || StringUtils.isBlank(validateCode) || !validateCode.equalsIgnoreCase(form.getCaptcha())) {
+//            return ResultMap.error("验证码错误");
+//        }
 
         UserVo userVo =userService.selectByLoginName(form.getUsername());
 
@@ -143,6 +142,11 @@ public class SysLoginController extends BaseController {
      * 退出
      */
     @ApiOperation(value = "退出", notes = "退出")
+    @ApiImplicitParam(paramType = "query", name = "token", value = "token", required = true, dataType = "String")
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "success"),
+            @ApiResponse(code = 500, message = "error"),
+    })
     @PostMapping("/sys/logout")
     public ResultMap logout() {
         //生成一个token

@@ -130,7 +130,7 @@ public abstract class UpLoadController extends BaseController {
             // 保存文件
             String realFileName = file.getOriginalFilename();
             Long fileName = System.currentTimeMillis();
-            File targetFile = new File(new File(savePath).getAbsolutePath() + File.separator + fileName + realFileName.substring(realFileName.indexOf(".")));
+            File targetFile = new File(new File(savePath).getAbsolutePath() + File.separator + fileName + realFileName.substring(realFileName.lastIndexOf(".")));
             if (!targetFile.getParentFile().exists()) {
                 targetFile.getParentFile().mkdirs();
             }
@@ -138,11 +138,11 @@ public abstract class UpLoadController extends BaseController {
             if (StringUtils.isNotBlank(fileUploadServer)) {
                 resultPath = fileUploadServer + "/static/upload/" + dir + "/"
                         + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
-                        + fileName + realFileName.substring(realFileName.indexOf("."));
+                        + fileName + realFileName.substring(realFileName.lastIndexOf("."));
             } else {
                 resultPath = "/static/upload/" + dir + "/"
                         + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
-                        + fileName + realFileName.substring(realFileName.indexOf("."));
+                        + fileName + realFileName.substring(realFileName.lastIndexOf("."));
             }
 
             params.put("fileName", realFileName);
@@ -180,7 +180,7 @@ public abstract class UpLoadController extends BaseController {
                     // 保存文件
                     String realFileName = file.getOriginalFilename();
                     Long fileName = System.currentTimeMillis();
-                    File targetFile = new File(new File(savePath).getAbsolutePath() + File.separator + fileName + realFileName.substring(realFileName.indexOf(".")));
+                    File targetFile = new File(new File(savePath).getAbsolutePath() + File.separator + fileName + realFileName.substring(realFileName.lastIndexOf(".")));
                     if (!targetFile.getParentFile().exists()) {
                         targetFile.getParentFile().mkdirs();
                     }
@@ -188,7 +188,7 @@ public abstract class UpLoadController extends BaseController {
                     if (StringUtils.isNotBlank(fileUploadServer)) {
                         String resultPath = fileUploadServer + "/static/upload/" + dir + "/"
                                 + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
-                                + fileName + realFileName.substring(realFileName.indexOf("."));
+                                + fileName + realFileName.substring(realFileName.lastIndexOf("."));
                         Map<String, String> params = new HashedMap();
                         params.put("fileName", realFileName);
                         params.put("filePath", resultPath);
@@ -196,7 +196,7 @@ public abstract class UpLoadController extends BaseController {
                     } else {
                         String resultPath = "/static/upload/" + dir + "/"
                                 + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
-                                + fileName + realFileName.substring(realFileName.indexOf("."));
+                                + fileName + realFileName.substring(realFileName.lastIndexOf("."));
                         Map<String, String> params = new HashedMap();
                         params.put("fileName", realFileName);
                         params.put("filePath", resultPath);
@@ -221,14 +221,20 @@ public abstract class UpLoadController extends BaseController {
         if (StringUtils.isBlank(fileUrl)) {
             return ResultMap.error(1, "文件删除失败");
         }
+        String realPath = "";
         String temp = fileUrl.substring(fileUrl.indexOf("/static") + 7);
-        System.out.println(fileUploadPrefix + File.separator + temp);
-        File file = new File(fileUploadPrefix + File.separator + temp);
+        String os = System.getProperty("os.name");
+        if (os.toLowerCase().startsWith("win")) {
+            realPath = fileUploadPrefix + temp.replaceAll("/", "\\\\");
+        } else {
+            realPath = fileUploadPrefix + temp;
+        }
+        File file = new File(realPath);
         if (file.exists() && file.isFile()) {
             file.delete();
             return ResultMap.ok("文件删除成功");
         } else {
-            return ResultMap.error(1, "文件删除失败");
+            return ResultMap.error("文件删除失败");
         }
     }
 
