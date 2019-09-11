@@ -132,7 +132,7 @@ public class SysLoginController extends BaseController {
         }
 
         // 清除验证码
-        redisService.del(form.getUuid());
+        // redisService.del(form.getUuid());
 
         //生成token，并保存到数据库
         return createToken(userVo.getId());
