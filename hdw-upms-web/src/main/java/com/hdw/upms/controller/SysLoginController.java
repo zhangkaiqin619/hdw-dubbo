@@ -113,7 +113,7 @@ public class SysLoginController extends BaseController {
 //            return ResultMap.error("验证码错误");
 //        }
 
-        UserVo userVo =userService.selectByLoginName(form.getUsername());
+        UserVo userVo = userService.selectByLoginName(form.getUsername());
 
         if (null == userVo) {
             return ResultMap.error("账号不存在");
@@ -122,11 +122,11 @@ public class SysLoginController extends BaseController {
             return ResultMap.error("密码不正确");
         }
         //当企业不存在或者企业被禁用不允许登录
-        if(userVo.getUserType()==1){
-            Enterprise sysEnterprise=enterpriseService.getById(userVo.getEnterpriseId());
-            if(null!=sysEnterprise && sysEnterprise.getStatus()==1){
+        if (userVo.getUserType() == 1) {
+            Enterprise sysEnterprise = enterpriseService.getById(userVo.getEnterpriseId());
+            if (null != sysEnterprise && sysEnterprise.getStatus() == 1) {
                 return ResultMap.error("企业被禁用，该账户不允许登录");
-            }else if(null==sysEnterprise){
+            } else if (null == sysEnterprise) {
                 return ResultMap.error("企业不存在，该账户不允许登录");
             }
         }
@@ -159,6 +159,7 @@ public class SysLoginController extends BaseController {
         tokenEntity.setUserId(ShiroKit.getUser().getId());
         tokenEntity.setToken(token);
         userTokenService.updateById(tokenEntity);
+        ShiroKit.logout();
         return ResultMap.ok();
     }
 

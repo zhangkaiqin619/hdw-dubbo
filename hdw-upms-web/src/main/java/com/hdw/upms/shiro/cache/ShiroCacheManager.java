@@ -9,31 +9,28 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+
 /**
- * @author TuMinglong
- * @Descriptin 实现shiro的CacheManager
- * @Date 2018年5月1日 下午3:22:49
+ * @Description 实现shiro的CacheManager
+ * @Author TuMingLong
+ * @Date 2019/9/12 10:39
  */
 @Component
-public class RedisCacheManager implements CacheManager {
+public class ShiroCacheManager implements CacheManager {
 
     @Value("${hdw.shiro.cache}")
-    private String redis_shiro_cache;
+    private String shiroCacheKey;
+
+    //30分钟过期
+    @Value("${hdw.expire}")
+    private int globExpire;
 
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public <K, V> Cache<K, V> getCache(String name) throws CacheException {
-        return new ShiroCache<K, V>(redis_shiro_cache, name, redisTemplate);
-    }
-
-    public RedisTemplate<String, Object> getRedisTemplate() {
-        return redisTemplate;
-    }
-
-    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+        return new ShiroCache<K, V>(shiroCacheKey, name, globExpire, redisTemplate);
     }
 
 }

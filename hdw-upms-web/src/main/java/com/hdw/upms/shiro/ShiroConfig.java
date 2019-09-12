@@ -2,13 +2,15 @@ package com.hdw.upms.shiro;
 
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.hdw.upms.shiro.cache.RedisCacheManager;
-import com.hdw.upms.shiro.cache.RedisSessionDAO;
+import com.hdw.upms.shiro.cache.ShiroCacheManager;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -47,11 +49,9 @@ public class ShiroConfig {
     @Value("${hdw.shiro.cookie}")
     private String shiroCookie;
 
-    @Autowired
-    private RedisSessionDAO sessionDAO;
 
     @Autowired
-    public RedisCacheManager redisCacheManager;
+    public ShiroCacheManager shiroCacheManager;
 
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。 注意：单独一个ShiroFilterFactoryBean配置是或报错的，以为在
@@ -123,7 +123,7 @@ public class ShiroConfig {
         // 注入Session管理器
         securityManager.setSessionManager(sessionManager());
         // 注入缓存管理器
-        securityManager.setCacheManager(redisCacheManager);
+        securityManager.setCacheManager(shiroCacheManager);
         // 注入记住我管理器;
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
@@ -136,7 +136,7 @@ public class ShiroConfig {
     public ShiroDBRealm shiroDBRealm() {
         ShiroDBRealm shiroDBRealm = new ShiroDBRealm();
         shiroDBRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        shiroDBRealm.setCacheManager(redisCacheManager);
+        shiroDBRealm.setCacheManager(shiroCacheManager);
         // 启用身份验证缓存，即缓存AuthenticationInfo信息，默认false
         shiroDBRealm.setAuthenticationCachingEnabled(true);
         // 缓存AuthenticationInfo信息的缓存名称
@@ -152,11 +152,28 @@ public class ShiroConfig {
      */
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new RetryLimitCredentialsMatcher(redisCacheManager);
+        HashedCredentialsMatcher hashedCredentialsMatcher = new RetryLimitCredentialsMatcher(shiroCacheManager);
         hashedCredentialsMatcher.setHashAlgorithmName("md5");// 散列算法:这里使用MD5算法;
         hashedCredentialsMatcher.setHashIterations(2);// 散列的次数，比如散列两次，相当于md5(md5(""));
         hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);// 表示是否存储散列后的密码为16进制，需要和生成密码时的一样，默认是base64；
         return hashedCredentialsMatcher;
+    }
+
+    /**
+     * SessionDAO的作用是为Session提供CRUD并进行持久化的一个shiro组件
+     * MemorySessionDAO 直接在内存中进行会话维护
+     * EnterpriseCacheSessionDAO  提供了缓存功能的会话维护，默认情况下使用MapCache实现，内部使用ConcurrentHashMap保存缓存的会话。
+     *
+     * @return
+     */
+    @Bean
+    public SessionDAO sessionDAO() {
+        EnterpriseCacheSessionDAO enterpriseCacheSessionDAO = new EnterpriseCacheSessionDAO();
+        //使用ehCacheManager
+        enterpriseCacheSessionDAO.setCacheManager(shiroCacheManager);
+        //sessionId生成器
+        enterpriseCacheSessionDAO.setSessionIdGenerator(new JavaUuidSessionIdGenerator());
+        return enterpriseCacheSessionDAO;
     }
 
     /**
@@ -208,7 +225,7 @@ public class ShiroConfig {
     public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(60 * 60 * 1 * 1 * 1000);
-        sessionManager.setSessionDAO(sessionDAO);
+        sessionManager.setSessionDAO(sessionDAO());
         // url中是否显示session Id
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         // 删除失效的session

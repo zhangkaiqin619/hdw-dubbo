@@ -2,8 +2,7 @@ package com.hdw.upms.shiro.cas;
 
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.hdw.upms.shiro.cache.RedisCacheManager;
-import com.hdw.upms.shiro.cache.RedisSessionDAO;
+import com.hdw.upms.shiro.cache.ShiroCacheManager;
 import io.buji.pac4j.filter.CallbackFilter;
 import io.buji.pac4j.filter.LogoutFilter;
 import io.buji.pac4j.filter.SecurityFilter;
@@ -14,6 +13,9 @@ import org.apache.shiro.mgt.SubjectFactory;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -70,10 +72,7 @@ public class ShiroCasConfig {
     private String shiroCookie;
 
     @Autowired
-    private RedisSessionDAO sessionDAO;
-
-    @Autowired
-    public RedisCacheManager redisCacheManager;
+    public ShiroCacheManager shiroCacheManager;
 
     /**
      * JWT Token 生成器，对CommonProfile生成然后每次携带token访问
@@ -180,7 +179,7 @@ public class ShiroCasConfig {
         securityManager.setRealm(pac4jRealm());
         securityManager.setSubjectFactory(pac4jSubjectFactory());
         // 注入缓存管理器
-        securityManager.setCacheManager(redisCacheManager);
+        securityManager.setCacheManager(shiroCacheManager);
         // 记住密码管理
         securityManager.setRememberMeManager(rememberMeManager());
         // session管理
@@ -255,6 +254,23 @@ public class ShiroCasConfig {
     }
 
     /**
+     * SessionDAO的作用是为Session提供CRUD并进行持久化的一个shiro组件
+     * MemorySessionDAO 直接在内存中进行会话维护
+     * EnterpriseCacheSessionDAO  提供了缓存功能的会话维护，默认情况下使用MapCache实现，内部使用ConcurrentHashMap保存缓存的会话。
+     *
+     * @return
+     */
+    @Bean
+    public SessionDAO sessionDAO() {
+        EnterpriseCacheSessionDAO enterpriseCacheSessionDAO = new EnterpriseCacheSessionDAO();
+        //使用ehCacheManager
+        enterpriseCacheSessionDAO.setCacheManager(shiroCacheManager);
+        //sessionId生成器
+        enterpriseCacheSessionDAO.setSessionIdGenerator(new JavaUuidSessionIdGenerator());
+        return enterpriseCacheSessionDAO;
+    }
+
+    /**
      * cookie对象;
      *
      * @return
@@ -286,7 +302,7 @@ public class ShiroCasConfig {
     public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(60 * 60 * 1 * 1 * 1000);
-        sessionManager.setSessionDAO(sessionDAO);
+        sessionManager.setSessionDAO(sessionDAO());
         // url中是否显示session Id
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         // 删除失效的session

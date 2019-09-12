@@ -10,23 +10,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * @param <K>
  * @param <V>
- * @author TuMinglong
- * @Descriptin ShiroCache共享
- * @Date 2018年5月1日 下午3:21:20
+ * @Description ShiroCache共享
+ * @Author TuMingLong
+ * @Date 2019/9/12 10:39
  */
-
 public class ShiroCache<K, V> implements Cache<K, V> {
 
-    private String redis_shiro_cahce = "";
     private String cacheKey;
+    private long globExpire;
     private RedisTemplate<K, V> redisTemplate;
-    private long globExpire = 30;
 
-    public ShiroCache(String redis_shiro_cache, String name, RedisTemplate client) {
-        this.cacheKey = redis_shiro_cache + name + ":";
+
+    public ShiroCache(String cacheKey, String name, long globExpire, RedisTemplate client) {
+        this.cacheKey = cacheKey + name + ":";
+        this.globExpire = globExpire;
         this.redisTemplate = client;
     }
 

@@ -239,6 +239,13 @@ public class ShiroKit {
     }
 
     /**
+     * 退出
+     */
+    public static void logout() {
+        getSubject().logout();
+    }
+
+    /**
      * 获取角色关联的企业
      *
      * @return

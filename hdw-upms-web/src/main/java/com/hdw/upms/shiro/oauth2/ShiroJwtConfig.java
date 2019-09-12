@@ -1,11 +1,15 @@
 package com.hdw.upms.shiro.oauth2;
 
-import com.hdw.upms.shiro.cache.RedisCacheManager;
-import com.hdw.upms.shiro.cache.RedisSessionDAO;
+import com.hdw.upms.shiro.cache.ShiroCacheManager;
+import com.hdw.upms.shiro.cache.ShiroSessionListener;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -19,6 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,10 +42,7 @@ public class ShiroJwtConfig {
     private String shiroCookie;
 
     @Autowired
-    private RedisSessionDAO sessionDAO;
-
-    @Autowired
-    public RedisCacheManager redisCacheManager;
+    public ShiroCacheManager shiroCacheManager;
 
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。 注意：单独一个ShiroFilterFactoryBean配置是或报错的，以为在
@@ -106,7 +109,7 @@ public class ShiroJwtConfig {
         // 注入Session管理器
         securityManager.setSessionManager(sessionManager());
         // 注入缓存管理器
-        securityManager.setCacheManager(redisCacheManager);
+        securityManager.setCacheManager(shiroCacheManager);
         // 注入记住我管理器
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
@@ -118,7 +121,7 @@ public class ShiroJwtConfig {
     @Bean
     public OAuth2Realm oAuth2Realm() {
         OAuth2Realm oAuth2Realm = new OAuth2Realm();
-        oAuth2Realm.setCacheManager(redisCacheManager);
+        oAuth2Realm.setCacheManager(shiroCacheManager);
         // 启用身份验证缓存，即缓存AuthenticationInfo信息，默认false
         oAuth2Realm.setAuthenticationCachingEnabled(true);
         // 缓存AuthenticationInfo信息的缓存名称
@@ -126,6 +129,24 @@ public class ShiroJwtConfig {
         // 缓存AuthorizationInfo信息的缓存名称
         oAuth2Realm.setAuthorizationCacheName("authorizationCache");
         return oAuth2Realm;
+    }
+
+
+    /**
+     * SessionDAO的作用是为Session提供CRUD并进行持久化的一个shiro组件
+     * MemorySessionDAO 直接在内存中进行会话维护
+     * EnterpriseCacheSessionDAO  提供了缓存功能的会话维护，默认情况下使用MapCache实现，内部使用ConcurrentHashMap保存缓存的会话。
+     *
+     * @return
+     */
+    @Bean
+    public SessionDAO sessionDAO() {
+        EnterpriseCacheSessionDAO enterpriseCacheSessionDAO = new EnterpriseCacheSessionDAO();
+        //使用ehCacheManager
+        enterpriseCacheSessionDAO.setCacheManager(shiroCacheManager);
+        //sessionId生成器
+        enterpriseCacheSessionDAO.setSessionIdGenerator(new JavaUuidSessionIdGenerator());
+        return enterpriseCacheSessionDAO;
     }
 
     /**
@@ -156,11 +177,26 @@ public class ShiroJwtConfig {
         return cookieRememberMeManager;
     }
 
+    /**
+     * 配置session监听
+     *
+     * @return
+     */
+    @Bean("sessionListener")
+    public ShiroSessionListener sessionListener() {
+        ShiroSessionListener sessionListener = new ShiroSessionListener();
+        return sessionListener;
+    }
+
     @Bean(name = "sessionManager")
     public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        Collection<SessionListener> listeners = new ArrayList<SessionListener>();
+        //配置监听
+        listeners.add(sessionListener());
+        sessionManager.setSessionListeners(listeners);
         sessionManager.setGlobalSessionTimeout(60 * 60 * 1 * 1 * 1000);
-        sessionManager.setSessionDAO(sessionDAO);
+        sessionManager.setSessionDAO(sessionDAO());
         // url中是否显示session Id
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         // 删除失效的session

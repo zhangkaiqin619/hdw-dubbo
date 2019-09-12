@@ -64,10 +64,10 @@ public class SysDicController extends BaseController {
             params.put("parentId", parentId);
         }
         List<SysDic> dicList = sysDicService.selectDicList(params);
-        List<SelectTreeNode> treeNodeList= Lists.newArrayList();
-        if(!dicList.isEmpty()){
-            dicList.forEach(dic ->{
-                SelectTreeNode selectTreeNode=new SelectTreeNode();
+        List<SelectTreeNode> treeNodeList = Lists.newArrayList();
+        if (!dicList.isEmpty()) {
+            dicList.forEach(dic -> {
+                SelectTreeNode selectTreeNode = new SelectTreeNode();
                 selectTreeNode.setId(dic.getId().toString());
                 selectTreeNode.setParentId(dic.getParentId().toString());
                 selectTreeNode.setName(dic.getVarName());

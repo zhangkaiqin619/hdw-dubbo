@@ -77,11 +77,11 @@ public class SysRoleController extends BaseController {
         //查询角色对应的菜单
         List<Long> resourceIdList = sysRoleResourceService.selectResourceIdListByRoleId(roleId);
         role.setResourceIdList(resourceIdList);
-        List<SysRoleResource> roleResourceList=sysRoleResourceService.selectResourceNodeListByRoleId(roleId);
-        List<TreeNode> treeNodeList= Lists.newArrayList();
-        if(!roleResourceList.isEmpty()){
-            roleResourceList.forEach(roleResource ->{
-                TreeNode treeNode=new TreeNode();
+        List<SysRoleResource> roleResourceList = sysRoleResourceService.selectResourceNodeListByRoleId(roleId);
+        List<TreeNode> treeNodeList = Lists.newArrayList();
+        if (!roleResourceList.isEmpty()) {
+            roleResourceList.forEach(roleResource -> {
+                TreeNode treeNode = new TreeNode();
                 treeNode.setId(roleResource.getResourceId().toString());
                 treeNode.setLabel(roleResource.getResource().getName());
                 treeNodeList.add(treeNode);
