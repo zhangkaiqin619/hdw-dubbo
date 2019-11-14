@@ -3,6 +3,8 @@ package com.hdw.common.result;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hdw.common.utils.JacksonUtils;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,17 +14,22 @@ import java.util.List;
  * @Author TuMinglong
  * @Date 2018/12/13 18:37
  */
+@ApiModel("vue 树形选择器对象")
 public class SelectTreeNode implements Serializable {
 
     // 节点ID
+    @ApiModelProperty("节点ID")
     private String id;
     // 父节点ID
+    @ApiModelProperty("父节点ID")
     private String parentId;
     // 节点名称
+    @ApiModelProperty("节点名称")
     private String name;
     // 排序
+    @ApiModelProperty("排序")
     private String rank;
-
+    @ApiModelProperty("children")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<SelectTreeNode> children;
 

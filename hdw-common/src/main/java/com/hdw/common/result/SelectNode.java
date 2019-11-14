@@ -2,6 +2,8 @@ package com.hdw.common.result;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hdw.common.utils.JacksonUtils;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,17 +13,21 @@ import java.util.List;
  * @Author TuMinglong
  * @Date 2018/6/20 10:38
  */
+@ApiModel("vue select选择器对象")
 public class SelectNode implements Serializable {
     /**
      * value
      */
+    @ApiModelProperty("key")
     private String value;
 
     /**
      * label
      */
+    @ApiModelProperty("value")
     private String label;
 
+    @ApiModelProperty("对象List")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<SelectNode> options;
 

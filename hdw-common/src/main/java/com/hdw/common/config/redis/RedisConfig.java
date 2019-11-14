@@ -62,7 +62,6 @@ public class RedisConfig {
                 Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, Visibility.ANY);
-        om.enableDefaultTyping(DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         redisTemplate.setKeySerializer(stringSerializer);// key序列化
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);// value序列化

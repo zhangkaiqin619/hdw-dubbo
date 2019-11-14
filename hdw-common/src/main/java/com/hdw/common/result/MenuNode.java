@@ -2,7 +2,7 @@ package com.hdw.common.result;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.hdw.common.constants.MenuEnum;
+import com.hdw.common.constants.CommonEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -287,7 +287,7 @@ public class MenuNode implements Comparable, Serializable {
     public static List<MenuNode> clearBtn(List<MenuNode> nodes) {
         ArrayList<MenuNode> noBtns = new ArrayList<MenuNode>();
         for (MenuNode node : nodes) {
-            if (node.getIsMenu() == MenuEnum.YES.getCode()) {
+            if (node.getIsMenu() == CommonEnum.YES.getCode()) {
                 noBtns.add(node);
             }
         }

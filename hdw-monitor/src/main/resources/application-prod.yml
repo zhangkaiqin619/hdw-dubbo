@@ -4,7 +4,6 @@ server:
     uri-encoding: UTF-8
     max-connections: 1000
     min-spare-threads: 30
-  connection-timeout: 5000ms
 
 spring:
   application:

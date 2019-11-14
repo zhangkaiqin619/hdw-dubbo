@@ -80,4 +80,82 @@ public class CommonConstants {
      */
     public static final String PAGE_ORDER_KEY = "order";
 
+
+    /**
+     * JWT用户名
+     */
+    public static final String JWT_DEFAULT_USERNAME = "username";
+
+
+    /**
+     * 登陆Token
+     */
+    public static final String JWT_DEFAULT_TOKEN_NAME = "token";
+
+    /**
+     * JWT Token默认密钥
+     */
+    public static final String JWT_DEFAULT_SECRET = "666666";
+
+    /**
+     * 签发人
+     */
+    public static final String JWT_DEFAULT_ISSUER = "JacksonTu";
+
+    /**
+     * 签发的目标
+     */
+    public static final String JWT_DEFAULT_AUDIENCE = "web";
+
+    /**
+     * JWT 默认过期时间，3600L，单位秒
+     */
+    public static final int JWT_DEFAULT_EXPIRE_SECOND = 3600;
+
+
+    /**
+     * 登录用户Token令牌缓存KEY前缀
+     */
+    public static final String JWT_PREFIX_USER_TOKEN = "hdw_user_token_";
+
+    /**
+     * 系统日志类型： 登录
+     */
+    public static final int LOG_TYPE_1 = 1;
+
+    /**
+     * 系统日志类型： 操作
+     */
+    public static final int LOG_TYPE_0 = 0;
+
+    /**
+     * 操作日志类型： 查询
+     */
+    public static final int OPERATE_TYPE_1 = 1;
+
+    /**
+     * 操作日志类型： 添加
+     */
+    public static final int OPERATE_TYPE_2 = 2;
+
+    /**
+     * 操作日志类型： 更新
+     */
+    public static final int OPERATE_TYPE_3 = 3;
+
+    /**
+     * 操作日志类型： 删除
+     */
+    public static final int OPERATE_TYPE_4 = 4;
+
+    /**
+     * 操作日志类型： 导入
+     */
+    public static final int OPERATE_TYPE_5 = 5;
+
+    /**
+     * 操作日志类型： 导出
+     */
+    public static final int OPERATE_TYPE_6 = 6;
+
 }

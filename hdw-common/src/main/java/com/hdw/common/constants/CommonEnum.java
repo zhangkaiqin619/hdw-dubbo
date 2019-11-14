@@ -1,98 +1,83 @@
 package com.hdw.common.constants;
 
 /**
- * @Description 常量
- * @Author TuMinglong
- * @Date 2018年4月19日 下午3:57:46
+ * @Description 常量枚举
+ * @Author TuMingLong
+ * @Date 2019/11/1 11:22
  */
-public class CommonEnum {
+public enum CommonEnum {
+    /**
+     * 目录
+     */
+    CATALOG(0, "目录"),
+    /**
+     * 菜单
+     */
+    MENU(1, "菜单"),
+    /**
+     * 按钮
+     */
+    BUTTON(2, "按钮"),
+
+    /** 定时任务状态 */
+    /**
+     * 正常
+     */
+    NORMAL(0, "正常"),
+    /**
+     * 暂停
+     */
+    PAUSE(1, "暂停"),
+
+    /** 文件存储*/
+    /**
+     * 本地
+     */
+    LOCAL(0, "本地"),
+    /**
+     * fastdfs
+     */
+    FASTDFS(1, "fastdfs"),
+    /**
+     * 七牛云
+     */
+    QINIU(2, "七牛云"),
+    /**
+     * 阿里云
+     */
+    ALIYUN(3, "阿里云"),
+    /**
+     * 腾讯云
+     */
+    QCLOUD(4, "腾讯云"),
 
     /**
-     * 菜单类型
+     * 菜单，按钮状态
      */
-    public enum MenuType {
-        /**
-         * 目录
-         */
-        CATALOG(0),
-        /**
-         * 菜单
-         */
-        MENU(1),
-        /**
-         * 按钮
-         */
-        BUTTON(2);
+    YES(0, "是"),
 
-        private int value;
+    NO(1, "不是"),
 
-        MenuType(int value) {
-            this.value = value;
-        }
+    OPEN(0, "开启"),
 
-        public int getValue() {
-            return value;
-        }
+    CLOSE(1, "关闭"),
+
+
+    ;
+
+    private final int code;
+    private final String msg;
+
+    CommonEnum(final int code, final String msg) {
+        this.code = code;
+        this.msg = msg;
     }
 
-    /**
-     * 定时任务状态
-     */
-    public enum ScheduleStatus {
-        /**
-         * 正常
-         */
-        NORMAL(0),
-        /**
-         * 暂停
-         */
-        PAUSE(1);
-
-        private int value;
-
-        ScheduleStatus(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
+    public int getCode() {
+        return code;
     }
 
-    /**
-     * 文件存储
-     */
-    public enum CloudService {
-        /**
-         * 本地
-         */
-        LOCAL(0),
-        /**
-         * fastdfs
-         */
-        FASTDFS(1),
-        /**
-         * 七牛云
-         */
-        QINIU(2),
-        /**
-         * 阿里云
-         */
-        ALIYUN(3),
-        /**
-         * 腾讯云
-         */
-        QCLOUD(4);
-
-        private int value;
-
-        CloudService(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
+    public String getMsg() {
+        return msg;
     }
-
 }
