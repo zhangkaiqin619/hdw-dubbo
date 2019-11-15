@@ -10,7 +10,7 @@
 + 引入API模板，根据token作为登录令牌，极大的方便了APP接口开发
 + 引入Hibernate Validator校验框架，轻松实现后端校验
 + 引入swagger文档支持，方便编写API接口文档
-+ 前端地址：https://github.com/tumao2/hdw-dubbo-vue
++ 前端地址：https://github.com/JacksonTu/hdw-dubbo-vue
 + 演示地址：http://locahost:8090 (账号密码：admin/123456)
 
 
@@ -102,12 +102,12 @@ hdw-dubbo
 + hdw-dubbo技术交流群：948405874
 
 #### 系统预览
-![image](https://github.com/tumao2/hdw-dubbo/blob/master/img/QQ%E6%88%AA%E5%9B%BE20181219204905.png)
-![image](https://github.com/tumao2/hdw-dubbo/blob/master/img/QQ%E6%88%AA%E5%9B%BE20181219210136.png)
-![image](https://github.com/tumao2/hdw-dubbo/blob/master/img/QQ%E6%88%AA%E5%9B%BE20181219210210.png)
-![image](https://github.com/tumao2/hdw-dubbo/blob/master/img/QQ%E6%88%AA%E5%9B%BE20181219210441.png)
-![image](https://github.com/tumao2/hdw-dubbo/blob/master/img/QQ%E6%88%AA%E5%9B%BE20181219210502.png)
-![image](https://github.com/tumao2/hdw-dubbo/blob/master/img/hdw-dubbo%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
+![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219204905.png)
+![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210136.png)
+![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210150.png)
+![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210210.png)
+![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210441.png)
+![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/hdw-dubbo%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
 
 
 #### 更新日志
