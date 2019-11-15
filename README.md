@@ -10,7 +10,7 @@
 + 引入API模板，根据token作为登录令牌，极大的方便了APP接口开发
 + 引入Hibernate Validator校验框架，轻松实现后端校验
 + 引入swagger文档支持，方便编写API接口文档
-+ 前端地址：https://github.com/JacksonTu/hdw-dubbo-vue
++ 前端地址：https://github.com/JacksonTu/hdw-dubbo-ui
 + 演示地址：http://locahost:8090 (账号密码：admin/123456)
 
 
