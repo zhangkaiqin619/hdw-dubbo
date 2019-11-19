@@ -73,7 +73,7 @@ hdw-dubbo
      ```
       
 7. 前端启动
-    1. 按照淘宝NPM镜像
+    1. 安装淘宝NPM镜像
     ```bush
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     npm config set registry  https://registry.npm.taobao.org
