@@ -11,7 +11,7 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 13/11/2019 16:14:42
+ Date: 20/11/2019 18:57:11
 */
 
 SET NAMES utf8mb4;
@@ -155,7 +155,7 @@ CREATE TABLE `qrtz_scheduler_state`  (
 -- Records of qrtz_scheduler_state
 -- ----------------------------
 INSERT INTO `qrtz_scheduler_state` VALUES ('das-Scheduler', 'WIN-7COM6EF6BDG1573437847561', 1573526307782, 15000);
-INSERT INTO `qrtz_scheduler_state` VALUES ('hdw-base-Scheduler', 'WIN-7COM6EF6BDG1573631958592', 1573632878911, 15000);
+INSERT INTO `qrtz_scheduler_state` VALUES ('hdw-base-Scheduler', 'WIN-7COM6EF6BDG1573784547309', 1573784702662, 15000);
 INSERT INTO `qrtz_scheduler_state` VALUES ('hdw-dss-Scheduler', 'WIN-7COM6EF6BDG1573194731709', 1573195619932, 15000);
 
 -- ----------------------------
@@ -377,7 +377,7 @@ CREATE TABLE `t_schedule_job`  (
 -- Records of t_schedule_job
 -- ----------------------------
 INSERT INTO `t_schedule_job` VALUES (1159404137228144642, 'smsTask', 'pushHomeUnreadMessage', '', '*/5 * * * * ?', 1, '推送首页最近5条消息及未读消息总数', '2019-08-08 18:01:01');
-INSERT INTO `t_schedule_job` VALUES (1159404328370966530, 'smsTask', 'pushPageMsg', '', '*/5 * * * * ?', 0, '推送实时页面消息', '2019-08-08 18:01:47');
+INSERT INTO `t_schedule_job` VALUES (1159404328370966530, 'smsTask', 'pushPageMsg', '', '*/5 * * * * ?', 1, '推送实时页面消息', '2019-08-08 18:01:47');
 INSERT INTO `t_schedule_job` VALUES (1194222031296348161, 'testTask', 'test', '测试', '*/5 * * * * ?', 1, '测试定时任务', '2019-11-12 19:54:54');
 
 -- ----------------------------
@@ -396,16 +396,7 @@ CREATE TABLE `t_schedule_job_log`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `job_id`(`job_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1194222121725542402 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of t_schedule_job_log
--- ----------------------------
-INSERT INTO `t_schedule_job_log` VALUES (1194222037952708610, 1194222031296348161, 'testTask', 'test', '测试', 0, NULL, 1001, '2019-11-12 19:54:55');
-INSERT INTO `t_schedule_job_log` VALUES (1194222058764845057, 1194222031296348161, 'testTask', 'test', '测试', 0, NULL, 1000, '2019-11-12 19:55:00');
-INSERT INTO `t_schedule_job_log` VALUES (1194222080956907522, 1194222031296348161, 'testTask', 'test', '测试', 0, NULL, 1001, '2019-11-12 19:55:05');
-INSERT INTO `t_schedule_job_log` VALUES (1194222100770799617, 1194222031296348161, 'testTask', 'test', '测试', 0, NULL, 1002, '2019-11-12 19:55:10');
-INSERT INTO `t_schedule_job_log` VALUES (1194222121725542401, 1194222031296348161, 'testTask', 'test', '测试', 0, NULL, 1001, '2019-11-12 19:55:15');
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_sys_dic
@@ -510,7 +501,7 @@ CREATE TABLE `t_sys_log`  (
   `client_ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户端ip',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1194528978369331203 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_sys_resource
@@ -621,8 +612,7 @@ INSERT INTO `t_sys_resource` VALUES (1193713024584396801, 1193712807411724290, '
 INSERT INTO `t_sys_resource` VALUES (1193722636930920450, 1193712807411724290, 'Tomcat信息', 'sysMonitor/tomcat', 'Tomcat信息', 'menu', 2, 1, 0, '2019-11-11 10:51:22', '2019-11-11 10:51:23', 'admin', 'admin');
 INSERT INTO `t_sys_resource` VALUES (1193730814687064065, 1193712807411724290, '服务器信息', 'sysMonitor/server', '服务器信息', 'menu', 3, 1, 0, '2019-11-11 11:22:59', NULL, 'admin', NULL);
 INSERT INTO `t_sys_resource` VALUES (1193731016772825090, 1193712807411724290, 'JVM信息', 'sysMonitor/jvm', 'JVM信息', 'menu', 4, 1, 0, '2019-11-11 11:23:48', NULL, 'admin', NULL);
-INSERT INTO `t_sys_resource` VALUES (1193731242564792321, 1193712807411724290, '请求追踪', 'sysMonitor/httpTrace', '请求追踪', 'menu', 5, 1, 0, '2019-11-11 11:24:41', NULL, 'admin', NULL);
-INSERT INTO `t_sys_resource` VALUES (1193731450753265665, 1193712807411724290, '磁盘监控', 'sysMonitor/disk', '磁盘监控', 'menu', 6, 1, 0, '2019-11-11 11:25:31', NULL, 'admin', NULL);
+INSERT INTO `t_sys_resource` VALUES (1193731450753265665, 1193712807411724290, '磁盘监控', 'sysMonitor/disk', '磁盘监控', 'menu', 5, 1, 0, '2019-11-15 10:23:14', '2019-11-15 10:23:14', 'admin', 'admin');
 
 -- ----------------------------
 -- Table structure for t_sys_role
@@ -643,8 +633,8 @@ CREATE TABLE `t_sys_role`  (
 -- ----------------------------
 -- Records of t_sys_role
 -- ----------------------------
-INSERT INTO `t_sys_role` VALUES (1, 'admin', 1, '超级管理员', 0, '2019-09-26 17:26:30', '2019-09-26 17:26:31', 1);
-INSERT INTO `t_sys_role` VALUES (2, '应用管理员', 2, '应用管理员', 0, '2019-09-26 17:27:40', '2019-09-26 17:27:40', 1);
+INSERT INTO `t_sys_role` VALUES (1, 'admin', 1, '超级管理员', 0, '2019-11-15 10:23:38', '2019-11-15 10:23:38', 1);
+INSERT INTO `t_sys_role` VALUES (2, '应用管理员', 2, '应用管理员', 0, '2019-11-15 10:24:42', '2019-11-15 10:24:43', 1);
 INSERT INTO `t_sys_role` VALUES (3, '测试人员', 3, '测试人员', 0, '2019-09-27 14:02:38', '2019-09-27 14:02:38', 1);
 INSERT INTO `t_sys_role` VALUES (4, '运维人员', 4, '运维人员', 0, '2019-09-26 17:28:30', '2019-09-26 17:28:30', 1);
 INSERT INTO `t_sys_role` VALUES (5, '运营人员', 5, '运营人员', 0, '2019-09-26 17:29:46', '2019-09-26 17:29:46', 1);
@@ -659,171 +649,178 @@ CREATE TABLE `t_sys_role_resource`  (
   `resource_id` bigint(20) NOT NULL COMMENT '资源id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_role_resource_ids`(`role_id`, `resource_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 89669 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色资源表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1195165701516345371 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色资源表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_sys_role_resource
 -- ----------------------------
-INSERT INTO `t_sys_role_resource` VALUES (89246, 1, 1);
-INSERT INTO `t_sys_role_resource` VALUES (89260, 1, 11);
-INSERT INTO `t_sys_role_resource` VALUES (89253, 1, 12);
-INSERT INTO `t_sys_role_resource` VALUES (89247, 1, 13);
-INSERT INTO `t_sys_role_resource` VALUES (89261, 1, 111);
-INSERT INTO `t_sys_role_resource` VALUES (89262, 1, 112);
-INSERT INTO `t_sys_role_resource` VALUES (89263, 1, 113);
-INSERT INTO `t_sys_role_resource` VALUES (89264, 1, 114);
-INSERT INTO `t_sys_role_resource` VALUES (89265, 1, 115);
-INSERT INTO `t_sys_role_resource` VALUES (89266, 1, 116);
-INSERT INTO `t_sys_role_resource` VALUES (89254, 1, 121);
-INSERT INTO `t_sys_role_resource` VALUES (89255, 1, 122);
-INSERT INTO `t_sys_role_resource` VALUES (89256, 1, 123);
-INSERT INTO `t_sys_role_resource` VALUES (89257, 1, 124);
-INSERT INTO `t_sys_role_resource` VALUES (89258, 1, 125);
-INSERT INTO `t_sys_role_resource` VALUES (89259, 1, 126);
-INSERT INTO `t_sys_role_resource` VALUES (89248, 1, 131);
-INSERT INTO `t_sys_role_resource` VALUES (89249, 1, 132);
-INSERT INTO `t_sys_role_resource` VALUES (89250, 1, 133);
-INSERT INTO `t_sys_role_resource` VALUES (89251, 1, 134);
-INSERT INTO `t_sys_role_resource` VALUES (89252, 1, 135);
-INSERT INTO `t_sys_role_resource` VALUES (89294, 1, 227);
-INSERT INTO `t_sys_role_resource` VALUES (89295, 1, 228);
-INSERT INTO `t_sys_role_resource` VALUES (89267, 1, 234);
-INSERT INTO `t_sys_role_resource` VALUES (89268, 1, 235);
-INSERT INTO `t_sys_role_resource` VALUES (89269, 1, 236);
-INSERT INTO `t_sys_role_resource` VALUES (89270, 1, 237);
-INSERT INTO `t_sys_role_resource` VALUES (89271, 1, 238);
-INSERT INTO `t_sys_role_resource` VALUES (89272, 1, 239);
-INSERT INTO `t_sys_role_resource` VALUES (89273, 1, 240);
-INSERT INTO `t_sys_role_resource` VALUES (89274, 1, 241);
-INSERT INTO `t_sys_role_resource` VALUES (89275, 1, 242);
-INSERT INTO `t_sys_role_resource` VALUES (89276, 1, 243);
-INSERT INTO `t_sys_role_resource` VALUES (89277, 1, 244);
-INSERT INTO `t_sys_role_resource` VALUES (89278, 1, 245);
-INSERT INTO `t_sys_role_resource` VALUES (89279, 1, 246);
-INSERT INTO `t_sys_role_resource` VALUES (89280, 1, 247);
-INSERT INTO `t_sys_role_resource` VALUES (89281, 1, 248);
-INSERT INTO `t_sys_role_resource` VALUES (89217, 1, 249);
-INSERT INTO `t_sys_role_resource` VALUES (89218, 1, 250);
-INSERT INTO `t_sys_role_resource` VALUES (89219, 1, 251);
-INSERT INTO `t_sys_role_resource` VALUES (89220, 1, 252);
-INSERT INTO `t_sys_role_resource` VALUES (89221, 1, 253);
-INSERT INTO `t_sys_role_resource` VALUES (89222, 1, 254);
-INSERT INTO `t_sys_role_resource` VALUES (89223, 1, 255);
-INSERT INTO `t_sys_role_resource` VALUES (89282, 1, 256);
-INSERT INTO `t_sys_role_resource` VALUES (89288, 1, 257);
-INSERT INTO `t_sys_role_resource` VALUES (89283, 1, 258);
-INSERT INTO `t_sys_role_resource` VALUES (89284, 1, 259);
-INSERT INTO `t_sys_role_resource` VALUES (89285, 1, 260);
-INSERT INTO `t_sys_role_resource` VALUES (89286, 1, 261);
-INSERT INTO `t_sys_role_resource` VALUES (89287, 1, 262);
-INSERT INTO `t_sys_role_resource` VALUES (89289, 1, 263);
-INSERT INTO `t_sys_role_resource` VALUES (89290, 1, 264);
-INSERT INTO `t_sys_role_resource` VALUES (89291, 1, 265);
-INSERT INTO `t_sys_role_resource` VALUES (89292, 1, 266);
-INSERT INTO `t_sys_role_resource` VALUES (89293, 1, 267);
-INSERT INTO `t_sys_role_resource` VALUES (89296, 1, 268);
-INSERT INTO `t_sys_role_resource` VALUES (89224, 1, 269);
-INSERT INTO `t_sys_role_resource` VALUES (89225, 1, 270);
-INSERT INTO `t_sys_role_resource` VALUES (89226, 1, 271);
-INSERT INTO `t_sys_role_resource` VALUES (89227, 1, 272);
-INSERT INTO `t_sys_role_resource` VALUES (89228, 1, 273);
-INSERT INTO `t_sys_role_resource` VALUES (89229, 1, 274);
-INSERT INTO `t_sys_role_resource` VALUES (89230, 1, 275);
-INSERT INTO `t_sys_role_resource` VALUES (89231, 1, 276);
-INSERT INTO `t_sys_role_resource` VALUES (89239, 1, 277);
-INSERT INTO `t_sys_role_resource` VALUES (89240, 1, 278);
-INSERT INTO `t_sys_role_resource` VALUES (89241, 1, 279);
-INSERT INTO `t_sys_role_resource` VALUES (89242, 1, 280);
-INSERT INTO `t_sys_role_resource` VALUES (89243, 1, 281);
-INSERT INTO `t_sys_role_resource` VALUES (89244, 1, 282);
-INSERT INTO `t_sys_role_resource` VALUES (89245, 1, 283);
-INSERT INTO `t_sys_role_resource` VALUES (89232, 1, 284);
-INSERT INTO `t_sys_role_resource` VALUES (89233, 1, 285);
-INSERT INTO `t_sys_role_resource` VALUES (89234, 1, 286);
-INSERT INTO `t_sys_role_resource` VALUES (89235, 1, 287);
-INSERT INTO `t_sys_role_resource` VALUES (89236, 1, 288);
-INSERT INTO `t_sys_role_resource` VALUES (89237, 1, 289);
-INSERT INTO `t_sys_role_resource` VALUES (89238, 1, 290);
-INSERT INTO `t_sys_role_resource` VALUES (89618, 2, 1);
-INSERT INTO `t_sys_role_resource` VALUES (89632, 2, 11);
-INSERT INTO `t_sys_role_resource` VALUES (89625, 2, 12);
-INSERT INTO `t_sys_role_resource` VALUES (89619, 2, 13);
-INSERT INTO `t_sys_role_resource` VALUES (89633, 2, 111);
-INSERT INTO `t_sys_role_resource` VALUES (89634, 2, 112);
-INSERT INTO `t_sys_role_resource` VALUES (89635, 2, 113);
-INSERT INTO `t_sys_role_resource` VALUES (89636, 2, 114);
-INSERT INTO `t_sys_role_resource` VALUES (89637, 2, 115);
-INSERT INTO `t_sys_role_resource` VALUES (89638, 2, 116);
-INSERT INTO `t_sys_role_resource` VALUES (89626, 2, 121);
-INSERT INTO `t_sys_role_resource` VALUES (89627, 2, 122);
-INSERT INTO `t_sys_role_resource` VALUES (89628, 2, 123);
-INSERT INTO `t_sys_role_resource` VALUES (89629, 2, 124);
-INSERT INTO `t_sys_role_resource` VALUES (89630, 2, 125);
-INSERT INTO `t_sys_role_resource` VALUES (89631, 2, 126);
-INSERT INTO `t_sys_role_resource` VALUES (89620, 2, 131);
-INSERT INTO `t_sys_role_resource` VALUES (89621, 2, 132);
-INSERT INTO `t_sys_role_resource` VALUES (89622, 2, 133);
-INSERT INTO `t_sys_role_resource` VALUES (89623, 2, 134);
-INSERT INTO `t_sys_role_resource` VALUES (89624, 2, 135);
-INSERT INTO `t_sys_role_resource` VALUES (89666, 2, 227);
-INSERT INTO `t_sys_role_resource` VALUES (89667, 2, 228);
-INSERT INTO `t_sys_role_resource` VALUES (89639, 2, 234);
-INSERT INTO `t_sys_role_resource` VALUES (89640, 2, 235);
-INSERT INTO `t_sys_role_resource` VALUES (89641, 2, 236);
-INSERT INTO `t_sys_role_resource` VALUES (89642, 2, 237);
-INSERT INTO `t_sys_role_resource` VALUES (89643, 2, 238);
-INSERT INTO `t_sys_role_resource` VALUES (89644, 2, 239);
-INSERT INTO `t_sys_role_resource` VALUES (89645, 2, 240);
-INSERT INTO `t_sys_role_resource` VALUES (89646, 2, 241);
-INSERT INTO `t_sys_role_resource` VALUES (89647, 2, 242);
-INSERT INTO `t_sys_role_resource` VALUES (89648, 2, 243);
-INSERT INTO `t_sys_role_resource` VALUES (89649, 2, 244);
-INSERT INTO `t_sys_role_resource` VALUES (89650, 2, 245);
-INSERT INTO `t_sys_role_resource` VALUES (89651, 2, 246);
-INSERT INTO `t_sys_role_resource` VALUES (89652, 2, 247);
-INSERT INTO `t_sys_role_resource` VALUES (89653, 2, 248);
-INSERT INTO `t_sys_role_resource` VALUES (89589, 2, 249);
-INSERT INTO `t_sys_role_resource` VALUES (89590, 2, 250);
-INSERT INTO `t_sys_role_resource` VALUES (89591, 2, 251);
-INSERT INTO `t_sys_role_resource` VALUES (89592, 2, 252);
-INSERT INTO `t_sys_role_resource` VALUES (89593, 2, 253);
-INSERT INTO `t_sys_role_resource` VALUES (89594, 2, 254);
-INSERT INTO `t_sys_role_resource` VALUES (89595, 2, 255);
-INSERT INTO `t_sys_role_resource` VALUES (89654, 2, 256);
-INSERT INTO `t_sys_role_resource` VALUES (89660, 2, 257);
-INSERT INTO `t_sys_role_resource` VALUES (89655, 2, 258);
-INSERT INTO `t_sys_role_resource` VALUES (89656, 2, 259);
-INSERT INTO `t_sys_role_resource` VALUES (89657, 2, 260);
-INSERT INTO `t_sys_role_resource` VALUES (89658, 2, 261);
-INSERT INTO `t_sys_role_resource` VALUES (89659, 2, 262);
-INSERT INTO `t_sys_role_resource` VALUES (89661, 2, 263);
-INSERT INTO `t_sys_role_resource` VALUES (89662, 2, 264);
-INSERT INTO `t_sys_role_resource` VALUES (89663, 2, 265);
-INSERT INTO `t_sys_role_resource` VALUES (89664, 2, 266);
-INSERT INTO `t_sys_role_resource` VALUES (89665, 2, 267);
-INSERT INTO `t_sys_role_resource` VALUES (89668, 2, 268);
-INSERT INTO `t_sys_role_resource` VALUES (89596, 2, 269);
-INSERT INTO `t_sys_role_resource` VALUES (89597, 2, 270);
-INSERT INTO `t_sys_role_resource` VALUES (89598, 2, 271);
-INSERT INTO `t_sys_role_resource` VALUES (89599, 2, 272);
-INSERT INTO `t_sys_role_resource` VALUES (89600, 2, 273);
-INSERT INTO `t_sys_role_resource` VALUES (89601, 2, 274);
-INSERT INTO `t_sys_role_resource` VALUES (89602, 2, 275);
-INSERT INTO `t_sys_role_resource` VALUES (89603, 2, 276);
-INSERT INTO `t_sys_role_resource` VALUES (89611, 2, 277);
-INSERT INTO `t_sys_role_resource` VALUES (89612, 2, 278);
-INSERT INTO `t_sys_role_resource` VALUES (89613, 2, 279);
-INSERT INTO `t_sys_role_resource` VALUES (89614, 2, 280);
-INSERT INTO `t_sys_role_resource` VALUES (89615, 2, 281);
-INSERT INTO `t_sys_role_resource` VALUES (89616, 2, 282);
-INSERT INTO `t_sys_role_resource` VALUES (89617, 2, 283);
-INSERT INTO `t_sys_role_resource` VALUES (89604, 2, 284);
-INSERT INTO `t_sys_role_resource` VALUES (89605, 2, 285);
-INSERT INTO `t_sys_role_resource` VALUES (89606, 2, 286);
-INSERT INTO `t_sys_role_resource` VALUES (89607, 2, 287);
-INSERT INTO `t_sys_role_resource` VALUES (89608, 2, 288);
-INSERT INTO `t_sys_role_resource` VALUES (89609, 2, 289);
-INSERT INTO `t_sys_role_resource` VALUES (89610, 2, 290);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511375, 1, 1);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899973, 1, 11);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511382, 1, 12);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511376, 1, 13);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899974, 1, 111);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899975, 1, 112);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899976, 1, 113);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899977, 1, 114);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899978, 1, 115);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899979, 1, 116);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511383, 1, 121);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511384, 1, 122);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899969, 1, 123);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899970, 1, 124);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899971, 1, 125);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899972, 1, 126);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511377, 1, 131);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511378, 1, 132);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511379, 1, 133);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511380, 1, 134);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511381, 1, 135);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288599, 1, 227);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288600, 1, 228);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899980, 1, 234);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899981, 1, 235);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899982, 1, 236);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899983, 1, 237);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899984, 1, 238);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899985, 1, 239);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899986, 1, 240);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899987, 1, 241);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899988, 1, 242);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899989, 1, 243);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430274899990, 1, 244);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288577, 1, 245);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288578, 1, 246);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288579, 1, 247);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288580, 1, 248);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430249734145, 1, 249);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430249734146, 1, 250);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122754, 1, 251);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122755, 1, 252);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122756, 1, 253);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122757, 1, 254);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122758, 1, 255);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288581, 1, 256);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288587, 1, 257);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288582, 1, 258);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288583, 1, 259);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288584, 1, 260);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288585, 1, 261);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288586, 1, 262);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288588, 1, 263);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288589, 1, 264);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288590, 1, 265);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288591, 1, 266);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288592, 1, 267);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288601, 1, 268);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122759, 1, 269);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122760, 1, 270);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122761, 1, 271);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122762, 1, 272);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122763, 1, 273);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122764, 1, 274);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122765, 1, 275);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122766, 1, 276);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511368, 1, 277);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511369, 1, 278);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511370, 1, 279);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511371, 1, 280);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511372, 1, 281);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511373, 1, 282);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511374, 1, 283);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430258122767, 1, 284);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511362, 1, 285);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511363, 1, 286);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511364, 1, 287);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511365, 1, 288);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511366, 1, 289);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430266511367, 1, 290);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288593, 1, 1193712807411724290);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288594, 1, 1193713024584396801);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288595, 1, 1193722636930920450);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288596, 1, 1193730814687064065);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288597, 1, 1193731016772825090);
+INSERT INTO `t_sys_role_resource` VALUES (1195165430283288598, 1, 1193731450753265665);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345368, 2, 1);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956746, 2, 11);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345370, 2, 12);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345369, 2, 13);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956747, 2, 111);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956748, 2, 112);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956749, 2, 113);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956750, 2, 114);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956751, 2, 115);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956752, 2, 116);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956742, 2, 121);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956743, 2, 122);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956744, 2, 125);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956745, 2, 126);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956740, 2, 131);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956741, 2, 132);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345365, 2, 227);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345366, 2, 228);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956753, 2, 234);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956754, 2, 235);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956755, 2, 236);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956756, 2, 237);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956757, 2, 238);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956758, 2, 239);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956759, 2, 240);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956760, 2, 241);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956761, 2, 242);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956762, 2, 243);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956763, 2, 244);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956764, 2, 245);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956765, 2, 246);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345345, 2, 247);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345346, 2, 248);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701491179522, 2, 249);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568130, 2, 250);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568131, 2, 251);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568132, 2, 252);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568133, 2, 253);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568134, 2, 254);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568135, 2, 255);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345347, 2, 256);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345353, 2, 257);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345348, 2, 258);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345349, 2, 259);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345350, 2, 260);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345351, 2, 261);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345352, 2, 262);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345354, 2, 263);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345355, 2, 264);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345356, 2, 265);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345357, 2, 266);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345358, 2, 267);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345367, 2, 268);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568136, 2, 269);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568137, 2, 270);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568138, 2, 271);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568139, 2, 272);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568140, 2, 273);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568141, 2, 274);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568142, 2, 275);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568143, 2, 276);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568151, 2, 277);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568152, 2, 278);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568153, 2, 279);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568154, 2, 280);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568155, 2, 281);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956738, 2, 282);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701507956739, 2, 283);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568144, 2, 284);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568145, 2, 285);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568146, 2, 286);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568147, 2, 287);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568148, 2, 288);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568149, 2, 289);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701499568150, 2, 290);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345359, 2, 1193712807411724290);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345360, 2, 1193713024584396801);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345361, 2, 1193722636930920450);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345362, 2, 1193730814687064065);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345363, 2, 1193731016772825090);
+INSERT INTO `t_sys_role_resource` VALUES (1195165701516345364, 2, 1193731450753265665);
 INSERT INTO `t_sys_role_resource` VALUES (89562, 5, 249);
 INSERT INTO `t_sys_role_resource` VALUES (89563, 5, 250);
 INSERT INTO `t_sys_role_resource` VALUES (89564, 5, 251);
