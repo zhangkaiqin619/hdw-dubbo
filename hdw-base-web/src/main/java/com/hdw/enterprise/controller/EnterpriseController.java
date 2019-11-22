@@ -146,7 +146,7 @@ public class EnterpriseController extends UpLoadController {
     @ApiImplicitParam(paramType = "query", name = "ids", value = "企业ID数组", dataType = "String", required = true, allowMultiple = true)
     @PostMapping("/delete")
     @RequiresPermissions("enterprise/enterprise/delete")
-    public CommonResult deleteBatchIds(@RequestParam String[] ids) {
+    public CommonResult deleteBatchIds(@RequestBody String[] ids) {
         enterpriseService.removeByIds(Arrays.asList(ids));
         return CommonResult.ok().msg("删除成功");
     }
