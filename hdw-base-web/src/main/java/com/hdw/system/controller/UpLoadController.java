@@ -98,11 +98,11 @@ public abstract class UpLoadController {
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), targetFile);// 复制临时文件到指定目录下
             if (StringUtils.isNotBlank(commonProperties.getResourceAccessUrl())) {
-                resultPath = commonProperties.getResourceAccessUrl() + "/static/upload/" + dir + "/"
+                resultPath = commonProperties.getResourceAccessUrl() + "/upload/" + dir + "/"
                         + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
                         + fileName + realFileName.substring(realFileName.indexOf("."));
             } else {
-                resultPath = "/static/upload/" + dir + "/"
+                resultPath = "/upload/" + dir + "/"
                         + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
                         + fileName + realFileName.substring(realFileName.indexOf("."));
             }
@@ -148,7 +148,7 @@ public abstract class UpLoadController {
                     }
                     FileUtils.copyInputStreamToFile(file.getInputStream(), targetFile);// 复制临时文件到指定目录下
                     if (StringUtils.isNotBlank(commonProperties.getResourceAccessUrl())) {
-                        String resultPath = commonProperties.getResourceAccessUrl() + "/static/upload/" + dir + "/"
+                        String resultPath = commonProperties.getResourceAccessUrl() + "/upload/" + dir + "/"
                                 + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
                                 + fileName + realFileName.substring(realFileName.indexOf("."));
                         Map<String, String> params = new HashedMap();
@@ -156,7 +156,7 @@ public abstract class UpLoadController {
                         params.put("filePath", resultPath);
                         list.add(params);
                     } else {
-                        String resultPath = "/static/upload/" + dir + "/"
+                        String resultPath = "/upload/" + dir + "/"
                                 + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
                                 + fileName + realFileName.substring(realFileName.indexOf("."));
                         Map<String, String> params = new HashedMap();
