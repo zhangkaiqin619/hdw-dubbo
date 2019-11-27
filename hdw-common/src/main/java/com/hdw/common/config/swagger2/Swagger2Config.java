@@ -1,5 +1,6 @@
 package com.hdw.common.config.swagger2;
 
+import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import com.hdw.common.constants.CommonConstants;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
+@EnableSwaggerBootstrapUI
 @EnableConfigurationProperties({HdwSwaggerProperties.class})
 @ConditionalOnProperty(prefix = "hdw.swagger2", name = "enabled", havingValue = "true")
 @Import({Swagger2DocumentationConfiguration.class})
