@@ -29,7 +29,7 @@
 #if($column.columnName == $pk.columnName)
           ${column.attrname}: 0,
 #else
-          ${column.attrname}: ''#if($velocityCount != $columns.size()),#end
+          ${column.attrname}: ''#if($foreach.count != $columns.size()),#end
 
 #end
 #end
@@ -39,7 +39,7 @@
 #if($column.columnName != $pk.columnName)
           ${column.attrname}: [
             { required: true, message: '${column.comments}不能为空', trigger: 'blur' }
-          ]#if($velocityCount != $columns.size()),#end
+          ]#if($foreach.count != $columns.size()),#end
 
 #end
 #end
@@ -81,7 +81,7 @@
 #if($column.columnName == $pk.columnName)
                 '${column.attrname}': this.dataForm.${column.attrname} || undefined,
 #else
-                '${column.attrname}': this.dataForm.${column.attrname}#if($velocityCount != $columns.size()),#end
+                '${column.attrname}': this.dataForm.${column.attrname}#if($foreach.count != $columns.size()),#end
 
 #end
 #end

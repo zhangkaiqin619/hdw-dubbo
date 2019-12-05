@@ -12,12 +12,20 @@
 
     <!-- 自定义分页 -->
     <select id="pageList"  resultType="${package}.${moduleName}.entity.${className}">
-
+        select
+        #foreach($column in $columns)
+          t.${column.columnName} #if($foreach.count!= $columns.size()), #end
+        #end
+        from ${tableName} t
     </select>
 
     <!-- 多表信息查询 -->
     <select id="selectMapList" resultType="${package}.${moduleName}.entity.${className}">
-
+        select
+        #foreach($column in $columns)
+          t.${column.columnName} #if($foreach.count!= $columns.size()), #end
+        #end
+        from ${tableName} t
     </select>
 
     
