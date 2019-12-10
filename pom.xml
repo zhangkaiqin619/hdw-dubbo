@@ -30,7 +30,7 @@
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
 
-        <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
+        <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
         <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
         <alibaba.cloud.version>2.1.0.RELEASE</alibaba.cloud.version>
