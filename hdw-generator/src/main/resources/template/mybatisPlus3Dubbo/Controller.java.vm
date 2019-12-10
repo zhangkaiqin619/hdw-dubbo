@@ -52,7 +52,7 @@ public class ${className}Controller {
     }
 
     /**
-     * 获取${comments}信息"
+     * 获取${comments}信息
      */
     @AutoLog(value = "${comments}-获取${comments}信息")
     @ApiOperation(value = "获取${comments}信息", notes = "获取${comments}信息")
