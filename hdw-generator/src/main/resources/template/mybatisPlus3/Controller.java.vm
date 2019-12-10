@@ -47,7 +47,7 @@ public class ${className}Controller {
     @GetMapping("/list")
     @RequiresPermissions("${moduleName}/${pathName}/list")
     public CommonResult<PageParam<${className}>> treeGrid(QueryParam queryParam) {
-        PageParam<${className}> page = enterpriseService.pageList(queryParam);
+        PageParam<${className}> page = ${classname}Service.pageList(queryParam);
         return CommonResult.ok().data(page);
     }
 
