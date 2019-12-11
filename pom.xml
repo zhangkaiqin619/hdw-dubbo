@@ -33,7 +33,7 @@
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
         <spring-boot-admin.version>2.2.0</spring-boot-admin.version>
-        <alibaba.cloud.version>2.1.0.RELEASE</alibaba.cloud.version>
+        <alibaba.cloud.version>2.1.1.RELEASE</alibaba.cloud.version>
         <alibaba.fastjson.version>1.2.62</alibaba.fastjson.version>
         <alibaba.druid.version>1.1.20</alibaba.druid.version>
         <dubbo.version>2.7.4.1</dubbo.version>
