@@ -29,8 +29,6 @@
         <result column="id" property="id"/>
         <result column="login_name" property="loginName"/>
         <result column="name" property="name"/>
-        <result column="password" property="password"/>
-        <result column="salt" property="salt"/>
         <result column="sex" property="sex"/>
         <result column="phone" property="phone"/>
         <result column="email" property="email"/>
@@ -56,8 +54,6 @@
         t.id,
         t.login_name,
         t.`name`,
-        t.`password`,
-        t.salt,
         t.sex,
         t.phone,
         t.email,

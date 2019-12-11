@@ -37,16 +37,6 @@ public class UserVo implements Serializable {
     @ApiModelProperty(value = "用户名")
     private String name;
     /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码")
-    private String password;
-    /**
-     * 密码加密盐
-     */
-    @ApiModelProperty(value = "密码加密盐")
-    private String salt;
-    /**
      * 性别(0:男，1：女)
      */
     @ApiModelProperty(value = "性别(0:男，1：女)")
