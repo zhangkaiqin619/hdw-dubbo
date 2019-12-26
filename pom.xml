@@ -36,7 +36,7 @@
         <alibaba.cloud.version>2.1.1.RELEASE</alibaba.cloud.version>
         <alibaba.fastjson.version>1.2.62</alibaba.fastjson.version>
         <alibaba.druid.version>1.1.20</alibaba.druid.version>
-        <dubbo.version>2.7.4.1</dubbo.version>
+        <dubbo.version>2.7.3</dubbo.version>
 
         <apache.commons-lang3.version>3.9</apache.commons-lang3.version>
         <apache.commons-io.version>2.6</apache.commons-io.version>
@@ -66,7 +66,6 @@
         <thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
         <jsoup.version>1.12.1</jsoup.version>
-        <netty-all.version>4.1.42.Final</netty-all.version>
 
         <hdw-common.version>3.0.0</hdw-common.version>
         <hdw-base-mapper.version>3.0.0</hdw-base-mapper.version>

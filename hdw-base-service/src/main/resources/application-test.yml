@@ -146,7 +146,7 @@ management:
 
 info:
   name: 基础平台SERVICE服务
-  version: 1.0.0
+  version: ${project.version}
 
 hdw:
   expire: 1800

@@ -171,7 +171,7 @@ management:
 
 info:
   name: 基础平台WEB服务
-  version: 1.0.0
+  version: ${project.version}
 
 fdfs:
   file-upload:
@@ -225,7 +225,7 @@ hdw:
     enabled: true
     description: 基础平台WEB服务
     title: 基础平台WEB服务
-    version: 1.0
+    version: ${project.version}
 
 #CAS Config
 cas:
