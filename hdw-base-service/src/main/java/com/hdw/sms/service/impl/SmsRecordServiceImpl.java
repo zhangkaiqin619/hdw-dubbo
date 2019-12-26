@@ -36,8 +36,12 @@ public class SmsRecordServiceImpl extends BaseServiceImpl<SmsRecordMapper, SmsRe
                 .ge(ObjectUtils.isNotEmpty(smsRecordParam.getStartTime()), "t.push_time", smsRecordParam.getStartTime())
                 .le(ObjectUtils.isNotEmpty(smsRecordParam.getEndTime()), "t.push_time", smsRecordParam.getEndTime())
                 .eq(ObjectUtils.isNotEmpty(smsRecordParam.getUserId()), "t.user_id", smsRecordParam.getUserId());
-        if (ObjectUtils.isNotEmpty(smsRecordParam.getStatus()) && smsRecordParam.getStatus() == -1) {
-            wrapper.and(i -> i.ne("t.status", "0").ne("t.status", "3"));
+        if (ObjectUtils.isNotEmpty(smsRecordParam.getStatus())){
+            if(smsRecordParam.getStatus() == "-1"){
+                wrapper.and(i -> i.ne("t.status", "0").ne("t.status", "3"));
+            }else{
+                wrapper.eq(ObjectUtils.isNotEmpty(smsRecordParam.getStatus()), "t.status", smsRecordParam.getStatus());
+            }
         }
         wrapper.orderByDesc("t.push_time");
         Page page = new Page();

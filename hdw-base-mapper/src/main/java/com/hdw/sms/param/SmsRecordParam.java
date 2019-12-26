@@ -24,5 +24,5 @@ public class SmsRecordParam extends QueryParam {
     @ApiModelProperty("结束时间")
     private String endTime;
     @ApiModelProperty(value = "状态(-1:未读)", example = "-1")
-    private int status;
+    private String status;
 }
