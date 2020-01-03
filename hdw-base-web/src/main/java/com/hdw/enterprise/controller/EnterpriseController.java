@@ -206,8 +206,8 @@ public class EnterpriseController extends UpLoadController {
                     String url = map.get("filePath");
                     param.put("name", name);
                     param.put("url", url);
+                    setUploadFile(map);
                 }
-                setUploadFile(uploadFileUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,9 +228,9 @@ public class EnterpriseController extends UpLoadController {
                                    @RequestParam(value = "name", required = false) String name,
                                    @RequestParam(value = "url", required = false) String url) {
         try {
-            sysFileService.deleteFile("t_app_emergency_case", "", "", name, url);
+            sysFileService.deleteFile("t_enterprise", "", "", name, url);
             if (StringUtils.isNotBlank(url)) {
-                deleteFileFromFastDFS(url);
+                deleteFileFromLocal(url);
             }
             resetUploadFile();
             return CommonResult.ok().msg("删除文件成功");
@@ -306,18 +306,19 @@ public class EnterpriseController extends UpLoadController {
         }
     }
 
-    private void setUploadFile(List<Map<String, String>> uploadFileUrl) {
+    private void setUploadFile(Map<String, String> uploadFileUrl) {
         LoginUser user = ShiroKit.getUser();
         Object o = uploadFileUrls.get(user.getId().toString());
         if (o == null) {
-            uploadFileUrls.put(user.getId().toString(), new ArrayList<>());
+            uploadFileUrls.put(user.getId().toString(), new ArrayList<Map<String, String>>());
         }
-        uploadFileUrls.get(user.getId().toString()).addAll(uploadFileUrl);
+        uploadFileUrls.get(user.getId().toString()).add(uploadFileUrl);
     }
 
     private List<Map<String, String>> getUploadFile() {
         LoginUser user = ShiroKit.getUser();
-        return uploadFileUrls.get(user.getId().toString());
+        List<Map<String, String>> list = uploadFileUrls.get(user.getId().toString());
+        return (list == null) ? (new ArrayList<Map<String, String>>()) : (list);
     }
 
     private void resetUploadFile() {

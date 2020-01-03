@@ -125,7 +125,6 @@ public abstract class UpLoadController {
      * @return
      */
     public List<Map<String, String>> uploads(MultipartFile[] multipartFiles, String dir) {
-        System.out.println("到这里");
         List<Map<String, String>> list = new ArrayList<>();
         try {
             // 判断file数组不能为空并且长度大于0
@@ -134,7 +133,6 @@ public abstract class UpLoadController {
                 for (MultipartFile file : multipartFiles) {
                     String savePath = "";
                     if (StringUtils.isNotBlank(dir)) {
-                        System.out.println("上传路径前缀："+commonProperties.getFileUploadPrefix());
                         savePath = commonProperties.getFileUploadPrefix() + File.separator + "upload" + File.separator
                                 + dir + File.separator + DateUtils.formatDate(new Date(), "yyyyMMdd") + File.separator;
                     } else {
@@ -186,8 +184,7 @@ public abstract class UpLoadController {
         if (StringUtils.isBlank(fileUrl)) {
             return CommonResult.fail().msg("文件删除失败");
         }
-        String temp = fileUrl.substring(fileUrl.indexOf("/upload"));
-        System.out.println(commonProperties.getFileUploadPrefix() + File.separator + temp);
+        String temp = fileUrl.substring(fileUrl.lastIndexOf("upload"));
         File file = new File(commonProperties.getFileUploadPrefix() + File.separator + temp);
         if (file.exists() && file.isFile()) {
             file.delete();
