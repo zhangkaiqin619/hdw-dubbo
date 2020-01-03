@@ -1,6 +1,5 @@
 package com.hdw.sms.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -30,7 +29,7 @@ public class SysSms extends Model<SysSms> {
      */
     @ApiModelProperty(value = "主键")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId
     private Long id;
     /**
      * 消息类型ID

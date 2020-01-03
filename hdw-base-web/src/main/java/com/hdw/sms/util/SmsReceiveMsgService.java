@@ -1,6 +1,8 @@
 package com.hdw.sms.util;
 
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import com.hdw.common.utils.JacksonUtils;
 import com.hdw.sms.entity.Sms;
 import com.hdw.sms.entity.SmsRecord;
@@ -45,7 +47,10 @@ public class SmsReceiveMsgService {
         log.info("接收到的数据：" + msg);
         Sms sms = JacksonUtils.toObject(msg, Sms.class);
         if (null != sms) {
+            Snowflake snowflake = IdUtil.createSnowflake(1, 1);
+            long id = snowflake.nextId();
             SysSms sysSms = new SysSms();
+            sysSms.setId(id);
             sysSms.setSmsTypeId(Long.valueOf(sms.getSmsType()));
             sysSms.setTitle(sms.getTitle());
             sysSms.setContent(sms.getContent());

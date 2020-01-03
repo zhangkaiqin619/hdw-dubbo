@@ -1,5 +1,7 @@
 package com.hdw.sms.controller;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import com.hdw.common.result.CommonResult;
 import com.hdw.common.result.PageParam;
 import com.hdw.sms.entity.SysSms;
@@ -64,6 +66,9 @@ public class SmsController {
     @RequiresPermissions("sms/sms/save")
     public CommonResult save(@Valid @RequestBody SysSms sysSms) {
         try {
+            Snowflake snowflake = IdUtil.createSnowflake(1, 1);
+            long id = snowflake.nextId();
+            sysSms.setId(id);
             sysSms.setCreateTime(new Date());
             sysSms.setCreateUser(ShiroKit.getUser().getId());
             sysSms.setUpdateTime(new Date());
