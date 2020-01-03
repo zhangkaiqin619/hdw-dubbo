@@ -53,7 +53,7 @@ public class UploadInterceptor extends HandlerInterceptorAdapter {
     private boolean checkFile(String fileName) {
         List<String> suffixList = commonProperties.getAllowUploadFileExtensions();
         // 获取文件后缀
-        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
         if (suffixList.contains(suffix)) {
             return true;
         }

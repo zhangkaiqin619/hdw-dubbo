@@ -201,8 +201,8 @@ hdw:
   # 上传路径配置
   file-upload-prefix: D:\\Workspaces\\SSM\src\\hdw-dubbo\\hdw-base-web\\src\main\\resources\\static
   # 资源访问路径
-  resource-access-path: /static/
-  # 资源访问路径匹配：/static/**
+  resource-access-path: /
+  # 资源访问路径匹配：/**
   resource-access-patterns: ${hdw.resource-access-path}**
   # 资源访问全路径前缀：http://localhost:9090
   resource-access-url: http://localhost:${server.port}${server.servlet.context-path}

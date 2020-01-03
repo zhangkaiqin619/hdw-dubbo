@@ -22,5 +22,16 @@ public interface ISysFileService extends IBaseService<SysFile> {
      */
     List<SysFile> selectFileListByTableIdAndRecordId(Map<String, Object> params);
 
+    /**
+     * 删除文件
+     *
+     * @param tableId         主表名
+     * @param recordId        主表ID
+     * @param attachmentGroup 主表附件分组组名
+     * @param attachmentName  文件名
+     * @param attachmentPath  文件路径
+     */
+    void deleteFile(String tableId, String recordId, String attachmentGroup, String attachmentName, String attachmentPath);
+
 }
 

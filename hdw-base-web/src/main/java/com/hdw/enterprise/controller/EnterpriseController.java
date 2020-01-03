@@ -197,88 +197,72 @@ public class EnterpriseController extends UpLoadController {
     @ApiOperation(value = "上传附件", notes = "上传附件")
     @PostMapping("/uploadFile")
     public CommonResult uploadFile(@RequestParam("file") MultipartFile[] files) {
+        Map<String,Object> param=new HashMap<>();
         try {
             List<Map<String, String>> uploadFileUrl = uploads(files, "enterprise");
-            String fileName = "";
-            String filePath = "";
-            if (!uploadFileUrl.isEmpty() && uploadFileUrl.size() > 0) {
+            if (!uploadFileUrl.isEmpty()) {
                 for (Map<String, String> map : uploadFileUrl) {
-                    fileName = map.get("fileName");
-                    filePath = map.get("filePath");
+                    String name = map.get("fileName");
+                    String url = map.get("filePath");
+                    param.put("name", name);
+                    param.put("url", url);
                 }
                 setUploadFile(uploadFileUrl);
-                return CommonResult.ok().put("filePath", filePath);
-            } else {
-                return CommonResult.ok().put("filePath", "");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
         }
+        return CommonResult.ok().data(param);
     }
 
-    /**
-     * 列示附件
-     */
-    @ApiOperation(value = "列示附件", notes = "列示附件")
-    @ApiImplicitParam(paramType = "path", name = "id", value = "企业ID", dataType = "String", required = true)
-    @GetMapping("/selectFile/{id}")
-    public CommonResult<List<SysFile>> listFile(@PathVariable("id") String id) {
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("tableId", "t_enterprise");
-        params.put("recordId", id);
-        List<SysFile> fileList = sysFileService.selectFileListByTableIdAndRecordId(params);
-        return CommonResult.ok().data(fileList);
-    }
 
     /**
-     * 删除附件
+     * 删除文件
+     *
+     * @param name 文件名
+     * @param url  文件路径
+     * @return
      */
-    @ApiOperation(value = "删除附件", notes = "删除附件")
-    @ApiImplicitParam(paramType = "path", name = "id", value = "文件表主键ID", dataType = "String", required = true)
-    @GetMapping("/deleteFileById/{id}")
-    public CommonResult deleteFileById(@PathVariable("id") String id) {
+    @GetMapping("/deleteFile")
+    public CommonResult deleteFile(@RequestParam(value = "id") String id,
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "url", required = false) String url) {
         try {
-            SysFile sysFile = sysFileService.getById(id);
-            if (sysFile != null) {
-                sysFileService.removeById(sysFile.getId());
-                deleteFileFromLocal(sysFile.getAttachmentPath());
+            sysFileService.deleteFile("t_app_emergency_case", "", "", name, url);
+            if (StringUtils.isNotBlank(url)) {
+                deleteFileFromFastDFS(url);
             }
-            return CommonResult.ok().msg("删除成功");
+            resetUploadFile();
+            return CommonResult.ok().msg("删除文件成功");
         } catch (Exception e) {
             e.printStackTrace();
             return CommonResult.fail().msg("运行异常，请联系管理员");
         }
     }
 
+
     /**
-     * 删除附件(刚上传到后端的附件)
+     * 列示文件
+     *
+     * @param id
+     * @return
      */
-    @ApiOperation(value = "删除附件(刚上传到后端的附件)", notes = "删除附件(刚上传到后端的附件)")
-    @ApiImplicitParam(paramType = "query", name = "fileName", value = "文件名", dataType = "String", required = true)
-    @GetMapping("/deleteFileByName")
-    public CommonResult deleteFileByName(@RequestParam String fileName) {
-        try {
-            List<Map<String, String>> list = getUploadFile();
-            if (StringUtils.isNotBlank(fileName) && list != null && !list.isEmpty()) {
-                for (Map<String, String> uploadFileUrl : list) {
-                    boolean canDel = false;
-                    if (uploadFileUrl.get("fileName").equalsIgnoreCase(fileName)) {
-                        deleteFileFromLocal(uploadFileUrl.get("filePath"));
-                        canDel = true;
-                        break;
-                    }
-                    if (canDel) {
-                        list.remove(uploadFileUrl);
-                        break;
-                    }
-                }
+    @GetMapping("/lookFile/{id}")
+    public CommonResult listFile(@PathVariable("id") String id) {
+        List<Map<String, String>> list = new ArrayList<>();
+        HashMap<String, Object> param = new HashMap<String, Object>();
+        param.put("tableId", "t_enterprise");
+        param.put("recordId", id);
+        List<SysFile> files = sysFileService.selectFileListByTableIdAndRecordId(param);
+        if (!files.isEmpty()) {
+            for (SysFile sysFile : files) {
+                Map<String, String> fileMap = new HashMap<>();
+                fileMap.put("name", sysFile.getAttachmentName());
+                fileMap.put("url", sysFile.getAttachmentPath());
+                list.add(fileMap);
             }
-            return CommonResult.ok().msg("删除成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
         }
+        return CommonResult.ok().data(list);
     }
 
     public CommonResult saveFile(String id) {
@@ -295,14 +279,14 @@ public class EnterpriseController extends UpLoadController {
                     sysFile.setAttachmentName(fileName);
                     sysFile.setAttachmentPath(filePah);
                     //附件类型(0-word,1-excel,2-pdf,3-jpg,png,4-其他等)
-                    String fileType = fileName.substring(fileName.indexOf("."));
-                    if ("doc".equals(fileType.toLowerCase())) {
+                    String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+                    if ("doc".equals(fileType.toLowerCase()) || "docx".equals(fileType.toLowerCase())) {
                         sysFile.setAttachmentType(0);
-                    } else if ("xlsx".equals(fileType.toLowerCase())) {
+                    } else if ("xls".equals(fileType.toLowerCase()) || "xlsx".equals(fileType.toLowerCase())) {
                         sysFile.setAttachmentType(1);
                     } else if ("pdf".equals(fileType.toLowerCase())) {
                         sysFile.setAttachmentType(2);
-                    } else if ("jpg".equals(fileType.toLowerCase()) || "png".equals(fileType.toLowerCase())) {
+                    } else if ("jpg".equals(fileType.toLowerCase()) || "png".equals(fileType.toLowerCase()) || "gif".equals(fileType.toLowerCase())) {
                         sysFile.setAttachmentType(3);
                     } else {
                         sysFile.setAttachmentType(4);
