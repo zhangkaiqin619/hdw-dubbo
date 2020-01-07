@@ -17,7 +17,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -87,12 +90,26 @@ public class SysLogAspect {
 
         //请求的参数
         Object[] args = joinPoint.getArgs();
-        try{
-            String params = JacksonUtils.toJson(args);
-            sysLog.setParams(params);
-        }catch (Exception e){
-           e.printStackTrace();
+        Object[] arguments = new Object[args.length];
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof ServletRequest || args[i] instanceof ServletResponse || args[i] instanceof MultipartFile) {
+                //ServletRequest不能序列化，从入参里排除，否则报异常：java.lang.IllegalStateException:
+                // It is illegal to call this method if the current request is not in asynchronous mode (i.e. isAsyncStarted() returns false)
+                //ServletResponse不能序列化 从入参里排除，否则报异常：java.lang.IllegalStateException:
+                // getOutputStream() has already been called for this response
+                continue;
+            }
+            arguments[i] = args[i];
         }
+        String params = "";
+        if (arguments != null) {
+            try {
+                params = JacksonUtils.toJson(arguments);
+            } catch (Exception e) {
+                params = arguments.toString();
+            }
+        }
+        sysLog.setParams(params);
 
         //获取request
         HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
