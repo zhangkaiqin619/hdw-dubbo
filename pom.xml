@@ -30,7 +30,7 @@
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
 
-        <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
         <spring-boot-admin.version>2.2.0</spring-boot-admin.version>
         <alibaba.cloud.version>2.1.1.RELEASE</alibaba.cloud.version>
@@ -55,8 +55,8 @@
         <fastdfs-spring-boot-starter.version>0.2.0</fastdfs-spring-boot-starter.version>
         <swagger2.version>2.9.2</swagger2.version>
         <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
-        <mybatis-plus.version>3.2.0</mybatis-plus.version>
-        <dynamic-datasource-spring-boot-starter.version>2.5.7</dynamic-datasource-spring-boot-starter.version>
+        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <dynamic-datasource-spring-boot-starter.version>2.5.8</dynamic-datasource-spring-boot-starter.version>
         <p6spy.version>3.8.6</p6spy.version>
         <oracle.version>10.2.0.4.0</oracle.version>
         <shiro.version>1.4.1</shiro.version>
