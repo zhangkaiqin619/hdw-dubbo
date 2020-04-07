@@ -1,9 +1,9 @@
 package com.hdw.system.service;
 
 
-import com.hdw.common.base.service.IBaseService;
+import com.hdw.common.mybatis.base.service.IBaseService;
 import com.hdw.system.entity.SysRole;
-import com.hdw.system.entity.vo.RoleVo;
+import com.hdw.system.vo.RoleVo;
 
 import java.util.List;
 import java.util.Map;

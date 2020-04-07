@@ -3,9 +3,9 @@ package com.hdw.enterprise.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
-import com.hdw.enterprise.entity.vo.EnterpriseDepartmentVo;
+import com.hdw.enterprise.vo.EnterpriseDepartmentVo;
 import com.hdw.enterprise.mapper.EnterpriseDepartmentMapper;
-import com.hdw.enterprise.param.EnterpriseDepartmentParam;
+import com.hdw.enterprise.dto.EnterpriseDepartmentDTO;
 import com.hdw.enterprise.service.IEnterpriseDepartmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
@@ -27,8 +27,8 @@ public class EnterpriseDepartmentServiceImpl extends ServiceImpl<EnterpriseDepar
 
 
     @Override
-    public List<EnterpriseDepartmentVo> selectTreeGrid(EnterpriseDepartmentParam enterpriseDepartmentParam) {
-        return this.baseMapper.selectTreeGrid(enterpriseDepartmentParam);
+    public List<EnterpriseDepartmentVo> selectTreeGrid(EnterpriseDepartmentDTO enterpriseDepartmentDTO) {
+        return this.baseMapper.selectTreeGrid(enterpriseDepartmentDTO);
     }
 
     @Override

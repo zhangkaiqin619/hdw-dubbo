@@ -1,10 +1,10 @@
 package com.hdw.job.controller;
 
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
-import com.hdw.common.validator.ValidatorUtils;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.mybatis.base.vo.PageVo;
+import com.hdw.common.validator.ValidatorUtil;
 import com.hdw.job.entity.ScheduleJobEntity;
-import com.hdw.job.param.JobParam;
+import com.hdw.job.dto.JobDTO;
 import com.hdw.job.service.IScheduleJobService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -31,10 +31,10 @@ public class ScheduleJobController {
     @ApiOperation(value = "定时任务列表", notes = "定时任务列表")
     @GetMapping("/list")
     @RequiresPermissions("sys/schedule/list")
-    public CommonResult<PageParam<ScheduleJobEntity>> list(JobParam jobParam) {
-        PageParam<ScheduleJobEntity> page = scheduleJobService.queryPage(jobParam);
+    public CommonResult<PageVo<ScheduleJobEntity>> list(JobDTO jobDTO) {
+        PageVo<ScheduleJobEntity> page = scheduleJobService.queryPage(jobDTO);
 
-        return CommonResult.ok().data(page);
+        return CommonResult.success(page);
     }
 
     /**
@@ -47,7 +47,7 @@ public class ScheduleJobController {
     public CommonResult<ScheduleJobEntity> info(@PathVariable("jobId") Long jobId) {
         ScheduleJobEntity schedule = scheduleJobService.getById(jobId);
 
-        return CommonResult.ok().data(schedule);
+        return CommonResult.success(schedule);
     }
 
     /**
@@ -57,11 +57,11 @@ public class ScheduleJobController {
     @PostMapping("/save")
     @RequiresPermissions("sys/schedule/save")
     public CommonResult save(@RequestBody ScheduleJobEntity scheduleJob) {
-        ValidatorUtils.validateEntity(scheduleJob);
+        ValidatorUtil.validateEntity(scheduleJob);
 
         scheduleJobService.insert(scheduleJob);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -71,11 +71,11 @@ public class ScheduleJobController {
     @PostMapping("/update")
     @RequiresPermissions("sys/schedule/update")
     public CommonResult update(@RequestBody ScheduleJobEntity scheduleJob) {
-        ValidatorUtils.validateEntity(scheduleJob);
+        ValidatorUtil.validateEntity(scheduleJob);
 
         scheduleJobService.update(scheduleJob);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -88,7 +88,7 @@ public class ScheduleJobController {
     public CommonResult delete(@RequestBody Long[] jobIds) {
         scheduleJobService.deleteBatch(jobIds);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -101,7 +101,7 @@ public class ScheduleJobController {
     public CommonResult run(@RequestBody Long[] jobIds) {
         scheduleJobService.run(jobIds);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -114,7 +114,7 @@ public class ScheduleJobController {
     public CommonResult pause(@RequestBody Long[] jobIds) {
         scheduleJobService.pause(jobIds);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -127,7 +127,7 @@ public class ScheduleJobController {
     public CommonResult resume(@RequestBody Long[] jobIds) {
         scheduleJobService.resume(jobIds);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
 }

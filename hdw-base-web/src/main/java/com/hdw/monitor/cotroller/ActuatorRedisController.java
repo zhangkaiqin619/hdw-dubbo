@@ -1,6 +1,6 @@
 package com.hdw.monitor.cotroller;
 
-import com.hdw.common.result.CommonResult;
+import com.hdw.common.api.CommonResult;
 import com.hdw.monitor.entity.RedisInfo;
 import com.hdw.monitor.service.IRedisInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class ActuatorRedisController {
     public CommonResult<List<RedisInfo>> getRedisInfo() throws Exception {
         List<RedisInfo> infoList = this.redisInfoService.getRedisInfo();
         log.info(infoList.toString());
-        return CommonResult.ok().data(infoList);
+        return CommonResult.success(infoList);
     }
 
     @GetMapping("/keysSize")
@@ -81,10 +81,10 @@ public class ActuatorRedisController {
                 list.add(map);
                 log.info(map.toString());
             }
-            return CommonResult.ok().data(list);
+            return CommonResult.success(list);
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 }

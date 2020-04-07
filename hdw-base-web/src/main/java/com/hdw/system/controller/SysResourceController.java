@@ -1,13 +1,13 @@
 package com.hdw.system.controller;
 
-import com.hdw.common.constants.CommonEnum;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.constant.CommonEnum;
 import com.hdw.common.exception.GlobalException;
-import com.hdw.common.result.CommonResult;
 import com.hdw.system.entity.SysResource;
-import com.hdw.system.entity.vo.MenuVo;
+import com.hdw.system.vo.MenuVo;
 import com.hdw.system.service.ISysResourceService;
 import com.hdw.system.service.ISysUserService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -38,13 +38,13 @@ public class SysResourceController {
     @ApiOperation(value = "导航菜单", notes = "导航菜单")
     @GetMapping("/nav")
     public CommonResult<MenuVo> nav() {
-        Long userId = ShiroKit.getUser().getId();
+        Long userId = ShiroUtil.getUser().getId();
         List<SysResource> menuList = sysResourceService.selectUserResourceListByUserId(userId);
         Set<String> permissions = sysUserService.selectUserPermissions(userId);
         MenuVo menuVo = new MenuVo();
         menuVo.setMenuList(menuList);
         menuVo.setPermissions(permissions);
-        return CommonResult.ok().data(menuVo);
+        return CommonResult.success(menuVo);
     }
 
     /**
@@ -56,7 +56,7 @@ public class SysResourceController {
     public CommonResult<List<SysResource>> list() {
         Map<String, Object> params = new HashMap<>();
         List<SysResource> menuList = sysResourceService.selectResourceList(params);
-        return CommonResult.ok().data(menuList);
+        return CommonResult.success(menuList);
     }
 
     /**
@@ -68,7 +68,7 @@ public class SysResourceController {
     @RequiresPermissions("sys/menu/info")
     public CommonResult<SysResource> info(@PathVariable("menuId") Long menuId) {
         SysResource sysResource = sysResourceService.getById(menuId);
-        return CommonResult.ok().data(sysResource);
+        return CommonResult.success(sysResource);
     }
 
     /**
@@ -81,9 +81,9 @@ public class SysResourceController {
         //数据校验
         verifyForm(sysResource);
         sysResource.setCreateTime(new Date());
-        sysResource.setCreateUser(ShiroKit.getUser().getLoginName());
+        sysResource.setCreateUser(ShiroUtil.getUser().getLoginName());
         sysResourceService.save(sysResource);
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -96,9 +96,9 @@ public class SysResourceController {
         //数据校验
         verifyForm(sysResource);
         sysResource.setUpdateTime(new Date());
-        sysResource.setUpdateUser(ShiroKit.getUser().getLoginName());
+        sysResource.setUpdateUser(ShiroUtil.getUser().getLoginName());
         sysResourceService.updateById(sysResource);
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -110,15 +110,15 @@ public class SysResourceController {
     @RequiresPermissions("sys/menu/delete")
     public CommonResult delete(@PathVariable("menuId") long menuId) {
         if (menuId <= 31) {
-            return CommonResult.fail().msg("系统菜单，不能删除");
+            return CommonResult.failed("系统菜单，不能删除");
         }
         //判断是否有子菜单或按钮
         List<SysResource> menuList = sysResourceService.selectListByParentId(menuId);
         if (menuList.size() > 0) {
-            return CommonResult.fail().msg("请先删除子菜单或按钮");
+            return CommonResult.failed("请先删除子菜单或按钮");
         }
         sysResourceService.removeById(menuId);
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -137,7 +137,7 @@ public class SysResourceController {
         root.setParentId(0L);
         root.setOpen(true);
         menuList.add(root);
-        return CommonResult.ok().data(menuList);
+        return CommonResult.success(menuList);
     }
 
     /**

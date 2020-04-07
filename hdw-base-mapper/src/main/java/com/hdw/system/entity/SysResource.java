@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.hdw.common.utils.JacksonUtils;
+import com.hdw.common.util.JacksonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -329,6 +329,6 @@ public class SysResource extends Model<SysResource> {
 
     @Override
     public String toString() {
-        return JacksonUtils.toJson(this);
+        return JacksonUtil.toJson(this);
     }
 }

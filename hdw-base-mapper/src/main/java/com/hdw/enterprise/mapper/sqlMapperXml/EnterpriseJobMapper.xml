@@ -23,7 +23,7 @@
     </resultMap>
 
     <!-- 多表页面信息查询 -->
-    <select id="pageList" resultType="com.hdw.enterprise.entity.vo.EnterpriseJobVo">
+    <select id="pageList" resultType="com.hdw.enterprise.vo.EnterpriseJobVo">
         SELECT DISTINCT
         t.id,
         t.department_id AS departmentId,

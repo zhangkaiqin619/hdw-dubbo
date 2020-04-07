@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.hdw.common.utils.JacksonUtils;
+import com.hdw.common.util.JacksonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -277,6 +277,6 @@ public class SysFile extends Model<SysFile> {
 
     @Override
     public String toString() {
-        return JacksonUtils.toJson(this);
+        return JacksonUtil.toJson(this);
     }
 }

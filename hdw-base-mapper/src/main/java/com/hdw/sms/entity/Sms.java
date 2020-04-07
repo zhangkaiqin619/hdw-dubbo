@@ -1,7 +1,7 @@
 package com.hdw.sms.entity;
 
 
-import com.hdw.common.utils.JacksonUtils;
+import com.hdw.common.util.JacksonUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -65,7 +65,7 @@ public class Sms implements Serializable {
 
     @Override
     public String toString() {
-        return JacksonUtils.toJson(this);
+        return JacksonUtil.toJson(this);
     }
 
 }

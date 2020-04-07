@@ -2,17 +2,16 @@ package com.hdw.sms.controller;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SysSms;
-import com.hdw.sms.param.SmsParam;
+import com.hdw.sms.dto.SmsDTO;
 import com.hdw.sms.service.ISysSmsService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,9 +39,9 @@ public class SmsController {
     @ApiOperation(value = "消息表列表", notes = "消息表列表")
     @GetMapping("/list")
     @RequiresPermissions("sms/sms/list")
-    public CommonResult<PageParam<SysSms>> list(SmsParam smsParam) {
-        PageParam<SysSms> page = smsService.selectSmsPageList(smsParam);
-        return CommonResult.ok().data(page);
+    public CommonResult<PageVo<SysSms>> list(SmsDTO smsDTO) {
+        PageVo<SysSms> page = smsService.selectSmsPageList(smsDTO);
+        return CommonResult.success(page);
     }
 
 
@@ -55,7 +54,7 @@ public class SmsController {
     @RequiresPermissions("sms/sms/info")
     public CommonResult<SysSms> info(@PathVariable("id") Long id) {
         SysSms sysSms = smsService.getById(id);
-        return CommonResult.ok().data(sysSms);
+        return CommonResult.success(sysSms);
     }
 
     /**
@@ -70,14 +69,14 @@ public class SmsController {
             long id = snowflake.nextId();
             sysSms.setId(id);
             sysSms.setCreateTime(new Date());
-            sysSms.setCreateUser(ShiroKit.getUser().getId());
+            sysSms.setCreateUser(ShiroUtil.getUser().getId());
             sysSms.setUpdateTime(new Date());
-            sysSms.setUpdateUser(ShiroKit.getUser().getId());
+            sysSms.setUpdateUser(ShiroUtil.getUser().getId());
             smsService.save(sysSms);
-            return CommonResult.ok().msg("添加成功");
+            return CommonResult.success("添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -89,13 +88,13 @@ public class SmsController {
     @RequiresPermissions("sms/sms/update")
     public CommonResult update(@Valid @RequestBody SysSms sysSms) {
         try {
-            sysSms.setUpdateUser(ShiroKit.getUser().getId());
+            sysSms.setUpdateUser(ShiroUtil.getUser().getId());
             sysSms.setUpdateTime(new Date());
             smsService.updateById(sysSms);
-            return CommonResult.ok().msg("修改成功");
+            return CommonResult.success("修改成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
 
     }
@@ -110,10 +109,10 @@ public class SmsController {
     public CommonResult delete(@RequestBody Long[] ids) {
         try {
             smsService.removeByIds(Arrays.asList(ids));
-            return CommonResult.ok().msg("删除成功");
+            return CommonResult.success("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 

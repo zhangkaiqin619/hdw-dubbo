@@ -1,6 +1,6 @@
 package com.hdw.enterprise.mapper;
 
-import com.hdw.common.base.mapper.SuperMapper;
+import com.hdw.common.mybatis.base.mapper.SuperMapper;
 import com.hdw.enterprise.entity.Enterprise;
 import org.apache.ibatis.annotations.Param;
 

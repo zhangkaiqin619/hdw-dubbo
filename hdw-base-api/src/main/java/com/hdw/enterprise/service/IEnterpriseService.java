@@ -1,7 +1,7 @@
 package com.hdw.enterprise.service;
 
 
-import com.hdw.common.base.service.IBaseService;
+import com.hdw.common.mybatis.base.service.IBaseService;
 import com.hdw.enterprise.entity.Enterprise;
 
 import java.util.List;

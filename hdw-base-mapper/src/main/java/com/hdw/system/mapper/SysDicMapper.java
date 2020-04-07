@@ -3,7 +3,7 @@ package com.hdw.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hdw.system.entity.SysDic;
-import com.hdw.system.entity.vo.DicVo;
+import com.hdw.system.vo.DicVo;
 
 import java.util.List;
 import java.util.Map;

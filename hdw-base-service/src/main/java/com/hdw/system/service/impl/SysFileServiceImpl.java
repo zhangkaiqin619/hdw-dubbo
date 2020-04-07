@@ -1,7 +1,7 @@
 package com.hdw.system.service.impl;
 
 
-import com.hdw.common.base.service.impl.BaseServiceImpl;
+import com.hdw.common.mybatis.base.service.impl.BaseServiceImpl;
 import com.hdw.system.entity.SysFile;
 import com.hdw.system.mapper.SysFileMapper;
 import com.hdw.system.service.ISysFileService;

@@ -2,19 +2,19 @@ package com.hdw.enterprise.controller;
 
 
 import com.google.common.collect.Lists;
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
-import com.hdw.common.result.SelectNode;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.model.SelectNode;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.enterprise.entity.Enterprise;
-import com.hdw.enterprise.entity.vo.EnterpriseVo;
-import com.hdw.enterprise.param.EnterpriseParam;
+import com.hdw.enterprise.vo.EnterpriseVo;
+import com.hdw.enterprise.dto.EnterpriseDTO;
 import com.hdw.enterprise.service.IEnterpriseService;
 import com.hdw.system.controller.UpLoadController;
 import com.hdw.system.entity.SysFile;
 import com.hdw.system.service.ISysDicService;
 import com.hdw.system.service.ISysFileService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -58,14 +58,14 @@ public class EnterpriseController extends UpLoadController {
     @ApiOperation(value = "企业列表", notes = "企业列表")
     @GetMapping("/list")
     @RequiresPermissions("enterprise/enterprise/list")
-    public CommonResult<PageParam<EnterpriseVo>> treeGrid(EnterpriseParam enterpriseParam) {
-        LoginUser loginUser = ShiroKit.getUser();
+    public CommonResult<PageVo<EnterpriseVo>> treeGrid(EnterpriseDTO enterpriseDTO) {
+        LoginUserVo loginUserVo = ShiroUtil.getUser();
         // 不是管理员
-        if (loginUser.getUserType() != 0) {
-            enterpriseParam.setUserId(ShiroKit.getUser().getId());
+        if (loginUserVo.getUserType() != 0) {
+            enterpriseDTO.setUserId(ShiroUtil.getUser().getId());
         }
-        PageParam<EnterpriseVo> page = enterpriseService.pageList(enterpriseParam);
-        return CommonResult.ok().data(page);
+        PageVo<EnterpriseVo> page = enterpriseService.pageList(enterpriseDTO);
+        return CommonResult.success(page);
     }
 
     /**
@@ -80,7 +80,7 @@ public class EnterpriseController extends UpLoadController {
     @RequiresPermissions("enterprise/enterprise/info")
     public CommonResult<Enterprise> info(@PathVariable("id") String id) {
         Enterprise enterprise = enterpriseService.getById(id);
-        return CommonResult.ok().data(enterprise);
+        return CommonResult.success(enterprise);
     }
 
     /**
@@ -95,17 +95,17 @@ public class EnterpriseController extends UpLoadController {
     public CommonResult save(@Valid @RequestBody Enterprise enterprise) {
         try {
             enterprise.setCreateTime(new Date());
-            enterprise.setCreateUser(ShiroKit.getUser().getLoginName());
+            enterprise.setCreateUser(ShiroUtil.getUser().getLoginName());
             boolean b = enterpriseService.save(enterprise);
             saveFile(enterprise.getId());
             if (b) {
-                return CommonResult.ok().msg("添加成功");
+                return CommonResult.success("添加成功");
             } else {
-                return CommonResult.fail().msg("添加失败");
+                return CommonResult.failed("添加失败");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
 
     }
@@ -122,17 +122,17 @@ public class EnterpriseController extends UpLoadController {
     public CommonResult update(@Valid @RequestBody Enterprise enterprise) {
         try {
             enterprise.setUpdateTime(new Date());
-            enterprise.setUpdateUser(ShiroKit.getUser().getLoginName());
+            enterprise.setUpdateUser(ShiroUtil.getUser().getLoginName());
             boolean b = enterpriseService.updateById(enterprise);
             saveFile(enterprise.getId());
             if (b) {
-                return CommonResult.ok().msg("修改成功");
+                return CommonResult.success("修改成功");
             } else {
-                return CommonResult.fail().msg("修改失败");
+                return CommonResult.failed("修改失败");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -148,7 +148,7 @@ public class EnterpriseController extends UpLoadController {
     @RequiresPermissions("enterprise/enterprise/delete")
     public CommonResult deleteBatchIds(@RequestBody String[] ids) {
         enterpriseService.removeByIds(Arrays.asList(ids));
-        return CommonResult.ok().msg("删除成功");
+        return CommonResult.success("删除成功");
     }
 
     /**
@@ -169,10 +169,10 @@ public class EnterpriseController extends UpLoadController {
         try {
             List<SelectNode> nodeList = Lists.newArrayList();
             Map<String, Object> params = new HashMap<>();
-            LoginUser loginUser = ShiroKit.getUser();
+            LoginUserVo loginUserVo = ShiroUtil.getUser();
             // 不是管理员
-            if (loginUser.getUserType() != 0) {
-                params.put("userId", ShiroKit.getUser().getId());
+            if (loginUserVo.getUserType() != 0) {
+                params.put("userId", ShiroUtil.getUser().getId());
             }
             params.put("industryCode", industryCode);
             List<Map<String, Object>> list = enterpriseService.selectEnterpriseList(params);
@@ -184,10 +184,10 @@ public class EnterpriseController extends UpLoadController {
                     nodeList.add(selectNode);
                 });
             }
-            return CommonResult.ok().data(nodeList);
+            return CommonResult.success(nodeList);
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -212,7 +212,7 @@ public class EnterpriseController extends UpLoadController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return CommonResult.ok().data(param);
+        return CommonResult.success(param);
     }
 
 
@@ -233,10 +233,10 @@ public class EnterpriseController extends UpLoadController {
                 deleteFileFromLocal(url);
             }
             resetUploadFile();
-            return CommonResult.ok().msg("删除文件成功");
+            return CommonResult.success("删除文件成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -262,13 +262,13 @@ public class EnterpriseController extends UpLoadController {
                 list.add(fileMap);
             }
         }
-        return CommonResult.ok().data(list);
+        return CommonResult.success(list);
     }
 
     public CommonResult saveFile(String id) {
         try {
             if (getUploadFile() != null) {
-                LoginUser user = ShiroKit.getUser();
+                LoginUserVo user = ShiroUtil.getUser();
                 for (Map<String, String> uploadFileUrl : getUploadFile()) {
                     String fileName = uploadFileUrl.get("fileName");
                     String filePah = uploadFileUrl.get("filePath");
@@ -294,20 +294,20 @@ public class EnterpriseController extends UpLoadController {
                     sysFile.setSaveType(0);
                     sysFile.setIsSync(0);
                     sysFile.setCreateTime(new Date());
-                    sysFile.setCreateUser(ShiroKit.getUser().getLoginName());
+                    sysFile.setCreateUser(ShiroUtil.getUser().getLoginName());
                     sysFileService.save(sysFile);
                 }
                 resetUploadFile();
             }
-            return CommonResult.ok().msg("保存成功");
+            return CommonResult.success("保存成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
     private void setUploadFile(Map<String, String> uploadFileUrl) {
-        LoginUser user = ShiroKit.getUser();
+        LoginUserVo user = ShiroUtil.getUser();
         Object o = uploadFileUrls.get(user.getId().toString());
         if (o == null) {
             uploadFileUrls.put(user.getId().toString(), new ArrayList<Map<String, String>>());
@@ -316,13 +316,13 @@ public class EnterpriseController extends UpLoadController {
     }
 
     private List<Map<String, String>> getUploadFile() {
-        LoginUser user = ShiroKit.getUser();
+        LoginUserVo user = ShiroUtil.getUser();
         List<Map<String, String>> list = uploadFileUrls.get(user.getId().toString());
         return (list == null) ? (new ArrayList<Map<String, String>>()) : (list);
     }
 
     private void resetUploadFile() {
-        LoginUser user = ShiroKit.getUser();
+        LoginUserVo user = ShiroUtil.getUser();
         uploadFileUrls.remove(user.getId().toString());
     }
 }

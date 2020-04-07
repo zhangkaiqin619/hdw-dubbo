@@ -2,9 +2,9 @@ package com.hdw.job.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.job.entity.ScheduleJobEntity;
-import com.hdw.job.param.JobParam;
+import com.hdw.job.dto.JobDTO;
 
 /**
  * @Description 定时任务
@@ -13,7 +13,7 @@ import com.hdw.job.param.JobParam;
  **/
 public interface IScheduleJobService extends IService<ScheduleJobEntity> {
 
-    PageParam queryPage(JobParam jobParam);
+    PageVo queryPage(JobDTO jobDTO);
 
     /**
      * 保存定时任务

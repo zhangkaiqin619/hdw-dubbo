@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hdw.common.base.service.impl.BaseServiceImpl;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.mybatis.base.service.impl.BaseServiceImpl;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SysSms;
 import com.hdw.sms.mapper.SysSmsMapper;
-import com.hdw.sms.param.SmsParam;
+import com.hdw.sms.dto.SmsDTO;
 import com.hdw.sms.service.ISysSmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
@@ -29,20 +28,20 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class SysSmsServiceImpl extends BaseServiceImpl<SysSmsMapper, SysSms> implements ISysSmsService {
 
-    public PageParam selectSmsPageList(SmsParam smsParam) {
+    public PageVo selectSmsPageList(SmsDTO smsDTO) {
         QueryWrapper<SysSms> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .like(ObjectUtils.isNotEmpty(smsParam.getTitle()), SysSms::getTitle, smsParam.getTitle())
-                .eq(ObjectUtils.isNotEmpty(smsParam.getSmsTypeId()), SysSms::getSmsTypeId, smsParam.getSmsTypeId());
-        queryWrapper.like(ObjectUtils.isNotEmpty(smsParam.getTypeName()), "t2.type_name", smsParam.getTypeName());
+                .like(ObjectUtils.isNotEmpty(smsDTO.getTitle()), SysSms::getTitle, smsDTO.getTitle())
+                .eq(ObjectUtils.isNotEmpty(smsDTO.getSmsTypeId()), SysSms::getSmsTypeId, smsDTO.getSmsTypeId());
+        queryWrapper.like(ObjectUtils.isNotEmpty(smsDTO.getTypeName()), "t2.type_name", smsDTO.getTypeName());
         queryWrapper.orderByDesc("create_time");
         Page page = new Page();
         // 设置当前页码
-        page.setCurrent(smsParam.getPage());
+        page.setCurrent(smsDTO.getPage());
         // 设置页大小
-        page.setSize(smsParam.getLimit());
+        page.setSize(smsDTO.getLimit());
         IPage ipage = this.baseMapper.selectSmsPageList(page, queryWrapper);
-        return new PageParam(ipage);
+        return new PageVo(ipage);
     }
 
     @Override

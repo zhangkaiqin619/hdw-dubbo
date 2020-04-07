@@ -4,13 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
-import com.hdw.common.base.service.impl.BaseServiceImpl;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.mybatis.base.service.impl.BaseServiceImpl;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SmsRecord;
 import com.hdw.sms.mapper.SmsRecordMapper;
-import com.hdw.sms.param.SmsRecordParam;
+import com.hdw.sms.dto.SmsRecordDTO;
 import com.hdw.sms.service.ISmsRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
@@ -30,27 +29,27 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class SmsRecordServiceImpl extends BaseServiceImpl<SmsRecordMapper, SmsRecord> implements ISmsRecordService {
 
-    public PageParam selectSmsRecordPageList(SmsRecordParam smsRecordParam) {
-        QueryWrapper<SmsRecord> wrapper = new QueryWrapper(smsRecordParam);
-        wrapper.like(ObjectUtils.isNotEmpty(smsRecordParam.getUserName()), "t3.name", smsRecordParam.getUserName())
-                .ge(ObjectUtils.isNotEmpty(smsRecordParam.getStartTime()), "t.push_time", smsRecordParam.getStartTime())
-                .le(ObjectUtils.isNotEmpty(smsRecordParam.getEndTime()), "t.push_time", smsRecordParam.getEndTime())
-                .eq(ObjectUtils.isNotEmpty(smsRecordParam.getUserId()), "t.user_id", smsRecordParam.getUserId());
-        if (ObjectUtils.isNotEmpty(smsRecordParam.getStatus())){
-            if(smsRecordParam.getStatus() == "-1"){
+    public PageVo selectSmsRecordPageList(SmsRecordDTO smsRecordDTO) {
+        QueryWrapper<SmsRecord> wrapper = new QueryWrapper(smsRecordDTO);
+        wrapper.like(ObjectUtils.isNotEmpty(smsRecordDTO.getUserName()), "t3.name", smsRecordDTO.getUserName())
+                .ge(ObjectUtils.isNotEmpty(smsRecordDTO.getStartTime()), "t.push_time", smsRecordDTO.getStartTime())
+                .le(ObjectUtils.isNotEmpty(smsRecordDTO.getEndTime()), "t.push_time", smsRecordDTO.getEndTime())
+                .eq(ObjectUtils.isNotEmpty(smsRecordDTO.getUserId()), "t.user_id", smsRecordDTO.getUserId());
+        if (ObjectUtils.isNotEmpty(smsRecordDTO.getStatus())){
+            if(smsRecordDTO.getStatus() == "-1"){
                 wrapper.and(i -> i.ne("t.status", "0").ne("t.status", "3"));
             }else{
-                wrapper.eq(ObjectUtils.isNotEmpty(smsRecordParam.getStatus()), "t.status", smsRecordParam.getStatus());
+                wrapper.eq(ObjectUtils.isNotEmpty(smsRecordDTO.getStatus()), "t.status", smsRecordDTO.getStatus());
             }
         }
         wrapper.orderByDesc("t.push_time");
         Page page = new Page();
         // 设置当前页码
-        page.setCurrent(smsRecordParam.getPage());
+        page.setCurrent(smsRecordDTO.getPage());
         // 设置页大小
-        page.setSize(smsRecordParam.getLimit());
+        page.setSize(smsRecordDTO.getLimit());
         IPage ipage = this.baseMapper.selectSmsRecordPageList(page, wrapper);
-        return new PageParam(ipage);
+        return new PageVo(ipage);
     }
 
 

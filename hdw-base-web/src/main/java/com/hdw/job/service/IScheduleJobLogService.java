@@ -2,9 +2,9 @@ package com.hdw.job.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.job.entity.ScheduleJobLogEntity;
-import com.hdw.job.param.JobLogParam;
+import com.hdw.job.dto.JobLogDTO;
 
 
 /**
@@ -14,6 +14,6 @@ import com.hdw.job.param.JobLogParam;
  **/
 public interface IScheduleJobLogService extends IService<ScheduleJobLogEntity> {
 
-    PageParam queryPage(JobLogParam jobLogParam);
+    PageVo queryPage(JobLogDTO jobLogDTO);
 
 }

@@ -1,9 +1,9 @@
 package com.hdw.sms.controller;
 
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SmsRecord;
-import com.hdw.sms.param.SmsRecordParam;
+import com.hdw.sms.dto.SmsRecordDTO;
 import com.hdw.sms.service.ISmsRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -36,9 +36,9 @@ public class SmsRecordController {
     @ApiOperation(value = "消息记录列表", notes = "消息记录列表")
     @GetMapping("/list")
     @RequiresPermissions("sms/smsRecord/list")
-    public CommonResult<PageParam<SmsRecord>> list(SmsRecordParam smsRecordParam) {
-        PageParam<SmsRecord> page = smsRecordService.selectSmsRecordPageList(smsRecordParam);
-        return CommonResult.ok().data(page);
+    public CommonResult<PageVo<SmsRecord>> list(SmsRecordDTO smsRecordDTO) {
+        PageVo<SmsRecord> page = smsRecordService.selectSmsRecordPageList(smsRecordDTO);
+        return CommonResult.success(page);
     }
 
     /**
@@ -51,10 +51,10 @@ public class SmsRecordController {
     public CommonResult delete(@RequestBody Long[] ids) {
         try {
             smsRecordService.removeByIds(Arrays.asList(ids));
-            return CommonResult.ok().msg("删除成功");
+            return CommonResult.success("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -70,10 +70,10 @@ public class SmsRecordController {
     public CommonResult updateStatus(@RequestBody String[] ids) {
         try {
             smsRecordService.updateMessageStatus(ids);
-            return CommonResult.ok().msg("更新状态成功");
+            return CommonResult.success("更新状态成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 }

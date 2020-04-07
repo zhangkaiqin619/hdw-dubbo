@@ -1,9 +1,9 @@
 package com.hdw.system.service.impl;
 
 
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.base.service.impl.BaseServiceImpl;
-import com.hdw.common.constants.CommonConstants;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
+import com.hdw.common.mybatis.base.service.impl.BaseServiceImpl;
+import com.hdw.common.constant.CommonConstant;
 import com.hdw.common.exception.GlobalException;
 import com.hdw.system.entity.SysResource;
 import com.hdw.system.entity.SysUser;
@@ -13,14 +13,15 @@ import com.hdw.system.service.ISysUserEnterpriseService;
 import com.hdw.system.service.ISysUserRoleService;
 import com.hdw.system.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户表
@@ -30,11 +31,7 @@ import java.util.concurrent.Executors;
  */
 @Slf4j
 @Service(interfaceName = "ISysUserService")
-@Transactional(rollbackFor = Exception.class)
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
-
-    // 控制线程数，最优选择是处理器线程数*3，本机处理器是4线程
-    private final static int THREAD_COUNT = Runtime.getRuntime().availableProcessors()*3;
 
     @Autowired
     private ISysUserRoleService sysUserRoleService;
@@ -44,90 +41,98 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private ISysResourceService sysResourceService;
 
     @Override
-    public LoginUser selectByUserId(Long userId) {
-        if (userId == null) {
+    public SysUser selectByLoginName(String loginName) {
+        SysUser sysUser = this.baseMapper.selectByLoginName(loginName);
+        if (ObjectUtils.isEmpty(sysUser)) {
             return null;
         }
-        SysUser sysUser = this.baseMapper.selectById(userId);
-        if (sysUser == null) {
-            return null;
-        }
-        LoginUser loginUser = new LoginUser();
-        BeanUtils.copyProperties(sysUser, loginUser);
-        List<String> enterpriseIds = sysUserEnterpriseService.selectEnterpriseIdByUserId(sysUser.getId());
-        loginUser.setEnterpriseIdList(enterpriseIds);
-        return loginUser;
+        return sysUser;
     }
 
     @Override
-    public LoginUser selectByLoginName(String loginName) {
-
-        if (StringUtils.isBlank(loginName)) {
-            return null;
-        }
+    public LoginUserVo selectLoginUserVoByLoginName(String loginName) {
         SysUser sysUser = this.baseMapper.selectByLoginName(loginName);
-        if (sysUser == null) {
+        if (ObjectUtils.isEmpty(sysUser)) {
             return null;
         }
-        LoginUser loginUser = new LoginUser();
-        BeanUtils.copyProperties(sysUser, loginUser);
+        LoginUserVo loginUserVo = new LoginUserVo();
+        BeanUtils.copyProperties(sysUser, loginUserVo);
         List<String> enterpriseIds = sysUserEnterpriseService.selectEnterpriseIdByUserId(sysUser.getId());
-        loginUser.setEnterpriseIdList(enterpriseIds);
-        return loginUser;
+        loginUserVo.setEnterpriseIdList(enterpriseIds);
+        return loginUserVo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveByVo(SysUser user) {
-        ExecutorService pool = Executors.newFixedThreadPool(THREAD_COUNT);
+        /**
+         * 对于CPU密集型任务，最大线程数是CPU线程数+1。对于IO密集型任务，尽量多配点，可以是CPU线程数*2，或者CPU线程数/(1-阻塞系数)。
+         * maxPoolSize=new Double(Math.floor(Runtime.getRuntime().availableProcessors()/(1-0.9))).intValue()
+         */
+        final ExecutorService threadPool=new ThreadPoolExecutor(
+                Runtime.getRuntime().availableProcessors() ,
+                new Double(Math.floor(Runtime.getRuntime().availableProcessors() / (1 - 0.9))).intValue(),
+                1l,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(Runtime.getRuntime().availableProcessors()),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.DiscardPolicy()
+        );
+
         this.baseMapper.insert(user);
         //检查角色是否越权
         checkRole(user);
 
-        pool.submit(new Runnable() {
-            @Override
-            public void run() {
+        try {
+            threadPool.submit(()->{
                 //保存用户与角色关系
                 sysUserRoleService.saveOrUpdateUserRole(user.getId(), user.getRoleIdList());
-            }
-        });
-        pool.submit(new Runnable() {
-            @Override
-            public void run() {
+            });
+            threadPool.submit(()->{
                 //保存用户与企业关系关系
                 sysUserEnterpriseService.saveOrUpdateUserEnterprise(user.getId(), user.getEnterpriseIdList());
-            }
-        });
-        pool.shutdown();
+            });
+        }finally {
+            threadPool.shutdown();
+        }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateByVo(SysUser user) {
-        ExecutorService pool = Executors.newFixedThreadPool(THREAD_COUNT);
+        /**
+         * 对于CPU密集型任务，最大线程数是CPU线程数+1。对于IO密集型任务，尽量多配点，可以是CPU线程数*2，或者CPU线程数/(1-阻塞系数)。
+         * maxPoolSize=new Double(Math.floor(Runtime.getRuntime().availableProcessors()/(1-0.9))).intValue()
+         */
+        final ExecutorService threadPool=new ThreadPoolExecutor(
+                Runtime.getRuntime().availableProcessors() ,
+                new Double(Math.floor(Runtime.getRuntime().availableProcessors() / (1 - 0.9))).intValue(),
+                1l,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(Runtime.getRuntime().availableProcessors()),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.DiscardPolicy()
+        );
+
         this.updateById(user);
         //检查角色是否越权
         checkRole(user);
-        pool.submit(new Runnable() {
-            @Override
-            public void run() {
+
+        try {
+            threadPool.submit(()->{
                 //保存用户与角色关系
                 sysUserRoleService.saveOrUpdateUserRole(user.getId(), user.getRoleIdList());
-            }
-        });
-        pool.submit(new Runnable() {
-            @Override
-            public void run() {
+            });
+            threadPool.submit(()->{
                 //保存用户与企业关系关系
                 sysUserEnterpriseService.saveOrUpdateUserEnterprise(user.getId(), user.getEnterpriseIdList());
-            }
-        });
-        pool.shutdown();
+            });
+        }finally {
+            threadPool.shutdown();
+        }
     }
 
-    @Override
-    public List<Long> selectResourceIdListByUserId(Long userId) {
-        return this.baseMapper.selectResourceIdListByUserId(userId);
-    }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteBatch(Long[] userIds) {
         this.removeByIds(Arrays.asList(userIds));
@@ -141,7 +146,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public Set<String> selectUserPermissions(long userId) {
         List<String> permsList;
         //系统管理员，拥有最高权限
-        if (userId == CommonConstants.SUPER_ADMIN) {
+        if (userId == CommonConstant.SUPER_ADMIN) {
             List<SysResource> menuList = sysResourceService.list();
             permsList = new ArrayList<>(menuList.size());
             for (SysResource menu : menuList) {
@@ -150,21 +155,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         } else {
             permsList = this.baseMapper.selectPerms(userId);
         }
-        //用户权限列表
-        Set<String> permsSet = new HashSet<>();
-        for (String perms : permsList) {
-            if (StringUtils.isBlank(perms)) {
-                continue;
-            }
-            permsSet.addAll(Arrays.asList(perms.trim().split(",")));
-        }
-        return permsSet;
+        return permsList.stream().collect(Collectors.toSet());
     }
 
     @Override
     public Set<String> selectUserRoles(long userId) {
         List<String> roleList = this.baseMapper.selectRoles(userId);
-        return new HashSet<>(roleList);
+        return roleList.stream().collect(Collectors.toSet());
+    }
+
+    @Override
+    public List<Long> selectResourceIdListByUserId(Long userId) {
+        return this.baseMapper.selectResourceIdListByUserId(userId);
     }
 
     /**
@@ -175,7 +177,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             return;
         }
         //如果不是超级管理员，则需要判断用户的角色是否自己创建
-        if (user.getCreateUserId() == CommonConstants.SUPER_ADMIN) {
+        if (user.getCreateUserId() == CommonConstant.SUPER_ADMIN) {
             return;
         }
         //查询用户创建的角色列表

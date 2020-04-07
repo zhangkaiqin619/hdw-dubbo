@@ -1,10 +1,9 @@
 package com.hdw.system.controller;
 
-import com.hdw.system.properties.HdwCommonProperties;
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.utils.DateUtils;
-import com.hdw.common.utils.DownloadUtils;
-import com.hdw.common.utils.QRCodeUtils;
+
+import cn.hutool.core.date.DateUtil;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.util.QRCodeUtil;
 import com.luhuiguo.fastdfs.domain.StorePath;
 import com.luhuiguo.fastdfs.exception.FdfsUnsupportStorePathException;
 import com.luhuiguo.fastdfs.service.FastFileStorageClient;
@@ -34,8 +33,17 @@ import java.util.Map;
 @Slf4j
 public abstract class UpLoadController {
 
-    @Autowired
-    private HdwCommonProperties commonProperties;
+    /**
+     * 文件上传路径前缀
+     */
+    @Value("${hdw.file-upload-prefix}")
+    private String fileUploadPrefix;
+
+    /**
+     * 资源访问全路径前缀
+     */
+    @Value("${hdw.resource-access-url}")
+    private String resourceAccessUrl;
 
     /**
      * FastDFS文件上传服务器名称
@@ -46,28 +54,7 @@ public abstract class UpLoadController {
     @Autowired
     private FastFileStorageClient fastFileStorageClient;
 
-    /**
-     * 下载文件
-     */
-    public void download(@PathVariable(required = true) String downloadFileName, HttpServletResponse response) throws Exception {
-        // 下载目录，既是上传目录
-        String downloadDir = commonProperties.getFileUploadPrefix();
-        // 允许下载的文件后缀
-        List<String> allowFileExtensions = commonProperties.getAllowDownloadFileExtensions();
-        // 文件下载，使用默认下载处理器
-//        DownloadUtils.download(downloadDir,downloadFileName,allowFileExtensions,response);
-        // 文件下载，使用自定义下载处理器
-        DownloadUtils.download(downloadDir, downloadFileName, allowFileExtensions, response, (dir, fileName, file, fileExtension, contentType, length) -> {
-            // 下载自定义处理，返回true：执行下载，false：取消下载
-            log.info("dir = " + dir);
-            log.info("fileName = " + fileName);
-            log.info("file = " + file);
-            log.info("fileExtension = " + fileExtension);
-            log.info("contentType = " + contentType);
-            log.info("length = " + length);
-            return true;
-        });
-    }
+
 
     /**
      * 单个文件上传
@@ -83,11 +70,11 @@ public abstract class UpLoadController {
         try {
             String savePath = "";
             if (StringUtils.isNotBlank(dir)) {
-                savePath = commonProperties.getFileUploadPrefix() + File.separator + "upload" + File.separator
-                        + dir + File.separator + DateUtils.formatDate(new Date(), "yyyyMMdd") + File.separator;
+                savePath = fileUploadPrefix + File.separator + "upload" + File.separator
+                        + dir + File.separator + DateUtil.format(new Date(), "yyyyMMdd") + File.separator;
             } else {
-                savePath = commonProperties.getFileUploadPrefix() + File.separator + "upload" + File.separator
-                        + DateUtils.formatDate(new Date(), "yyyyMMdd") + File.separator;
+                savePath = fileUploadPrefix + File.separator + "upload" + File.separator
+                        + DateUtil.format(new Date(), "yyyyMMdd") + File.separator;
             }
             // 保存文件
             String realFileName = file.getOriginalFilename();
@@ -97,13 +84,13 @@ public abstract class UpLoadController {
                 targetFile.getParentFile().mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), targetFile);// 复制临时文件到指定目录下
-            if (StringUtils.isNotBlank(commonProperties.getResourceAccessUrl())) {
-                resultPath = commonProperties.getResourceAccessUrl() + "/upload/" + dir + "/"
-                        + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
+            if (StringUtils.isNotBlank(resourceAccessUrl)) {
+                resultPath = resourceAccessUrl + "/upload/" + dir + "/"
+                        + DateUtil.format(new Date(), "yyyyMMdd") + "/"
                         + fileName + realFileName.substring(realFileName.indexOf("."));
             } else {
                 resultPath = "/upload/" + dir + "/"
-                        + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
+                        + DateUtil.format(new Date(), "yyyyMMdd") + "/"
                         + fileName + realFileName.substring(realFileName.indexOf("."));
             }
 
@@ -133,11 +120,11 @@ public abstract class UpLoadController {
                 for (MultipartFile file : multipartFiles) {
                     String savePath = "";
                     if (StringUtils.isNotBlank(dir)) {
-                        savePath = commonProperties.getFileUploadPrefix() + File.separator + "upload" + File.separator
-                                + dir + File.separator + DateUtils.formatDate(new Date(), "yyyyMMdd") + File.separator;
+                        savePath = fileUploadPrefix + File.separator + "upload" + File.separator
+                                + dir + File.separator + DateUtil.format(new Date(), "yyyyMMdd") + File.separator;
                     } else {
-                        savePath = commonProperties.getFileUploadPrefix() + File.separator + "upload" + File.separator
-                                + DateUtils.formatDate(new Date(), "yyyyMMdd") + File.separator;
+                        savePath = fileUploadPrefix + File.separator + "upload" + File.separator
+                                + DateUtil.format(new Date(), "yyyyMMdd") + File.separator;
                     }
                     // 保存文件
                     String realFileName = file.getOriginalFilename();
@@ -147,9 +134,9 @@ public abstract class UpLoadController {
                         targetFile.getParentFile().mkdirs();
                     }
                     FileUtils.copyInputStreamToFile(file.getInputStream(), targetFile);// 复制临时文件到指定目录下
-                    if (StringUtils.isNotBlank(commonProperties.getResourceAccessUrl())) {
-                        String resultPath = commonProperties.getResourceAccessUrl() + "/upload/" + dir + "/"
-                                + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
+                    if (StringUtils.isNotBlank(resourceAccessUrl)) {
+                        String resultPath = resourceAccessUrl + "/upload/" + dir + "/"
+                                + DateUtil.format(new Date(), "yyyyMMdd") + "/"
                                 + fileName + realFileName.substring(realFileName.indexOf("."));
                         Map<String, String> params = new HashedMap();
                         params.put("fileName", realFileName);
@@ -157,7 +144,7 @@ public abstract class UpLoadController {
                         list.add(params);
                     } else {
                         String resultPath = "/upload/" + dir + "/"
-                                + DateUtils.formatDate(new Date(), "yyyyMMdd") + "/"
+                                + DateUtil.format(new Date(), "yyyyMMdd") + "/"
                                 + fileName + realFileName.substring(realFileName.indexOf("."));
                         Map<String, String> params = new HashedMap();
                         params.put("fileName", realFileName);
@@ -182,15 +169,15 @@ public abstract class UpLoadController {
     public Object deleteFileFromLocal(String fileUrl) {
         System.out.println("待删除文件路径："+fileUrl);
         if (StringUtils.isBlank(fileUrl)) {
-            return CommonResult.fail().msg("文件删除失败");
+            return CommonResult.failed("文件删除失败");
         }
         String temp = fileUrl.substring(fileUrl.lastIndexOf("upload"));
-        File file = new File(commonProperties.getFileUploadPrefix() + File.separator + temp);
+        File file = new File(fileUploadPrefix + File.separator + temp);
         if (file.exists() && file.isFile()) {
             file.delete();
-            return CommonResult.ok().msg("文件删除成功");
+            return CommonResult.success("文件删除成功");
         } else {
-            return CommonResult.fail().msg("文件删除失败");
+            return CommonResult.failed("文件删除失败");
         }
     }
 
@@ -355,11 +342,11 @@ public abstract class UpLoadController {
             String fileName = fileUrl.substring(fileUrl.indexOf("=") + 1);
             byte[] bfile = fastFileStorageClient.downloadFile(group, path);
             getFile(bfile, filePath, fileName);
-            return CommonResult.ok().msg("文件下载成功");
+            return CommonResult.success("文件下载成功");
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
-            return CommonResult.fail().msg(e.getMessage());
+            return CommonResult.failed(e.getMessage());
         }
     }
 
@@ -395,7 +382,7 @@ public abstract class UpLoadController {
      */
     public Object deleteFileFromFastDFS(String fileUrl) {
         if (StringUtils.isEmpty(fileUrl)) {
-            return CommonResult.fail().msg("文件删除失败");
+            return CommonResult.failed("文件删除失败");
         }
         try {
             String temp = "";
@@ -407,11 +394,11 @@ public abstract class UpLoadController {
             String group = temp.substring(0, temp.indexOf("/"));
             String path = temp.substring(temp.indexOf("/") + 1);
             fastFileStorageClient.deleteFile(group, path);
-            return CommonResult.ok().msg("文件删除成功");
+            return CommonResult.success("文件删除成功");
         } catch (FdfsUnsupportStorePathException e) {
             e.printStackTrace();
             log.error(e.getMessage());
-            return CommonResult.fail().msg(e.getMessage());
+            return CommonResult.failed(e.getMessage());
         }
     }
 
@@ -490,7 +477,7 @@ public abstract class UpLoadController {
      * @return
      */
     public String createQrcode(String qrResource) {
-        String pngDir = QRCodeUtils.createQRCode(commonProperties.getFileUploadPrefix() + File.separator + "upload" + File.separator + "qr" + File.separator, qrResource);
+        String pngDir = QRCodeUtil.createQRCode(fileUploadPrefix + File.separator + "upload" + File.separator + "qr" + File.separator, qrResource);
         String qrDir = "";
         Map<String, String> params = uploadToFastDFS(pngDir);
         if (null != params) {

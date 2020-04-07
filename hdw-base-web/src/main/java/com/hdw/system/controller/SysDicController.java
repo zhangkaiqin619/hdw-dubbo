@@ -3,14 +3,14 @@ package com.hdw.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Maps;
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.SelectNode;
-import com.hdw.common.result.SelectTreeNode;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.model.SelectNode;
+import com.hdw.common.model.SelectTreeNode;
 import com.hdw.enterprise.service.IEnterpriseService;
 import com.hdw.system.entity.SysDic;
-import com.hdw.system.entity.vo.DicVo;
+import com.hdw.system.vo.DicVo;
 import com.hdw.system.service.ISysDicService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -52,7 +52,7 @@ public class SysDicController {
             @ApiImplicitParam(paramType = "query", name = "dicCode", value = "编码", required = false, dataType = "String")
     })
     @GetMapping("/list")
-    public CommonResult<DicVo> treeGrid(@RequestParam(required = false) String dicName,
+    public CommonResult<List<DicVo>> treeGrid(@RequestParam(required = false) String dicName,
                                         @RequestParam(required = false) String dicCode) {
         Map<String, Object> par = new HashMap<>();
         if (StringUtils.isNotBlank(dicName)) {
@@ -61,7 +61,7 @@ public class SysDicController {
         if (StringUtils.isNotBlank(dicCode)) {
             par.put("varCode", StringUtils.deleteWhitespace(dicCode));
         }
-        return CommonResult.ok().data(sysDicService.selectTreeGrid(par));
+        return CommonResult.success(sysDicService.selectTreeGrid(par));
 
     }
 
@@ -90,7 +90,7 @@ public class SysDicController {
             });
         }
         treeNodeList.add(SelectTreeNode.createParent());
-        return CommonResult.ok().data(treeNodeList);
+        return CommonResult.success(treeNodeList);
     }
 
     /**
@@ -110,7 +110,7 @@ public class SysDicController {
         } else {
             sysDic.setParentName("顶级");
         }
-        return CommonResult.ok().data(sysDic);
+        return CommonResult.success(sysDic);
     }
 
     /**
@@ -124,16 +124,16 @@ public class SysDicController {
     public CommonResult save(@Valid @RequestBody SysDic sysDic) {
         try {
             sysDic.setCreateTime(new Date());
-            sysDic.setCreateUser(ShiroKit.getUser().getLoginName());
+            sysDic.setCreateUser(ShiroUtil.getUser().getLoginName());
             boolean b = sysDicService.save(sysDic);
             if (b) {
-                return CommonResult.ok().msg("添加成功！");
+                return CommonResult.success("添加成功！");
             } else {
-                return CommonResult.fail().msg("添加失败！");
+                return CommonResult.failed("添加失败！");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            return CommonResult.fail().msg("添加失败，请联系管理员");
+            return CommonResult.failed("添加失败，请联系管理员");
         }
 
     }
@@ -149,16 +149,16 @@ public class SysDicController {
     public CommonResult update(@Valid @RequestBody SysDic sysDic) {
         try {
             sysDic.setUpdateTime(new Date());
-            sysDic.setUpdateUser(ShiroKit.getUser().getLoginName());
+            sysDic.setUpdateUser(ShiroUtil.getUser().getLoginName());
             boolean b = sysDicService.updateById(sysDic);
             if (b) {
-                return CommonResult.ok().msg("修改成功！");
+                return CommonResult.success("修改成功！");
             } else {
-                return CommonResult.fail().msg("修改失败！");
+                return CommonResult.failed("修改失败！");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            return CommonResult.fail().msg("编辑失败，请联系管理员");
+            return CommonResult.failed("编辑失败，请联系管理员");
         }
     }
 
@@ -177,10 +177,10 @@ public class SysDicController {
             QueryWrapper<SysDic> wrapper = new QueryWrapper<>();
             wrapper.eq("parent_id", dicId);
             sysDicService.remove(wrapper);
-            return CommonResult.ok().msg("删除成功！");
+            return CommonResult.success("删除成功！");
         } catch (Exception e) {
             log.error(e.getMessage());
-            return CommonResult.fail().msg("批量删除失败，请联系管理员");
+            return CommonResult.failed("批量删除失败，请联系管理员");
         }
     }
 
@@ -204,13 +204,13 @@ public class SysDicController {
                     wrapper.eq("parent_id", id);
                     sysDicService.remove(wrapper);
                 }
-                return CommonResult.ok().msg("删除成功！");
+                return CommonResult.success("删除成功！");
             } else {
-                return CommonResult.fail().msg("删除失败！");
+                return CommonResult.failed("删除失败！");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            return CommonResult.fail().msg("批量删除失败，请联系管理员");
+            return CommonResult.failed("批量删除失败，请联系管理员");
         }
     }
 
@@ -235,6 +235,6 @@ public class SysDicController {
                 tree.add(selectNode);
             }
         }
-        return CommonResult.ok().data(tree);
+        return CommonResult.success(tree);
     }
 }

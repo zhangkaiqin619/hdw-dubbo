@@ -1,7 +1,6 @@
 package com.hdw.mq.config;
 
-
-import com.hdw.common.utils.JacksonUtils;
+import com.hdw.common.util.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.command.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +54,10 @@ public class ActiveMQReceiveMsgService {
                 ActiveMQMessage aMsg = (ActiveMQMessage) msg;
                 if (aMsg.getDataStructure() instanceof ConnectionInfo) {
                     ConnectionInfo connectionInfo = (ConnectionInfo) aMsg.getDataStructure();
-                    log.info("连接信息：" + JacksonUtils.toJson(connectionInfo));
+                    log.info("连接信息：" + JacksonUtil.toJson(connectionInfo));
                 } else if (aMsg.getDataStructure() instanceof RemoveInfo) {
                     RemoveInfo removeInfo = (RemoveInfo) aMsg.getDataStructure();
-                    log.info("移除信息：" + JacksonUtils.toJson(removeInfo));
+                    log.info("移除信息：" + JacksonUtil.toJson(removeInfo));
                 }
             }
         } catch (Exception e) {
@@ -75,7 +74,7 @@ public class ActiveMQReceiveMsgService {
                 ActiveMQMessage aMsg = (ActiveMQMessage) msg;
                 if (aMsg.getDataStructure() instanceof ConsumerInfo) {
                     ConsumerInfo consumerInfo = (ConsumerInfo) aMsg.getDataStructure();
-                    log.info("sensorDataQueue消费者信息：" + JacksonUtils.toJson(consumerInfo));
+                    log.info("sensorDataQueue消费者信息：" + JacksonUtil.toJson(consumerInfo));
                 }
             }
         } catch (Exception e) {
@@ -91,7 +90,7 @@ public class ActiveMQReceiveMsgService {
                 ActiveMQMessage aMsg = (ActiveMQMessage) msg;
                 if (aMsg.getDataStructure() instanceof ProducerInfo) {
                     ProducerInfo producerInfo = (ProducerInfo) aMsg.getDataStructure();
-                    log.info("sensorDataQueue生产者信息：" + JacksonUtils.toJson(producerInfo));
+                    log.info("sensorDataQueue生产者信息：" + JacksonUtil.toJson(producerInfo));
                 }
             }
         } catch (Exception e) {

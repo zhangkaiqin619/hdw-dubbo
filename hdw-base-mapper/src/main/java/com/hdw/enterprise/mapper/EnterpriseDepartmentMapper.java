@@ -2,8 +2,8 @@ package com.hdw.enterprise.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
-import com.hdw.enterprise.entity.vo.EnterpriseDepartmentVo;
-import com.hdw.enterprise.param.EnterpriseDepartmentParam;
+import com.hdw.enterprise.vo.EnterpriseDepartmentVo;
+import com.hdw.enterprise.dto.EnterpriseDepartmentDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,10 +19,10 @@ public interface EnterpriseDepartmentMapper extends BaseMapper<EnterpriseDepartm
     /**
      * 树表
      *
-     * @param enterpriseDepartmentParam
+     * @param enterpriseDepartmentDTO
      * @return
      */
-    List<EnterpriseDepartmentVo> selectTreeGrid(@Param("param") EnterpriseDepartmentParam enterpriseDepartmentParam);
+    List<EnterpriseDepartmentVo> selectTreeGrid(@Param("param") EnterpriseDepartmentDTO enterpriseDepartmentDTO);
 
     /**
      * 自定义查询

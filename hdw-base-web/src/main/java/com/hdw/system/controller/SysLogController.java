@@ -1,10 +1,10 @@
 package com.hdw.system.controller;
 
 
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.system.entity.SysLog;
-import com.hdw.system.param.LogParam;
+import com.hdw.system.dto.LogDTO;
 import com.hdw.system.service.ISysLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,9 +28,9 @@ public class SysLogController {
 
     @ApiOperation(value = "日志列表", notes = "日志列表")
     @GetMapping("/list")
-    public CommonResult<PageParam<SysLog>> dataGrid(LogParam logParam) {
+    public CommonResult<PageVo<SysLog>> dataGrid(LogDTO logDTO) {
 
-        PageParam<SysLog> page = sysLogService.pageList(logParam);
-        return CommonResult.ok().data(page);
+        PageVo<SysLog> page = sysLogService.pageList(logDTO);
+        return CommonResult.success(page);
     }
 }

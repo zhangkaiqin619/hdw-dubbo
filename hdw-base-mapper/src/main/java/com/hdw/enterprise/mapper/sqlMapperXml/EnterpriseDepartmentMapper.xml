@@ -23,7 +23,7 @@
         </association>
     </resultMap>
 
-    <select id="selectTreeGrid" resultType="com.hdw.enterprise.entity.vo.EnterpriseDepartmentVo">
+    <select id="selectTreeGrid" resultType="com.hdw.enterprise.vo.EnterpriseDepartmentVo">
         SELECT DISTINCT
         t.id,
         t.parent_id AS parentId,

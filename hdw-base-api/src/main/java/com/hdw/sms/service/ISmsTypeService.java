@@ -1,10 +1,10 @@
 package com.hdw.sms.service;
 
 
-import com.hdw.common.base.service.IBaseService;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.mybatis.base.service.IBaseService;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SmsType;
-import com.hdw.sms.param.SmsTypeParam;
+import com.hdw.sms.dto.SmsTypeDTO;
 
 
 /**
@@ -17,10 +17,10 @@ public interface ISmsTypeService extends IBaseService<SmsType> {
 
     /**
      * 自定义分页
-     * @param smsTypeParam
+     * @param smsTypeDTO
      * @return
      */
-    PageParam selectSmsTypePageList(SmsTypeParam smsTypeParam);
+    PageVo selectSmsTypePageList(SmsTypeDTO smsTypeDTO);
 
 }
 

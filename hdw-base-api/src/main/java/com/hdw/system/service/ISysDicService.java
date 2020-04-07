@@ -2,7 +2,7 @@ package com.hdw.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hdw.system.entity.SysDic;
-import com.hdw.system.entity.vo.DicVo;
+import com.hdw.system.vo.DicVo;
 
 import java.util.List;
 import java.util.Map;

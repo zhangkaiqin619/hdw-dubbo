@@ -3,7 +3,7 @@ package com.hdw.sms.util;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
-import com.hdw.common.utils.JacksonUtils;
+import com.hdw.common.util.JacksonUtil;
 import com.hdw.sms.entity.Sms;
 import com.hdw.sms.entity.SmsRecord;
 import com.hdw.sms.entity.SmsType;
@@ -45,7 +45,7 @@ public class SmsReceiveMsgService {
     @JmsListener(destination = "hdw-dubbo-sms", containerFactory = "queueJmsListenerContainerFactory", concurrency = "5-10")
     public void receiveMsg(String msg) {
         log.info("接收到的数据：" + msg);
-        Sms sms = JacksonUtils.toObject(msg, Sms.class);
+        Sms sms = JacksonUtil.toObject(msg, Sms.class);
         if (null != sms) {
             Snowflake snowflake = IdUtil.createSnowflake(1, 1);
             long id = snowflake.nextId();

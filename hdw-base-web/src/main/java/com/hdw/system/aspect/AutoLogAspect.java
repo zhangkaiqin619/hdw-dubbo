@@ -1,13 +1,13 @@
 package com.hdw.system.aspect;
 
 import com.hdw.common.annotation.AutoLog;
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.constants.CommonConstants;
-import com.hdw.common.utils.JacksonUtils;
-import com.hdw.common.utils.SpringContextUtils;
+import com.hdw.common.constant.CommonConstant;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
+import com.hdw.common.util.JacksonUtil;
+import com.hdw.common.util.SpringUtil;
 import com.hdw.system.entity.SysLog;
 import com.hdw.system.service.ISysLogService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -72,26 +72,26 @@ public class AutoLogAspect {
 
 
         //设置操作类型
-        if (sysLog.getLogType() == CommonConstants.LOG_TYPE_0) {
+        if (sysLog.getLogType() == CommonConstant.LOG_TYPE_0) {
             sysLog.setOperateType(getOperateType(methodName, syslog.operateType()));
         }
 
         //请求的参数
         Object[] args = joinPoint.getArgs();
         try{
-            String params = JacksonUtils.toJson(args);
+            String params = JacksonUtil.toJson(args);
             sysLog.setParams(params);
         }catch (Exception e){
             e.printStackTrace();
         }
 
         //获取request
-        HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+        HttpServletRequest request = SpringUtil.getHttpServletRequest();
         //设置IP地址
         sysLog.setClientIp(request.getRemoteAddr());
 
         //获取登录用户信息
-        LoginUser sysUser = ShiroKit.getUser();
+        LoginUserVo sysUser = ShiroUtil.getUser();
         if(sysUser!=null){
             sysLog.setLoginName(sysUser.getLoginName());
 
@@ -110,23 +110,23 @@ public class AutoLogAspect {
             return operateType;
         }
         if (methodName.startsWith("list")) {
-            return CommonConstants.OPERATE_TYPE_1;
+            return CommonConstant.OPERATE_TYPE_1;
         }
         if (methodName.startsWith("save")) {
-            return CommonConstants.OPERATE_TYPE_2;
+            return CommonConstant.OPERATE_TYPE_2;
         }
         if (methodName.startsWith("update")) {
-            return CommonConstants.OPERATE_TYPE_3;
+            return CommonConstant.OPERATE_TYPE_3;
         }
         if (methodName.startsWith("delete")) {
-            return CommonConstants.OPERATE_TYPE_4;
+            return CommonConstant.OPERATE_TYPE_4;
         }
         if (methodName.startsWith("import")) {
-            return CommonConstants.OPERATE_TYPE_5;
+            return CommonConstant.OPERATE_TYPE_5;
         }
         if (methodName.startsWith("export")) {
-            return CommonConstants.OPERATE_TYPE_6;
+            return CommonConstant.OPERATE_TYPE_6;
         }
-        return CommonConstants.OPERATE_TYPE_1;
+        return CommonConstant.OPERATE_TYPE_1;
     }
 }

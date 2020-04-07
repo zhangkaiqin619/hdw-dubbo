@@ -1,9 +1,9 @@
 package com.hdw.job.controller;
 
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.job.entity.ScheduleJobLogEntity;
-import com.hdw.job.param.JobLogParam;
+import com.hdw.job.dto.JobLogDTO;
 import com.hdw.job.service.IScheduleJobLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,8 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 
 /**
@@ -33,10 +31,10 @@ public class ScheduleJobLogController {
     @ApiOperation(value = "定时任务日志列表", notes = "定时任务日志列表")
     @GetMapping("/list")
     @RequiresPermissions("sys/schedule/log")
-    public CommonResult<PageParam<ScheduleJobLogEntity>> list(JobLogParam jobLogParam) {
-        PageParam<ScheduleJobLogEntity> page = scheduleJobLogService.queryPage(jobLogParam);
+    public CommonResult<PageVo<ScheduleJobLogEntity>> list(JobLogDTO jobLogDTO) {
+        PageVo<ScheduleJobLogEntity> page = scheduleJobLogService.queryPage(jobLogDTO);
 
-        return CommonResult.ok().data(page);
+        return CommonResult.success(page);
     }
 
     /**
@@ -48,6 +46,6 @@ public class ScheduleJobLogController {
     public CommonResult<ScheduleJobLogEntity> info(@PathVariable("logId") Long logId) {
         ScheduleJobLogEntity log = scheduleJobLogService.getById(logId);
 
-        return CommonResult.ok().data(log);
+        return CommonResult.success(log);
     }
 }

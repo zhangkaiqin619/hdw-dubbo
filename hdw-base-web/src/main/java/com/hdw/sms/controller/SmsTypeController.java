@@ -1,14 +1,14 @@
 package com.hdw.sms.controller;
 
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
-import com.hdw.common.result.SelectNode;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.model.SelectNode;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SmsType;
-import com.hdw.sms.param.SmsTypeParam;
+import com.hdw.sms.dto.SmsTypeDTO;
 import com.hdw.sms.service.ISmsTypeService;
 import com.hdw.system.entity.SysUser;
 import com.hdw.system.service.ISysUserService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -45,9 +45,9 @@ public class SmsTypeController {
     @ApiOperation(value = "消息类型与用户关系表列表", notes = "消息类型与用户关系表列表")
     @GetMapping("/list")
     @RequiresPermissions("sms/smsType/list")
-    public CommonResult<PageParam<SmsType>> list(SmsTypeParam smsTypeParam) {
+    public CommonResult<PageVo<SmsType>> list(SmsTypeDTO smsTypeDTO) {
         List<SmsType> list = new ArrayList<>();
-        PageParam<SmsType> iPage = smsTypeService.selectSmsTypePageList(smsTypeParam);
+        PageVo<SmsType> iPage = smsTypeService.selectSmsTypePageList(smsTypeDTO);
         List<SmsType> smsTypeList = iPage.getList();
         if (!smsTypeList.isEmpty()) {
             smsTypeList.forEach(smsType -> {
@@ -83,7 +83,7 @@ public class SmsTypeController {
         }
         iPage.getList().clear();
         iPage.setList(list);
-        return CommonResult.ok().data(iPage);
+        return CommonResult.success(iPage);
     }
 
 
@@ -97,7 +97,7 @@ public class SmsTypeController {
     public CommonResult<SmsType> info(@PathVariable("id") Long id) {
         SmsType smsType = smsTypeService.getById(id);
         smsType.setAccountList(Arrays.asList(smsType.getTargetList()));
-        return CommonResult.ok().data(smsType);
+        return CommonResult.success(smsType);
     }
 
     /**
@@ -109,14 +109,14 @@ public class SmsTypeController {
     public CommonResult save(@Valid @RequestBody SmsType smsType) {
         try {
             smsType.setCreateTime(new Date());
-            smsType.setCreateUser(ShiroKit.getUser().getId());
+            smsType.setCreateUser(ShiroUtil.getUser().getId());
             String targetList = StringUtils.join(smsType.getAccountList(), ",");
             smsType.setTargetList(targetList);
             smsTypeService.save(smsType);
-            return CommonResult.ok().msg("添加成功");
+            return CommonResult.success("添加成功");
         } catch (Exception e) {
             log.error(e.getMessage());
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -128,15 +128,15 @@ public class SmsTypeController {
     @RequiresPermissions("sms/smsType/update")
     public CommonResult update(@Valid @RequestBody SmsType smsType) {
         try {
-            smsType.setUpdateUser(ShiroKit.getUser().getId());
+            smsType.setUpdateUser(ShiroUtil.getUser().getId());
             smsType.setUpdateTime(new Date());
             String targetList = StringUtils.join(smsType.getAccountList(), ",");
             smsType.setTargetList(targetList);
             smsTypeService.updateById(smsType);
-            return CommonResult.ok().msg("修改成功");
+            return CommonResult.success("修改成功");
         } catch (Exception e) {
             log.error(e.getMessage());
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
 
     }
@@ -151,10 +151,10 @@ public class SmsTypeController {
     public CommonResult delete(@RequestBody Long[] ids) {
         try {
             smsTypeService.removeByIds(Arrays.asList(ids));
-            return CommonResult.ok().msg("删除成功");
+            return CommonResult.success("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -175,10 +175,10 @@ public class SmsTypeController {
                 node.setValue(baseUser.getId().toString());
                 nodeList.add(node);
             });
-            return CommonResult.ok().data(nodeList);
+            return CommonResult.success(nodeList);
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.hdw.system.service.impl;
 
 
-import com.hdw.common.base.service.impl.BaseServiceImpl;
-import com.hdw.common.utils.SpringContextUtils;
+import com.hdw.common.mybatis.base.service.impl.BaseServiceImpl;
+import com.hdw.common.util.SpringUtil;
 import com.hdw.system.entity.SysLog;
 import com.hdw.system.mapper.SysLogMapper;
 import com.hdw.system.service.ISysLogService;
@@ -36,7 +36,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLogMapper, SysLog> imp
         //请求的参数
         try {
             //获取request
-            HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+            HttpServletRequest request = SpringUtil.getHttpServletRequest();
             //设置IP地址
             sysLog.setClientIp(request.getRemoteAddr());
         } catch (Exception e) {

@@ -1,6 +1,6 @@
 package com.hdw.system.service;
 
-import com.hdw.common.base.service.IBaseService;
+import com.hdw.common.mybatis.base.service.IBaseService;
 import com.hdw.system.entity.SysFile;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.hdw.enterprise.service.impl;
 
 
-import com.hdw.common.base.service.impl.BaseServiceImpl;
+import com.hdw.common.mybatis.base.service.impl.BaseServiceImpl;
 import com.hdw.enterprise.entity.EnterpriseJob;
 import com.hdw.enterprise.mapper.EnterpriseJobMapper;
 import com.hdw.enterprise.service.IEnterpriseJobService;

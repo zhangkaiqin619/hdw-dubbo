@@ -1,6 +1,6 @@
 package com.hdw.system.mapper;
 
-import com.hdw.common.base.mapper.SuperMapper;
+import com.hdw.common.mybatis.base.mapper.SuperMapper;
 import com.hdw.system.entity.SysFile;
 
 import java.util.List;

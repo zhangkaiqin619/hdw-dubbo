@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.hdw.common.utils.JacksonUtils;
+import com.hdw.common.util.JacksonUtil;
 import com.hdw.common.validator.group.CreateGroup;
 import com.hdw.common.validator.group.UpdateGroup;
 import io.swagger.annotations.ApiModel;
@@ -428,6 +428,6 @@ public class SysUser extends Model<SysUser> {
 
     @Override
     public String toString() {
-        return JacksonUtils.toJson(this);
+        return JacksonUtil.toJson(this);
     }
 }

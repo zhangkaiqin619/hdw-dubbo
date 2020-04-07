@@ -2,8 +2,8 @@ package com.hdw.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hdw.common.constants.CommonConstants;
-import com.hdw.common.constants.CommonEnum;
+import com.hdw.common.constant.CommonConstant;
+import com.hdw.common.constant.CommonEnum;
 import com.hdw.system.entity.SysResource;
 import com.hdw.system.mapper.SysResourceMapper;
 import com.hdw.system.service.ISysResourceService;
@@ -40,7 +40,7 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     @Override
     public List<SysResource> selectUserResourceListByUserId(Long userId) {
         //系统管理员，拥有最高权限
-        if (userId == CommonConstants.SUPER_ADMIN) {
+        if (userId == CommonConstant.SUPER_ADMIN) {
             return selectMenuList(null);
         }
         //用户菜单列表

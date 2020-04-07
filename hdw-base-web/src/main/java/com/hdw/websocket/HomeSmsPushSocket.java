@@ -17,10 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * @author TuMinglong
@@ -53,9 +50,6 @@ public class HomeSmsPushSocket {
 
     //用户Id
     private String userId;
-
-    // 控制线程数，最优选择是处理器线程数*3，本机处理器是6线程
-    private final static int THREAD_COUNT = Runtime.getRuntime().availableProcessors() * 3;
 
     /**
      * 连接建立成功调用的方法
@@ -204,23 +198,32 @@ public class HomeSmsPushSocket {
                 log.info("SmsPushSocket: 用户：" + userId + "不在线");
                 return;
             }
-            ExecutorService pool = Executors.newFixedThreadPool(THREAD_COUNT);
+            final ExecutorService threadPool = new ThreadPoolExecutor(
+                    Runtime.getRuntime().availableProcessors(),
+                    new Double(Runtime.getRuntime().availableProcessors() / (1 - 0.9)).intValue(),
+                    1l,
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<>(Runtime.getRuntime().availableProcessors()),
+                    Executors.defaultThreadFactory(),
+                    new ThreadPoolExecutor.DiscardPolicy()
+            );
             final CountDownLatch latch = new CountDownLatch(_thisList.size());
-            _thisList.forEach(_this -> {
-                if (!pool.isShutdown()) {
-                    pool.execute(() -> {
+            try {
+                _thisList.stream().forEach(_this -> {
+                    threadPool.execute(() -> {
                         try {
                             _this.sendMessage(message);
                         } finally {
                             latch.countDown();
                         }
                     });
-                }
-            });
-            //等待所有线程执行完毕
-            latch.await();
-            //关闭线程池
-            pool.shutdown();
+                });
+            } finally {
+                //TODO:等待所有线程执行完毕
+                latch.await();
+                //TODO:关闭线程池
+                threadPool.shutdown();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

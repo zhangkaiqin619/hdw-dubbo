@@ -1,12 +1,12 @@
 package com.hdw.system.aspect;
 
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.constants.CommonConstants;
-import com.hdw.common.utils.JacksonUtils;
-import com.hdw.common.utils.SpringContextUtils;
+import com.hdw.common.constant.CommonConstant;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
+import com.hdw.common.util.JacksonUtil;
+import com.hdw.common.util.SpringUtil;
 import com.hdw.system.entity.SysLog;
 import com.hdw.system.service.ISysLogService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -63,7 +63,7 @@ public class SysLogAspect {
     @AfterReturning(returning = "object", pointcut = "logPointCut()")
     public void doAfterReturning(Object object) {
         if (object != null) {
-            logger.info("response={}", JacksonUtils.toJson(object));
+            logger.info("response={}", JacksonUtil.toJson(object));
         } else {
             logger.info("response=");
         }
@@ -84,7 +84,7 @@ public class SysLogAspect {
         sysLog.setClassName(className);
 
         //设置操作类型
-        if (sysLog.getLogType() == CommonConstants.LOG_TYPE_0) {
+        if (sysLog.getLogType() == CommonConstant.LOG_TYPE_0) {
             sysLog.setOperateType(getOperateType(methodName));
         }
 
@@ -104,7 +104,7 @@ public class SysLogAspect {
         String params = "";
         if (arguments != null) {
             try {
-                params = JacksonUtils.toJson(arguments);
+                params = JacksonUtil.toJson(arguments);
             } catch (Exception e) {
                 params = arguments.toString();
             }
@@ -112,12 +112,12 @@ public class SysLogAspect {
         sysLog.setParams(params);
 
         //获取request
-        HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+        HttpServletRequest request = SpringUtil.getHttpServletRequest();
         //设置IP地址
         sysLog.setClientIp(request.getRemoteAddr());
 
         //获取登录用户信息
-        LoginUser sysUser = ShiroKit.getUser();
+        LoginUserVo sysUser = ShiroUtil.getUser();
         if(sysUser!=null){
             sysLog.setLoginName(sysUser.getLoginName());
         }
@@ -145,23 +145,23 @@ public class SysLogAspect {
      */
     private int getOperateType(String methodName) {
         if (methodName.startsWith("list")) {
-            return CommonConstants.OPERATE_TYPE_1;
+            return CommonConstant.OPERATE_TYPE_1;
         }
         if (methodName.startsWith("save")) {
-            return CommonConstants.OPERATE_TYPE_2;
+            return CommonConstant.OPERATE_TYPE_2;
         }
         if (methodName.startsWith("update")) {
-            return CommonConstants.OPERATE_TYPE_3;
+            return CommonConstant.OPERATE_TYPE_3;
         }
         if (methodName.startsWith("delete")) {
-            return CommonConstants.OPERATE_TYPE_4;
+            return CommonConstant.OPERATE_TYPE_4;
         }
         if (methodName.startsWith("import")) {
-            return CommonConstants.OPERATE_TYPE_5;
+            return CommonConstant.OPERATE_TYPE_5;
         }
         if (methodName.startsWith("export")) {
-            return CommonConstants.OPERATE_TYPE_6;
+            return CommonConstant.OPERATE_TYPE_6;
         }
-        return CommonConstants.OPERATE_TYPE_1;
+        return CommonConstant.OPERATE_TYPE_1;
     }
 }

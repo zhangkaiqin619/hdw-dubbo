@@ -1,9 +1,9 @@
 package com.hdw.sms.service;
 
-import com.hdw.common.base.service.IBaseService;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.mybatis.base.service.IBaseService;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SysSms;
-import com.hdw.sms.param.SmsParam;
+import com.hdw.sms.dto.SmsDTO;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ public interface ISysSmsService extends IBaseService<SysSms> {
 
     /**
      * 自定义分页
-     * @param smsParam
+     * @param smsDTO
      * @return
      */
-    PageParam selectSmsPageList(SmsParam smsParam);
+    PageVo selectSmsPageList(SmsDTO smsDTO);
 
     /**
      * 获取待推送消息

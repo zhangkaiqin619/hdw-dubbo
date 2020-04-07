@@ -24,7 +24,7 @@
 		createUser, update_user AS updateUser
 	</sql>
 
-    <select id="selectTreeGrid" resultType="com.hdw.system.entity.vo.DicVo">
+    <select id="selectTreeGrid" resultType="com.hdw.system.vo.DicVo">
         SELECT
         t.id,
         t.parent_id AS parentId,

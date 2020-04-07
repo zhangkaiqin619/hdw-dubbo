@@ -36,7 +36,7 @@
     </resultMap>
 
     <!-- 多表页面信息查询 -->
-    <select id="pageList" resultType="com.hdw.enterprise.entity.vo.EnterpriseVo">
+    <select id="pageList" resultType="com.hdw.enterprise.vo.EnterpriseVo">
         SELECT DISTINCT
         t.id,
         t.prefix,

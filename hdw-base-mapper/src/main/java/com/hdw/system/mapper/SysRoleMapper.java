@@ -1,8 +1,8 @@
 package com.hdw.system.mapper;
 
-import com.hdw.common.base.mapper.SuperMapper;
+import com.hdw.common.mybatis.base.mapper.SuperMapper;
 import com.hdw.system.entity.SysRole;
-import com.hdw.system.entity.vo.RoleVo;
+import com.hdw.system.vo.RoleVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

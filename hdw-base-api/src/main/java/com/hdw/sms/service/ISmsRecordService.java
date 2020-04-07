@@ -1,9 +1,9 @@
 package com.hdw.sms.service;
 
-import com.hdw.common.base.service.IBaseService;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.mybatis.base.service.IBaseService;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.sms.entity.SmsRecord;
-import com.hdw.sms.param.SmsRecordParam;
+import com.hdw.sms.dto.SmsRecordDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,10 +19,10 @@ public interface ISmsRecordService extends IBaseService<SmsRecord> {
 
     /**
      * 自定义分页
-     * @param smsRecordParam
+     * @param smsRecordDTO
      * @return
      */
-    PageParam selectSmsRecordPageList(SmsRecordParam smsRecordParam);
+    PageVo selectSmsRecordPageList(SmsRecordDTO smsRecordDTO);
 
     /**
      * 未读消息数量

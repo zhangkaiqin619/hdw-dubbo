@@ -2,8 +2,8 @@ package com.hdw.enterprise.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
-import com.hdw.enterprise.entity.vo.EnterpriseDepartmentVo;
-import com.hdw.enterprise.param.EnterpriseDepartmentParam;
+import com.hdw.enterprise.vo.EnterpriseDepartmentVo;
+import com.hdw.enterprise.dto.EnterpriseDepartmentDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -19,10 +19,10 @@ public interface IEnterpriseDepartmentService extends IService<EnterpriseDepartm
     /**
      * 树表
      *
-     * @param enterpriseDepartmentParam
+     * @param enterpriseDepartmentDTO
      * @return
      */
-    List<EnterpriseDepartmentVo> selectTreeGrid(EnterpriseDepartmentParam enterpriseDepartmentParam);
+    List<EnterpriseDepartmentVo> selectTreeGrid(EnterpriseDepartmentDTO enterpriseDepartmentDTO);
 
     /**
      * 自定义查询

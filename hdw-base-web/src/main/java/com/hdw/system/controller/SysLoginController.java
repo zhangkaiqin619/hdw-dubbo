@@ -1,36 +1,40 @@
 package com.hdw.system.controller;
 
 
-import cn.hutool.core.codec.Base64;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.AES;
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.config.redis.IRedisService;
-import com.hdw.common.constants.CommonConstants;
-import com.hdw.common.result.CommonResult;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.constant.CommonConstant;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
+import com.hdw.common.redis.service.RedisService;
 import com.hdw.enterprise.entity.Enterprise;
 import com.hdw.enterprise.service.IEnterpriseService;
+import com.hdw.shiro.jwt.JwtTokenUtil;
+import com.hdw.system.entity.SysUser;
 import com.hdw.system.service.ISysLogService;
 import com.hdw.system.service.ISysUserService;
-import com.hdw.system.shiro.ShiroKit;
-import com.hdw.system.shiro.form.SysLoginForm;
-import com.hdw.system.shiro.jwt.JwtUtil;
+import com.hdw.shiro.ShiroUtil;
+import com.hdw.system.dto.SysLoginDTO;
+import com.wf.captcha.SpecCaptcha;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @Description 登录退出接口
@@ -48,64 +52,99 @@ public class SysLoginController {
     @Reference
     private IEnterpriseService enterpriseService;
 
-    @Autowired
-    private IRedisService redisService;
-
     @Reference
     private ISysLogService sysLogService;
 
-    //30分钟过期
-    @Value("${hdw.expire}")
-    private int expire;
+    @Resource
+    private RedisService redisService;
 
-    //登录用户Token令牌缓存KEY前缀
-    @Value("${hdw.shiro.user-token-prefix}")
-    private String userTokenPrefix;
+    @Resource
+    private JwtTokenUtil jwtTokenUtil;
+
+    /**
+     * 获取验证码
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/sys/captcha")
+    public CommonResult captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 5);
+        String verCode = specCaptcha.text().toLowerCase();
+        String key = IdUtil.fastUUID();
+        // 存入redis并设置过期时间为30分钟
+        redisService.set(key,verCode,30*60);
+        // 将key和base64返回给前端
+        ConcurrentMap<String,Object> dataMap=new ConcurrentHashMap<>();
+        dataMap.put("key",key);
+        dataMap.put("image",specCaptcha.toBase64());
+        return CommonResult.success(dataMap);
+    }
 
     /**
      * 登录
      */
     @ApiOperation(value = "登录", notes = "登录")
     @PostMapping("/sys/login")
-    public CommonResult login(@RequestBody SysLoginForm form) {
-        if (StringUtils.isBlank(form.getUsername())) {
-            return CommonResult.fail().msg("用户名不能为空");
+    public CommonResult login(@RequestBody SysLoginDTO loginDTO) {
+
+        log.info("POST请求登录");
+        String username = decrypt(loginDTO.getUsername());
+        String password = decrypt(loginDTO.getPassword());
+        String verCode=loginDTO.getCaptcha();
+        String verKey=loginDTO.getCheckKey();
+
+        if (StringUtils.isBlank(username)) {
+            return CommonResult.failed("用户名不能为空");
         }
-        if (StringUtils.isBlank(form.getPassword())) {
-            return CommonResult.fail().msg("密码不能为空");
+        if (StringUtils.isBlank(password)) {
+            return CommonResult.failed("密码不能为空");
+        }
+        if (StringUtils.isBlank(verCode)) {
+            return CommonResult.failed("验证码不能为空");
         }
 
-        String username=decrypt(form.getUsername());
-        String password=decrypt(form.getPassword());
-
-        LoginUser loginUser = userService.selectByLoginName(username);
-
-        if (null == loginUser) {
-            return CommonResult.fail().msg("账号不存在");
+        //TODO: 获取redis中的验证码
+        String redisCode = (String) redisService.get(verKey);
+        //TODO: 判断验证码
+        if (org.springframework.util.StringUtils.isEmpty(redisCode) && !redisCode.equals(verCode.trim().toLowerCase())) {
+            return  CommonResult.failed("验证码不正确");
         }
-        if (!loginUser.getPassword().equals(ShiroKit.md5(password, loginUser.getLoginName() + loginUser.getSalt()))) {
-            return CommonResult.fail().msg("密码不正确");
+
+
+
+        SysUser sysUser = userService.selectByLoginName(username);
+
+        if (ObjectUtils.isEmpty(sysUser)) {
+            return CommonResult.failed("账号不存在");
         }
-        //当企业不存在或者企业被禁用不允许登录
-        if (loginUser.getUserType() == 1) {
-            Enterprise sysEnterprise = enterpriseService.getById(loginUser.getEnterpriseId());
+        if (!sysUser.getPassword().equals(ShiroUtil.md5(password, username + sysUser.getSalt()))) {
+            return CommonResult.failed("密码不正确");
+        }
+        if(sysUser.getStatus()==1){
+            return CommonResult.failed("账号被禁用");
+        }
+
+        //TODO:当企业不存在或者企业被禁用不允许登录
+        if (sysUser.getUserType() == 1) {
+            Enterprise sysEnterprise = enterpriseService.getById(sysUser.getEnterpriseId());
             if (null != sysEnterprise && sysEnterprise.getStatus() == 1) {
-                return CommonResult.fail().msg("企业被禁用，该账户不允许登录");
+                return CommonResult.failed("企业被禁用，该账户不允许登录");
             } else if (null == sysEnterprise) {
-                return CommonResult.fail().msg("企业不存在，该账户不允许登录");
+                return CommonResult.failed("企业不存在，该账户不允许登录");
             }
         }
 
-        // 生成token
-        String token = JwtUtil.generatorToken(loginUser.getLoginName(), loginUser.getPassword(), expire);
-        // 设置token缓存有效时间
-        redisService.set(userTokenPrefix + loginUser.getLoginName(), token, expire * 2);
-        Map<String, Object> params = new HashMap<>();
-        params.put("token", token);
-        params.put("expire", expire);
-        log.info(" 用户名:  " + loginUser.getName() + ",登录成功！ ");
-        sysLogService.addLog(loginUser.getLoginName(),"用户名: " + loginUser.getName() + ",登录成功！", 1, null);
-        return CommonResult.ok().data(params);
+        //TODO: 生成token
+        LoginUserVo loginUserVo=new LoginUserVo();
+        BeanUtils.copyProperties(sysUser,loginUserVo);
+        String token=jwtTokenUtil.generateToken(loginUserVo);
+        ConcurrentMap<String,Object> concurrentMap=new ConcurrentHashMap<>();
+        concurrentMap.put("token",token);
+        log.info(" 用户名:  " + loginUserVo.getName() + ",登录成功！ ");
+        sysLogService.addLog(loginUserVo.getLoginName(), "用户名: " + loginUserVo.getName() + ",登录成功！", 1, null);
+        return CommonResult.success(concurrentMap);
     }
 
     /**
@@ -115,22 +154,39 @@ public class SysLoginController {
     @PostMapping("/sys/logout")
     public CommonResult logout(HttpServletRequest request, HttpServletResponse response) {
         //用户退出逻辑
-        String token = request.getHeader(CommonConstants.JWT_DEFAULT_TOKEN_NAME);
+        String token = request.getHeader(CommonConstant.JWT_DEFAULT_TOKEN_NAME);
         if (StringUtils.isEmpty(token)) {
-            return CommonResult.fail().msg("退出登录失败!");
+            return CommonResult.failed("退出登录失败!");
         }
-        String username = JwtUtil.getUsername(token);
-        LoginUser loginUser = userService.selectByLoginName(username);
-        if (loginUser != null) {
-            log.info(" 用户名:  " + loginUser.getName() + ",退出成功！ ");
-            //清空用户登录Token缓存
-            redisService.del(userTokenPrefix + username);
-            //清空用户登录Shiro权限缓存
-            sysLogService.addLog(loginUser.getLoginName(),"用户名: " + loginUser.getName() + ",退出成功！", 1, null);
-            return CommonResult.ok().msg("退出登录成功!");
+        String username = jwtTokenUtil.getUserNameFromToken(token);
+        LoginUserVo loginUserVo = userService.selectLoginUserVoByLoginName(username);
+        if (!org.springframework.util.ObjectUtils.isEmpty(loginUserVo)) {
+            //TODO:调用Shiro的logout
+            SecurityUtils.getSubject().logout();
+            //TODO:清空用户登录Shiro权限缓存
+            sysLogService.addLog(loginUserVo.getLoginName(), "用户名: " + loginUserVo.getName() + ",退出成功！", 1, null);
+            return CommonResult.success("退出登录成功!");
         } else {
-            return CommonResult.fail().msg("Token无效!");
+            return CommonResult.failed("Token无效!");
         }
+    }
+
+    /**
+     * 加密
+     * @param data
+     * @return
+     */
+    @ApiOperation(value = "加密", notes = "加密")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "data", value = "待加密字符串", required = false, dataType = "String"),
+    })
+    @GetMapping("/sys/encrypt")
+    public String encrypt(String data){
+        /** AES加解密 */
+        AES aes = new AES(Mode.CBC, Padding.PKCS5Padding, "1234567812345678".getBytes(), "1234567812345678".getBytes());
+        // 解密
+        String s = aes.encryptBase64(data);
+        return s;
     }
 
     /**

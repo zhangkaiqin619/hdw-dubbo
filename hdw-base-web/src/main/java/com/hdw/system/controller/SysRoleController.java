@@ -1,16 +1,16 @@
 package com.hdw.system.controller;
 
-import com.hdw.common.constants.CommonConstants;
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
-import com.hdw.common.result.TreeNode;
-import com.hdw.common.validator.ValidatorUtils;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.constant.CommonConstant;
+import com.hdw.common.model.TreeNode;
+import com.hdw.common.mybatis.base.vo.PageVo;
+import com.hdw.common.validator.ValidatorUtil;
 import com.hdw.system.entity.SysRole;
 import com.hdw.system.entity.SysRoleResource;
-import com.hdw.system.param.RoleParam;
+import com.hdw.system.dto.RoleDTO;
 import com.hdw.system.service.ISysRoleResourceService;
 import com.hdw.system.service.ISysRoleService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -45,13 +45,13 @@ public class SysRoleController {
     @ApiOperation(value = "角色列表", notes = "角色列表")
     @GetMapping("/list")
     @RequiresPermissions("sys/role/list")
-    public CommonResult<PageParam<SysRole>> list(RoleParam roleParam) {
+    public CommonResult<PageVo<SysRole>> list(RoleDTO roleDTO) {
         //如果不是超级管理员，则只查询自己创建的角色列表
-        if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
-            roleParam.setCreateUserId(ShiroKit.getUser().getId());
+        if (ShiroUtil.getUser().getId() != CommonConstant.SUPER_ADMIN) {
+            roleDTO.setCreateUserId(ShiroUtil.getUser().getId());
         }
-        PageParam<SysRole> page = sysRoleService.pageList(roleParam);
-        return CommonResult.ok().data(page);
+        PageVo<SysRole> page = sysRoleService.pageList(roleDTO);
+        return CommonResult.success(page);
     }
 
     /**
@@ -63,12 +63,12 @@ public class SysRoleController {
     public CommonResult<List<SysRole>> select() {
         Map<String, Object> map = new HashMap<>();
         //如果不是超级管理员，则只查询自己所拥有的角色列表
-        if (ShiroKit.getUser().getId() != CommonConstants.SUPER_ADMIN) {
-            map.put("createUserId", ShiroKit.getUser().getId());
+        if (ShiroUtil.getUser().getId() != CommonConstant.SUPER_ADMIN) {
+            map.put("createUserId", ShiroUtil.getUser().getId());
         }
         List<SysRole> list = sysRoleService.selectSysRoleList(map);
 
-        return CommonResult.ok().data(list);
+        return CommonResult.success(list);
     }
 
     /**
@@ -94,7 +94,7 @@ public class SysRoleController {
             });
         }
         role.setResourceNodeList(treeNodeList);
-        return CommonResult.ok().data(role);
+        return CommonResult.success(role);
     }
 
     /**
@@ -104,12 +104,12 @@ public class SysRoleController {
     @PostMapping("/save")
     @RequiresPermissions("sys/role/save")
     public CommonResult save(@RequestBody SysRole role) {
-        ValidatorUtils.validateEntity(role);
+        ValidatorUtil.validateEntity(role);
         role.setCreateTime(new Date());
-        role.setCreateUserId(ShiroKit.getUser().getId());
+        role.setCreateUserId(ShiroUtil.getUser().getId());
         sysRoleService.saveByVo(role);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -119,12 +119,12 @@ public class SysRoleController {
     @PostMapping("/update")
     @RequiresPermissions("sys/role/update")
     public CommonResult update(@RequestBody SysRole role) {
-        ValidatorUtils.validateEntity(role);
+        ValidatorUtil.validateEntity(role);
         role.setUpdateTime(new Date());
-        role.setCreateUserId(ShiroKit.getUser().getId());
+        role.setCreateUserId(ShiroUtil.getUser().getId());
         sysRoleService.updateByVo(role);
 
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
     /**
@@ -136,7 +136,7 @@ public class SysRoleController {
     @RequiresPermissions("sys/role/delete")
     public CommonResult delete(@RequestBody Long[] roleIds) {
         sysRoleService.deleteBatch(roleIds);
-        return CommonResult.ok();
+        return CommonResult.success("");
     }
 
 }

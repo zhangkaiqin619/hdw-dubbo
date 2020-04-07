@@ -5,27 +5,27 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hdw.common.constants.CommonEnum;
-import com.hdw.common.result.PageParam;
+import com.hdw.common.constant.CommonEnum;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.job.entity.ScheduleJobEntity;
 import com.hdw.job.entity.ScheduleJobLogEntity;
 import com.hdw.job.mapper.ScheduleJobMapper;
-import com.hdw.job.param.JobParam;
+import com.hdw.job.dto.JobDTO;
 import com.hdw.job.service.IScheduleJobService;
-import com.hdw.job.utils.ScheduleUtils;
+import com.hdw.job.util.ScheduleUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Service("scheduleJobService")
 public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, ScheduleJobEntity> implements IScheduleJobService {
 
-    @Autowired
+    @Resource
     private Scheduler scheduler;
 
     /**
@@ -35,29 +35,29 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     public void init() {
         List<ScheduleJobEntity> scheduleJobList = this.list();
         for (ScheduleJobEntity scheduleJob : scheduleJobList) {
-            CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, scheduleJob.getJobId());
+            CronTrigger cronTrigger = ScheduleUtil.getCronTrigger(scheduler, scheduleJob.getJobId());
             //如果不存在，则创建
             if (cronTrigger == null) {
-                ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
+                ScheduleUtil.createScheduleJob(scheduler, scheduleJob);
             } else {
-                ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
+                ScheduleUtil.updateScheduleJob(scheduler, scheduleJob);
             }
         }
     }
 
     @Override
-    public PageParam queryPage(JobParam jobParam) {
-        String beanName = jobParam.getBeanName();
+    public PageVo queryPage(JobDTO jobDTO) {
+        String beanName = jobDTO.getBeanName();
         QueryWrapper<ScheduleJobEntity> queryWrapper = new QueryWrapper<ScheduleJobEntity>();
         queryWrapper.like(StringUtils.isNotBlank(beanName), "job_id", beanName)
                 .orderByDesc("job_id");
         Page page = new Page();
         // 设置当前页码
-        page.setCurrent(jobParam.getPage());
+        page.setCurrent(jobDTO.getPage());
         // 设置页大小
-        page.setSize(jobParam.getLimit());
+        page.setSize(jobDTO.getLimit());
         IPage<ScheduleJobLogEntity> iPage = this.page(page, queryWrapper);
-        return new PageParam(iPage);
+        return new PageVo(iPage);
     }
 
 
@@ -68,13 +68,13 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
         scheduleJob.setStatus(CommonEnum.NORMAL.getCode());
         this.save(scheduleJob);
 
-        ScheduleUtils.createScheduleJob(scheduler, scheduleJob);
+        ScheduleUtil.createScheduleJob(scheduler, scheduleJob);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(ScheduleJobEntity scheduleJob) {
-        ScheduleUtils.updateScheduleJob(scheduler, scheduleJob);
+        ScheduleUtil.updateScheduleJob(scheduler, scheduleJob);
 
         this.updateById(scheduleJob);
     }
@@ -83,7 +83,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     @Transactional(rollbackFor = Exception.class)
     public void deleteBatch(Long[] jobIds) {
         for (Long jobId : jobIds) {
-            ScheduleUtils.deleteScheduleJob(scheduler, jobId);
+            ScheduleUtil.deleteScheduleJob(scheduler, jobId);
         }
 
         //删除数据
@@ -102,7 +102,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     @Transactional(rollbackFor = Exception.class)
     public void run(Long[] jobIds) {
         for (Long jobId : jobIds) {
-            ScheduleUtils.run(scheduler, this.getById(jobId));
+            ScheduleUtil.run(scheduler, this.getById(jobId));
         }
     }
 
@@ -110,7 +110,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     @Transactional(rollbackFor = Exception.class)
     public void pause(Long[] jobIds) {
         for (Long jobId : jobIds) {
-            ScheduleUtils.pauseJob(scheduler, jobId);
+            ScheduleUtil.pauseJob(scheduler, jobId);
         }
 
         updateBatch(jobIds, CommonEnum.PAUSE.getCode());
@@ -120,7 +120,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     @Transactional(rollbackFor = Exception.class)
     public void resume(Long[] jobIds) {
         for (Long jobId : jobIds) {
-            ScheduleUtils.resumeJob(scheduler, jobId);
+            ScheduleUtil.resumeJob(scheduler, jobId);
         }
 
         updateBatch(jobIds, CommonEnum.NORMAL.getCode());

@@ -2,7 +2,7 @@ package com.hdw.system.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hdw.system.entity.SysDic;
-import com.hdw.system.entity.vo.DicVo;
+import com.hdw.system.vo.DicVo;
 import com.hdw.system.mapper.SysDicMapper;
 import com.hdw.system.service.ISysDicService;
 import lombok.extern.slf4j.Slf4j;

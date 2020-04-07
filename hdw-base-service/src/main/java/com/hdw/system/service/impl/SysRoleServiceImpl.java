@@ -1,10 +1,10 @@
 package com.hdw.system.service.impl;
 
-import com.hdw.common.base.service.impl.BaseServiceImpl;
-import com.hdw.common.constants.CommonConstants;
+import com.hdw.common.mybatis.base.service.impl.BaseServiceImpl;
+import com.hdw.common.constant.CommonConstant;
 import com.hdw.common.exception.GlobalException;
 import com.hdw.system.entity.SysRole;
-import com.hdw.system.entity.vo.RoleVo;
+import com.hdw.system.vo.RoleVo;
 import com.hdw.system.mapper.SysRoleMapper;
 import com.hdw.system.service.ISysRoleResourceService;
 import com.hdw.system.service.ISysRoleService;
@@ -88,7 +88,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
      */
     private void checkPrems(SysRole role) {
         //如果不是超级管理员，则需要判断角色的权限是否超过自己的权限
-        if (role.getCreateUserId() == CommonConstants.SUPER_ADMIN) {
+        if (role.getCreateUserId() == CommonConstant.SUPER_ADMIN) {
             return;
         }
         //查询用户所拥有的菜单列表

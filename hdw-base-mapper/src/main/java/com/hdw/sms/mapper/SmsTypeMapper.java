@@ -1,7 +1,7 @@
 package com.hdw.sms.mapper;
 
 
-import com.hdw.common.base.mapper.SuperMapper;
+import com.hdw.common.mybatis.base.mapper.SuperMapper;
 import com.hdw.sms.entity.SmsType;
 
 /**

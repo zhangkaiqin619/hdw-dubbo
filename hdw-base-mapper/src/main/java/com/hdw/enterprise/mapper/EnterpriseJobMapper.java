@@ -1,12 +1,7 @@
 package com.hdw.enterprise.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hdw.common.base.mapper.SuperMapper;
+import com.hdw.common.mybatis.base.mapper.SuperMapper;
 import com.hdw.enterprise.entity.EnterpriseJob;
-import com.hdw.enterprise.entity.vo.EnterpriseJobVo;
-import com.hdw.enterprise.param.EnterpriseJobParam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

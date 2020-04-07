@@ -1,7 +1,7 @@
 package com.hdw.system.service;
 
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.base.service.IBaseService;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
+import com.hdw.common.mybatis.base.service.IBaseService;
 import com.hdw.system.entity.SysUser;
 
 import java.util.List;
@@ -16,32 +16,24 @@ import java.util.Set;
 public interface ISysUserService extends IBaseService<SysUser> {
 
     /**
-     * 根据用户账号查询用户信息
-     *
-     * @param userId
-     * @return
-     */
-    LoginUser selectByUserId(Long userId);
-
-    /**
      * 根据用户登录名查询用户信息
      *
      * @param loginName
      * @return
      */
-    LoginUser selectByLoginName(String loginName);
+    SysUser selectByLoginName(String loginName);
+
+    /**
+     * 根据用户登录名查询登录用户信息
+     *
+     * @param loginName
+     * @return
+     */
+    LoginUserVo selectLoginUserVoByLoginName(String loginName);
 
     void saveByVo(SysUser user);
 
     void updateByVo(SysUser user);
-
-    /**
-     * 查询用户的所有菜单ID
-     *
-     * @param userId
-     * @return
-     */
-    List<Long> selectResourceIdListByUserId(Long userId);
 
     /**
      * 根据用户批量删除
@@ -59,5 +51,13 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * 获取用户角色名称
      */
     Set<String> selectUserRoles(long userId);
+
+    /**
+     * 查询用户的所有菜单ID
+     *
+     * @param userId
+     * @return
+     */
+    List<Long> selectResourceIdListByUserId(Long userId);
 }
 

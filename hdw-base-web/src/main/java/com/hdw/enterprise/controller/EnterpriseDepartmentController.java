@@ -3,15 +3,15 @@ package com.hdw.enterprise.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.SelectTreeNode;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.model.SelectTreeNode;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
-import com.hdw.enterprise.entity.vo.EnterpriseDepartmentVo;
-import com.hdw.enterprise.param.EnterpriseDepartmentParam;
+import com.hdw.enterprise.vo.EnterpriseDepartmentVo;
+import com.hdw.enterprise.dto.EnterpriseDepartmentDTO;
 import com.hdw.enterprise.service.IEnterpriseDepartmentService;
 import com.hdw.enterprise.service.IEnterpriseService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -48,14 +48,14 @@ public class EnterpriseDepartmentController {
     @ApiOperation(value = "企业部门列表", notes = "企业部门列表")
     @GetMapping("/list")
     @RequiresPermissions("enterprise/enterpriseDepartment/list")
-    public CommonResult<List<EnterpriseDepartmentVo>> treeGrid(EnterpriseDepartmentParam enterpriseDepartmentParam) {
-        LoginUser loginUser = ShiroKit.getUser();
+    public CommonResult<List<EnterpriseDepartmentVo>> treeGrid(EnterpriseDepartmentDTO enterpriseDepartmentDTO) {
+        LoginUserVo loginUserVo = ShiroUtil.getUser();
         // 不是管理员
-        if (loginUser.getUserType() != 0) {
-            enterpriseDepartmentParam.setUserId(ShiroKit.getUser().getId());
+        if (loginUserVo.getUserType() != 0) {
+            enterpriseDepartmentDTO.setUserId(ShiroUtil.getUser().getId());
         }
-        List<EnterpriseDepartmentVo> list = enterpriseDepartmentService.selectTreeGrid(enterpriseDepartmentParam);
-        return CommonResult.ok().data(list);
+        List<EnterpriseDepartmentVo> list = enterpriseDepartmentService.selectTreeGrid(enterpriseDepartmentDTO);
+        return CommonResult.success(list);
     }
 
 
@@ -70,7 +70,7 @@ public class EnterpriseDepartmentController {
         EnterpriseDepartment enterpriseDepartment = enterpriseDepartmentService.getById(id);
         EnterpriseDepartmentVo enterpriseDepartmentVo=new EnterpriseDepartmentVo();
         BeanUtils.copyProperties(enterpriseDepartment,enterpriseDepartmentVo);
-        return CommonResult.ok().data(enterpriseDepartmentVo);
+        return CommonResult.success(enterpriseDepartmentVo);
     }
 
     /**
@@ -81,14 +81,14 @@ public class EnterpriseDepartmentController {
     @RequiresPermissions("enterprise/enterpriseDepartment/save")
     public CommonResult save(@Valid @RequestBody EnterpriseDepartment enterpriseDepartment) {
         try {
-            LoginUser loginUser = ShiroKit.getUser();
+            LoginUserVo loginUserVo = ShiroUtil.getUser();
             enterpriseDepartment.setCreateTime(new Date());
-            enterpriseDepartment.setCreateUser(ShiroKit.getUser().getLoginName());
+            enterpriseDepartment.setCreateUser(ShiroUtil.getUser().getLoginName());
             enterpriseDepartmentService.save(enterpriseDepartment);
-            return CommonResult.ok().msg("添加成功");
+            return CommonResult.success("添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -100,13 +100,13 @@ public class EnterpriseDepartmentController {
     @RequiresPermissions("enterprise/enterpriseDepartment/update")
     public CommonResult update(@Valid @RequestBody EnterpriseDepartment enterpriseDepartment) {
         try {
-            enterpriseDepartment.setUpdateUser(ShiroKit.getUser().getLoginName());
+            enterpriseDepartment.setUpdateUser(ShiroUtil.getUser().getLoginName());
             enterpriseDepartment.setUpdateTime(new Date());
             enterpriseDepartmentService.updateById(enterpriseDepartment);
-            return CommonResult.ok().msg("修改成功");
+            return CommonResult.success("修改成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
 
     }
@@ -129,13 +129,13 @@ public class EnterpriseDepartmentController {
                     wrapper.eq("parent_id", id);
                     enterpriseDepartmentService.remove(wrapper);
                 }
-                return CommonResult.ok().msg("删除成功");
+                return CommonResult.success("删除成功");
             } else {
-                return CommonResult.fail().msg("删除失败！");
+                return CommonResult.failed("删除失败！");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -165,10 +165,10 @@ public class EnterpriseDepartmentController {
                     treeNodeList.add(selectTreeNode);
                 });
             }
-            return CommonResult.ok().data(treeNodeList);
+            return CommonResult.success(treeNodeList);
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 

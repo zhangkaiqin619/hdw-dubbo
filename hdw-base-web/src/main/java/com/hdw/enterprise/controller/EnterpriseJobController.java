@@ -2,22 +2,22 @@ package com.hdw.enterprise.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.hdw.common.base.entity.LoginUser;
-import com.hdw.common.result.CommonResult;
-import com.hdw.common.result.PageParam;
-import com.hdw.common.result.SelectNode;
-import com.hdw.common.utils.StringUtils;
+import com.hdw.common.api.CommonResult;
+import com.hdw.common.model.SelectNode;
+import com.hdw.common.mybatis.base.vo.LoginUserVo;
+import com.hdw.common.mybatis.base.vo.PageVo;
 import com.hdw.enterprise.entity.EnterpriseDepartment;
 import com.hdw.enterprise.entity.EnterpriseJob;
-import com.hdw.enterprise.entity.vo.EnterpriseJobVo;
-import com.hdw.enterprise.param.EnterpriseJobParam;
+import com.hdw.enterprise.vo.EnterpriseJobVo;
+import com.hdw.enterprise.dto.EnterpriseJobDTO;
 import com.hdw.enterprise.service.IEnterpriseDepartmentService;
 import com.hdw.enterprise.service.IEnterpriseJobService;
-import com.hdw.system.shiro.ShiroKit;
+import com.hdw.shiro.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -50,14 +50,14 @@ public class EnterpriseJobController {
     @ApiOperation(value = "企业职务配置列表", notes = "企业职务配置列表")
     @GetMapping("/list")
     @RequiresPermissions("enterprise/enterpriseJob/list")
-    public CommonResult<PageParam<EnterpriseJobVo>> list(EnterpriseJobParam enterpriseJobParam) {
-        LoginUser loginUser = ShiroKit.getUser();
+    public CommonResult<PageVo<EnterpriseJobVo>> list(EnterpriseJobDTO enterpriseJobDTO) {
+        LoginUserVo loginUserVo = ShiroUtil.getUser();
         // 不是管理员
-        if (loginUser.getUserType() != 0) {
-            enterpriseJobParam.setUserId(ShiroKit.getUser().getId());
+        if (loginUserVo.getUserType() != 0) {
+            enterpriseJobDTO.setUserId(ShiroUtil.getUser().getId());
         }
-        PageParam<EnterpriseJobVo> page = enterpriseJobService.pageList(enterpriseJobParam);
-        return CommonResult.ok().data(page);
+        PageVo<EnterpriseJobVo> page = enterpriseJobService.pageList(enterpriseJobDTO);
+        return CommonResult.success(page);
     }
 
 
@@ -72,7 +72,7 @@ public class EnterpriseJobController {
         EnterpriseJob enterpriseJob = enterpriseJobService.getById(id);
         EnterpriseDepartment department = enterpriseDepartmentService.getById(enterpriseJob.getDepartmentId());
         enterpriseJob.setEnterpriseDepartment(department);
-        return CommonResult.ok().data(enterpriseJob);
+        return CommonResult.success(enterpriseJob);
     }
 
     /**
@@ -83,14 +83,14 @@ public class EnterpriseJobController {
     @RequiresPermissions("enterprise/enterpriseJob/save")
     public CommonResult save(@Valid @RequestBody EnterpriseJob enterpriseJob) {
         try {
-            LoginUser loginUser = ShiroKit.getUser();
+            LoginUserVo loginUserVo = ShiroUtil.getUser();
             enterpriseJob.setCreateTime(new Date());
-            enterpriseJob.setCreateUser(ShiroKit.getUser().getLoginName());
+            enterpriseJob.setCreateUser(ShiroUtil.getUser().getLoginName());
             enterpriseJobService.save(enterpriseJob);
-            return CommonResult.ok().msg("添加成功");
+            return CommonResult.success("添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -102,13 +102,13 @@ public class EnterpriseJobController {
     @RequiresPermissions("enterprise/enterpriseJob/update")
     public CommonResult update(@Valid @RequestBody EnterpriseJob enterpriseJob) {
         try {
-            enterpriseJob.setUpdateUser(ShiroKit.getUser().getLoginName());
+            enterpriseJob.setUpdateUser(ShiroUtil.getUser().getLoginName());
             enterpriseJob.setUpdateTime(new Date());
             enterpriseJobService.updateById(enterpriseJob);
-            return CommonResult.ok().msg("修改成功");
+            return CommonResult.success("修改成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
 
     }
@@ -123,10 +123,10 @@ public class EnterpriseJobController {
     public CommonResult delete(@RequestBody String[] ids) {
         try {
             enterpriseJobService.removeByIds(Arrays.asList(ids));
-            return CommonResult.ok().msg("删除成功");
+            return CommonResult.success("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 
@@ -155,10 +155,10 @@ public class EnterpriseJobController {
                     nodeList.add(selectNode);
                 });
             }
-            return CommonResult.ok().data(nodeList);
+            return CommonResult.success(nodeList);
         } catch (Exception e) {
             e.printStackTrace();
-            return CommonResult.fail().msg("运行异常，请联系管理员");
+            return CommonResult.failed("运行异常，请联系管理员");
         }
     }
 

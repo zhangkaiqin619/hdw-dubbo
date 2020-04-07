@@ -46,8 +46,8 @@ public class ${className}Controller {
     @ApiOperation(value = "${comments}分页列表", notes = "${comments}分页列表")
     @GetMapping("/list")
     @RequiresPermissions("${moduleName}/${pathName}/list")
-    public CommonResult<PageParam<${className}>> treeGrid(QueryParam queryParam) {
-        PageParam<${className}> page = ${classname}Service.pageList(queryParam);
+    public CommonResult<PageParam<${className}>> treeGrid(QueryParam commonDTO) {
+        PageParam<${className}> page = ${classname}Service.pageList(commonDTO);
         return CommonResult.ok().data(page);
     }
 
