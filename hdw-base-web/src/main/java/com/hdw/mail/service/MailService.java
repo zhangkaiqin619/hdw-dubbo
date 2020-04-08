@@ -7,7 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
@@ -18,7 +18,7 @@ import javax.mail.internet.MimeMessage;
  * @Date 2020/4/2 10:38
  */
 @Slf4j
-//@Service
+@Component
 public class MailService {
 
     @Resource

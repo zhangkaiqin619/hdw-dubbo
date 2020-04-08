@@ -31,7 +31,7 @@ public class SysResource extends Model<SysResource> {
      */
     @ApiModelProperty(value = "主键")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     /**
      * 父级资源id

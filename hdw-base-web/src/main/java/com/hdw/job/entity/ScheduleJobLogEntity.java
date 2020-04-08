@@ -26,7 +26,7 @@ public class ScheduleJobLogEntity implements Serializable {
      */
     @ApiModelProperty("日志ID")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long logId;
 
     /**

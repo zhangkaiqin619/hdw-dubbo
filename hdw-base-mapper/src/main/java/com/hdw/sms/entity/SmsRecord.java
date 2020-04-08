@@ -30,7 +30,7 @@ public class SmsRecord extends Model<SmsRecord> {
      */
     @ApiModelProperty(value = "主键")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     /**
      * 账号

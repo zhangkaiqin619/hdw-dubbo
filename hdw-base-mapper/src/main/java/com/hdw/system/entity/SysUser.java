@@ -40,7 +40,7 @@ public class SysUser extends Model<SysUser> {
     @NotNull(message = "用户ID不能为空", groups = UpdateGroup.class)
     @ApiModelProperty(value = "主键ID")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     /**
      * 登陆名

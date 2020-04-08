@@ -32,7 +32,7 @@ public class ScheduleJobEntity implements Serializable {
      */
     @ApiModelProperty("任务ID")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long jobId;
 
     /**

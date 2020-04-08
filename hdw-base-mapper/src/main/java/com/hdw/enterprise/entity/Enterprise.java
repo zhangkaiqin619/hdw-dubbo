@@ -28,7 +28,7 @@ public class Enterprise extends Model<Enterprise> {
      * 主键ID
      */
     @ApiModelProperty(value = "主键ID")
-    @TableId(type = IdType.ID_WORKER_STR)
+    @TableId(type = IdType.ASSIGN_ID)
     private String id;
     /**
      * 企业id前缀

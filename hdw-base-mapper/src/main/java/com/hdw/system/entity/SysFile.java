@@ -24,7 +24,7 @@ import java.util.Date;
 public class SysFile extends Model<SysFile> {
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.ID_WORKER_STR)
+    @TableId(type = IdType.ASSIGN_ID)
     private String id;
     /**
      * 附件类型(哪个表的附件)

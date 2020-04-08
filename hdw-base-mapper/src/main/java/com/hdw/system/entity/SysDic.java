@@ -31,7 +31,7 @@ public class SysDic extends Model<SysDic> {
      */
     @ApiModelProperty(value = "主键ID")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     /**
      * 父变量ID

@@ -30,7 +30,7 @@ public class SysRoleResource extends Model<SysRoleResource> {
      */
     @ApiModelProperty(value = "主键id")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     /**
      * 角色id

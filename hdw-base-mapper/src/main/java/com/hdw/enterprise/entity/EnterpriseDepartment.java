@@ -24,7 +24,7 @@ import java.util.Date;
 public class EnterpriseDepartment extends Model<EnterpriseDepartment> {
     private static final long serialVersionUID = 1L;
     @ApiModelProperty(value = "主键ID")
-    @TableId(type = IdType.ID_WORKER_STR)
+    @TableId(type = IdType.ASSIGN_ID)
     private String id;
     /**
      * 企业部门父ID

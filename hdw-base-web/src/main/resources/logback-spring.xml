@@ -2,7 +2,7 @@
 <!-- 多环境分级别异步文件日志输出配置 -->
 <configuration debug="false">
     <!-- 日志级别 -->
-    <property name="log.level" value="INFO"/>
+    <property name="log.level" value="DEBUG"/>
     <!--日志文件的存储地址，勿在 LogBack 的配置中使用相对路径-->
     <property name="log.root" value="/output/logs"/>
     <!-- 日志名称 -->

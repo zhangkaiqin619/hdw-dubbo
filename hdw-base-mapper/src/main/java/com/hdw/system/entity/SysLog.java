@@ -33,7 +33,7 @@ public class SysLog extends Model<SysLog> {
      */
     @ApiModelProperty(value = "主键id")
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     /**
      * 登陆名
