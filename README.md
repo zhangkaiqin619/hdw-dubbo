@@ -102,18 +102,18 @@ hdw-dubbo
 + hdw-dubbo技术交流群：948405874
 
 #### 系统预览
-![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219204905.png)
-![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210136.png)
-![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210150.png)
-![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210210.png)
-![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/QQ%E6%88%AA%E5%9B%BE20181219210441.png)
-![image](https://github.com/JacksonTu/hdw-dubbo/blob/master/docs/img/hdw-dubbo%E6%8A%80%E6%9C%AF%E4%BA%A4%E6%B5%81%E7%BE%A4%E7%BE%A4%E4%BA%8C%E7%BB%B4%E7%A0%81.png)
+![image](https://images.gitee.com/uploads/images/2019/1115/104342_b5ec71f2_381747.png)
+![image](https://images.gitee.com/uploads/images/2019/1115/104223_ab350d2f_381747.png)
+![image](https://images.gitee.com/uploads/images/2019/1115/104223_81f580aa_381747.png)
+![image](https://images.gitee.com/uploads/images/2019/1115/104226_ca90d4ec_381747.png)
+![image](https://images.gitee.com/uploads/images/2019/1115/104223_b419cfa2_381747.png)
+![image](https://images.gitee.com/uploads/images/2019/1115/104223_77c64414_381747.png)
 
 
 #### 更新日志
  ##### v3.0.0 
-  + SpringBoot更新到2.2.1
-  + Dubbo 更新到2.7.3
+  + SpringBoot更新到2.2.5
+  + Dubbo 更新到2.7.6
   + 加入消息推送功能
   + 优化自定义分页参数工具类
   + 优化统一异常拦截
