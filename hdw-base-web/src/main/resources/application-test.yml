@@ -139,7 +139,3 @@ hdw:
       enabled: true
       include-paths: /**
       allow-file-extensions: gif,jpg,jpeg,bmp,png,jar,doc,docx,xls,xlsx,pdf,txt,rar
-    download:
-      enabled: false
-      include-paths: /**
-      allow-file-extensions: gif,jpg,jpeg,bmp,png,jar,doc,docx,xls,xlsx,pdf,txt,rar

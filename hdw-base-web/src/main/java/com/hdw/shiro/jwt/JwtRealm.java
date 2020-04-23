@@ -8,7 +8,6 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -88,21 +87,21 @@ public class JwtRealm extends AuthorizingRealm {
         //TODO:从token中取出用户名
         String username= jwtTokenUtil.getUserNameFromToken(token);
         if (org.apache.commons.lang3.StringUtils.isEmpty(username)) {
-            throw new AuthorizationException("token非法无效!");
+            throw new AuthenticationException("token非法无效!");
         }
         //TODO: 判断用户是否存在
         LoginUserVo loginUserVoVo= userService.selectLoginUserVoByLoginName(username);
         if(ObjectUtils.isEmpty(loginUserVoVo)){
-            throw new AuthorizationException("用户不存在!");
+            throw new AuthenticationException("用户不存在!");
         }
         //TODO: 判断用户状态
         if(loginUserVoVo.getStatus()==1){
-            throw new AuthorizationException("账号已被锁定,请联系管理员!");
+            throw new AuthenticationException("账号已被锁定,请联系管理员!");
         }
 
         //TODO:校验token是否超时失效
         if(!jwtTokenUtil.validateToken(token,username)){
-            throw new AuthorizationException("Token失效，请重新登录!");
+            throw new AuthenticationException("Token失效，请重新登录!");
         }
         log.info("===============Shiro登录认证成功============");
         return new SimpleAuthenticationInfo(loginUserVoVo, token, getName());

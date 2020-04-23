@@ -23,13 +23,6 @@ public class InterceptorProperties {
     @NestedConfigurationProperty
     private InterceptorConfig upload = new InterceptorConfig();
 
-    /**
-     * 下载拦截器
-     */
-    @NestedConfigurationProperty
-    private InterceptorConfig download = new InterceptorConfig();
-
-
     @Data
     public static class InterceptorConfig {
 

@@ -1,6 +1,5 @@
 package com.hdw.web;
 
-import com.hdw.interceptor.DownloadInterceptor;
 import com.hdw.interceptor.InterceptorProperties;
 import com.hdw.interceptor.UploadInterceptor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +23,6 @@ public class InterceptorWebConfig implements WebMvcConfigurer {
     @Resource
     private UploadInterceptor uploadInterceptor;
 
-    @Resource
-    private DownloadInterceptor downloadInterceptor;
-
     public InterceptorWebConfig() {
         log.debug("-----InterceptorWebConfig init-----");
     }
@@ -44,12 +40,6 @@ public class InterceptorWebConfig implements WebMvcConfigurer {
         if (interceptorProperties.getUpload().isEnabled()) {
             registry.addInterceptor(uploadInterceptor)
                     .addPathPatterns(interceptorProperties.getUpload().getIncludePaths());
-        }
-
-        // 下载拦截器注册
-        if (interceptorProperties.getDownload().isEnabled()) {
-            registry.addInterceptor(downloadInterceptor)
-                    .addPathPatterns(interceptorProperties.getDownload().getIncludePaths());
         }
     }
 }

@@ -3,7 +3,9 @@ package com.hdw.exception;
 import com.hdw.common.api.CommonResult;
 import com.hdw.common.exception.GlobalException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.auth.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -61,10 +63,9 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler(AuthorizationException.class)
+    @ExceptionHandler({UnauthorizedException.class, AuthenticationException.class,AuthorizationException.class})
     public CommonResult handleAuthorizationException(AuthorizationException e) {
         log.error("handleAuthorizationException: {}", e.getMessage());
         return CommonResult.unauthorized(e.getMessage());
     }
-
 }

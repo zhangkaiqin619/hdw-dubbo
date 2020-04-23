@@ -5,7 +5,8 @@ import com.hdw.common.constant.CommonConstant;
 import com.hdw.common.util.JacksonUtil;
 import com.hdw.shiro.jwt.JwtToken;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -41,7 +42,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             executeLogin(request,response);
             return true;
         }catch (Exception e){
-            throw new AuthorizationException("Token失效，请重新登录", e);
+            throw new AuthenticationException("Token失效，请重新登录", e);
         }
     }
 
@@ -101,14 +102,50 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         //TODO: 拦截请求头中是否含有token
         String headerToken = httpServletRequest.getHeader(CommonConstant.JWT_DEFAULT_TOKEN_NAME);
         //TODO: 拦截请求参数中是否含有token
-        String parameterToken=httpServletRequest.getParameter(CommonConstant.JWT_DEFAULT_TOKEN_NAME);
-        if(StringUtils.isEmpty(headerToken) && StringUtils.isEmpty(parameterToken)){
+        String parameterToken = httpServletRequest.getParameter(CommonConstant.JWT_DEFAULT_TOKEN_NAME);
+        if (StringUtils.isEmpty(headerToken) && StringUtils.isEmpty(parameterToken)) {
             String url = httpServletRequest.getRequestURI();
             log.error("JwtFilter preHandle url：{}", url);
             responseError(request, response);
             return false;
         }
         return super.preHandle(request, response);
+    }
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
+        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        //获取请求token，如果token不存在，直接返回401
+        //TODO: 拦截请求头中是否含有token
+        String headerToken = httpServletRequest.getHeader(CommonConstant.JWT_DEFAULT_TOKEN_NAME);
+        //TODO: 拦截请求参数中是否含有token
+        String parameterToken = httpServletRequest.getParameter(CommonConstant.JWT_DEFAULT_TOKEN_NAME);
+        if (StringUtils.isEmpty(headerToken) && StringUtils.isEmpty(parameterToken)) {
+            String url = httpServletRequest.getRequestURI();
+            log.error("JwtFilter onAccessDenied url：{}", url);
+            responseError(request, response);
+            return false;
+        }
+        return executeLogin(request, response);
+    }
+
+    @Override
+    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
+        httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        String url = httpServletRequest.getRequestURI();
+        log.error("JwtFilter onLoginFailure url：{}", url);
+        responseError(request, response);
+        return false;
     }
 
     /**
