@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * @Description com.hdw.enterprise.param
  * @Author TuMingLong
@@ -13,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("查询企业部门参数对象")
-public class EnterpriseDepartmentDTO {
+public class EnterpriseDepartmentDTO implements Serializable {
 
     @ApiModelProperty("主键ID")
     private String id;

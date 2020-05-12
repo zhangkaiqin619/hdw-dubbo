@@ -47,5 +47,7 @@ public interface ISmsRecordService extends IBaseService<SmsRecord> {
      */
     void updateMessageStatus(String[] smsRecordId);
 
+    String insert(SmsRecord smsRecord);
+
 }
 

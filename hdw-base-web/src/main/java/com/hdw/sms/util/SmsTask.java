@@ -108,9 +108,9 @@ public class SmsTask {
                         smsRecord.setSmsId(baseSysSms.getId());
                         smsRecord.setSmsTime(new Date());
                         smsRecord.setStatus(0);
-                        smsRecordService.save(smsRecord);
+                        String smsRecordId=smsRecordService.insert(smsRecord);
                         Sms sms = new Sms();
-                        sms.setId(smsRecord.getId().toString());
+                        sms.setId(smsRecordId);
                         sms.setTitle(baseSysSms.getTitle());
                         sms.setContent(baseSysSms.getContent());
                         //推送消息

@@ -78,4 +78,10 @@ public class SmsRecordServiceImpl extends BaseServiceImpl<SmsRecordMapper, SmsRe
         }
         this.updateBatchById(list);
     }
+
+    @Override
+    public String insert(SmsRecord smsRecord) {
+        this.baseMapper.insert(smsRecord);
+        return String.valueOf(smsRecord.getId());
+    }
 }
