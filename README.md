@@ -88,7 +88,7 @@ hdw-dubbo
 8. 项目打包部署  
      maven多环境打包,并替换相关变量
    ```bush
-      clean install -D profileActive={dev|test|prod} -D maven.test.skip=true -f pom.xml
+      clean install -D profileActive={dev|test|prod} -f pom.xml
    ```
 
 9. JVM优化
