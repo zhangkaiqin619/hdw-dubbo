@@ -1,0 +1,8 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.hdw.common.mybatis.MybatisPlusConfig,\
+  com.hdw.common.redis.RedisConfig,\
+  com.hdw.common.redis.RedissonConfig,\
+  com.hdw.common.swagger2.Swagger2Config,\
+  com.hdw.common.web.CorsConfig,\
+  com.hdw.common.web.WebConfig
+
