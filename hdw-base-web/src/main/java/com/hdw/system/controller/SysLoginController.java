@@ -108,7 +108,7 @@ public class SysLoginController {
         //TODO: 获取redis中的验证码
         String redisCode = (String) redisService.get(verKey);
         //TODO: 判断验证码
-        if (org.springframework.util.StringUtils.isEmpty(redisCode) && !redisCode.equals(verCode.trim().toLowerCase())) {
+        if (org.springframework.util.StringUtils.isEmpty(redisCode) || !redisCode.equals(verCode.trim().toLowerCase())) {
             return  CommonResult.failed("验证码不正确");
         }
 
