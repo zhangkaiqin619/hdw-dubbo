@@ -9,9 +9,9 @@ server:
 
 spring:
   profiles:
-    active: @profileActive@
+    active: ${profileActive}
   application:
-    name: @project.artifactId@
+    name: ${project.artifactId}
   main:
     allow-bean-definition-overriding: true
   mvc:
@@ -54,8 +54,9 @@ management:
         extras: registry,load,threadpool
 
 info:
-  name: @project.artifactId@
-  version: @project.version@
+  name: ${project.artifactId}
+  description: ${project.description}
+  version: ${project.version}
 
 mybatis-plus:
   mapper-locations: classpath*:com/hdw/*/mapper/sqlMapperXml/*Mapper.xml

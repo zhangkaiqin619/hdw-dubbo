@@ -9,9 +9,9 @@ server:
 
 spring:
   profiles:
-    active: @profileActive@
+    active: ${profileActive}
   application:
-    name: @project.artifactId@
+    name: ${project.artifactId}
   main:
     allow-bean-definition-overriding: true
   mvc:
@@ -55,6 +55,7 @@ management:
 
 info:
   name: ${project.artifactId}
+  description: ${project.description}
   version: ${project.version}
 
 mybatis-plus:

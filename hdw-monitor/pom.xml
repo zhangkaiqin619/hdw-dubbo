@@ -44,33 +44,6 @@
 		</dependency>
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<!-- 生产环境 -->
-			<id>prod</id>
-			<properties>
-				<profileActive>prod</profileActive>
-			</properties>
-		</profile>
-		<profile>
-			<!-- 本地开发环境 -->
-			<id>dev</id>
-			<properties>
-				<profileActive>dev</profileActive>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-		<profile>
-			<!-- 测试环境 -->
-			<id>test</id>
-			<properties>
-				<profileActive>test</profileActive>
-			</properties>
-		</profile>
-	</profiles>
-
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
