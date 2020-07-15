@@ -16,6 +16,7 @@
     <packaging>jar</packaging>
 
     <name>hdw-base-web</name>
+    <description>基础服务消费者</description>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -168,6 +169,13 @@
                     <fork>true</fork>
                     <outputDirectory>../docker/web</outputDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

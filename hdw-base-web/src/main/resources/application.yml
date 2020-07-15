@@ -82,5 +82,5 @@ hdw:
   swagger2:
     enabled: true
     description: ${project.description}
-    title: ${project.description}
+    title: ${project.artifactId}
     version: ${project.version}

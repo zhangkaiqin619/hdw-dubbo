@@ -16,6 +16,7 @@
     <packaging>jar</packaging>
 
     <name>hdw-base-service</name>
+    <description>基础服务提供者</description>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -51,6 +52,13 @@
                     <fork>true</fork>
                     <outputDirectory>../docker/service</outputDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
