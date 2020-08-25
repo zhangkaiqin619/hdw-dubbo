@@ -14,7 +14,6 @@ import com.hdw.job.dto.JobDTO;
 import com.hdw.job.service.IScheduleJobService;
 import com.hdw.job.util.ScheduleUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,23 +26,6 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
 
     @Resource
     private Scheduler scheduler;
-
-    /**
-     * 项目启动时，初始化定时器
-     */
-    //@PostConstruct
-    public void init() {
-        List<ScheduleJobEntity> scheduleJobList = this.list();
-        for (ScheduleJobEntity scheduleJob : scheduleJobList) {
-            CronTrigger cronTrigger = ScheduleUtil.getCronTrigger(scheduler, scheduleJob.getJobId());
-            //如果不存在，则创建
-            if (cronTrigger == null) {
-                ScheduleUtil.createScheduleJob(scheduler, scheduleJob);
-            } else {
-                ScheduleUtil.updateScheduleJob(scheduler, scheduleJob);
-            }
-        }
-    }
 
     @Override
     public PageVo queryPage(JobDTO jobDTO) {
@@ -93,7 +75,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     @Override
     public int updateBatch(Long[] jobIds, int status) {
         Map<String, Object> map = new HashMap<>();
-        map.put("list", jobIds);
+        map.put("list", Arrays.asList(jobIds));
         map.put("status", status);
         return this.baseMapper.updateBatch(map);
     }

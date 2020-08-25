@@ -85,8 +85,8 @@ spring:
       client:
         url: http://127.0.0.1:8180
         instance:
+          prefer-ip: true
           service-base-url: http://127.0.0.1:${server.port}
-          management-base-url: http://127.0.0.1:${server.port}
 
 dubbo:
   application:

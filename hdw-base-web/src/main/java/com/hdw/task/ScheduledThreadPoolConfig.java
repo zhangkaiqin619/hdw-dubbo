@@ -37,7 +37,7 @@ public class ScheduledThreadPoolConfig implements SchedulingConfigurer {
     public ThreadPoolTaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler executor = new ThreadPoolTaskScheduler();
         // 设置默认线程名称
-        executor.setThreadNamePrefix(env.getProperty("spring.application.name") + "-task-");
+        executor.setThreadNamePrefix(env.getProperty("spring.application.name") + "-task");
         // 设置最大线程数
         executor.setPoolSize(new Double(Math.floor(Runtime.getRuntime().availableProcessors() / (1 - 0.9))).intValue());
         // 设置线程活跃时间（秒）

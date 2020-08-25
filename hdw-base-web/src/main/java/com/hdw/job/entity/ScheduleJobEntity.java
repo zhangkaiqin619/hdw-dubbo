@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.hdw.common.util.JacksonUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -182,5 +183,10 @@ public class ScheduleJobEntity implements Serializable {
      */
     public Date getCreateTime() {
         return createTime;
+    }
+
+    @Override
+    public String toString() {
+        return JacksonUtil.toJson(this);
     }
 }

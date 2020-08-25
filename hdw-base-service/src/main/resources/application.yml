@@ -5,7 +5,6 @@ server:
   tomcat:
     uri-encoding: UTF-8
     max-connections: 1000
-    min-spare-threads: 30
 
 spring:
   profiles:
