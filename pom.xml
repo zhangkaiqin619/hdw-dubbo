@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.3.RELEASE</version>
+        <version>2.3.6.RELEASE</version>
         <relativePath/>
     </parent>
 
     <groupId>com.hdw</groupId>
     <artifactId>hdw-dubbo</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>hdw-common</module>
+        <module>hdw-api-base</module>
+        <module>hdw-server-base</module>
+        <module>hdw-api-notice</module>
+        <module>hdw-server-notice</module>
+        <module>hdw-web-base</module>
         <module>hdw-monitor</module>
-        <module>hdw-base-mapper</module>
-        <module>hdw-base-api</module>
-        <module>hdw-base-service</module>
-        <module>hdw-base-web</module>
-        <module>hdw-generator</module>
+
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
-        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
-        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-        <spring-boot-admin.version>2.2.3</spring-boot-admin.version>
-        <alibaba.cloud.version>2.2.1.RELEASE</alibaba.cloud.version>
-        <alibaba.fastjson.version>1.2.73</alibaba.fastjson.version>
-        <alibaba.druid.version>1.1.23</alibaba.druid.version>
+        <spring-boot.version>2.3.6.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <spring-boot-admin.version>2.3.0</spring-boot-admin.version>
+        <alibaba.cloud.version>2.2.3.RELEASE</alibaba.cloud.version>
+        <alibaba.fastjson.version>1.2.75</alibaba.fastjson.version>
+        <alibaba.druid.version>1.2.3</alibaba.druid.version>
         <dubbo.version>2.7.8</dubbo.version>
 
         <apache.commons-lang3.version>3.9</apache.commons-lang3.version>
@@ -45,17 +46,16 @@
         <apache.commons-collections4.version>4.4</apache.commons-collections4.version>
         <apache.commons-fileupload.version>1.4</apache.commons-fileupload.version>
         <apache.commons-text.version>1.8</apache.commons-text.version>
+        <apache.commons-configuration.version>1.10</apache.commons-configuration.version>
         <httpclient.version>4.5.12</httpclient.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <com.google.zxing.version>3.4.0</com.google.zxing.version>
-        <hutool.version>5.2.4</hutool.version>
-        <poi.version>4.1.1</poi.version>
+        <hutool.version>5.5.1</hutool.version>
         <pdfbox.version>2.0.19</pdfbox.version>
+        <knife4j.version>3.0.1</knife4j.version>
         <fastdfs-spring-boot-starter.version>0.2.0</fastdfs-spring-boot-starter.version>
-        <swagger2.version>2.9.2</swagger2.version>
-        <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
         <mybatis-plus.version>3.3.2</mybatis-plus.version>
-        <dynamic-datasource-spring-boot-starter.version>3.0.0</dynamic-datasource-spring-boot-starter.version>
+        <dynamic-datasource-spring-boot-starter.version>3.2.1</dynamic-datasource-spring-boot-starter.version>
         <p6spy.version>3.9.1</p6spy.version>
         <jsoup.version>1.13.1</jsoup.version>
         <jjwt.version>0.9.0</jjwt.version>
@@ -66,10 +66,11 @@
         <thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
         <thymeleaf-extras-shiro.version>2.0.0</thymeleaf-extras-shiro.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
+        <velocity.version>2.2</velocity.version>
 
-        <hdw-common.version>3.0.0</hdw-common.version>
-        <hdw-base-mapper.version>3.0.0</hdw-base-mapper.version>
-        <hdw-base-api.version>3.0.0</hdw-base-api.version>
+        <hdw-common.version>3.1.0</hdw-common.version>
+        <hdw-api-base.version>3.1.0</hdw-api-base.version>
+        <hdw-api-notice.version>3.1.0</hdw-api-notice.version>
     </properties>
 
     <dependencyManagement>

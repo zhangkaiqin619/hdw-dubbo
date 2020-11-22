@@ -19,21 +19,25 @@
 ``` lua
 hdw-dubbo
 ├── docker                             -- docker脚本文件
-    ├── service                        -- hdw-base-service脚本
-    ├── service                        -- hdw-base-web脚本
+    ├── server-base                        -- hdw-server-base脚本
+    ├── server-notice                      -- hdw-server-notice脚本
+    ├── web-base                           -- hdw-base-web脚本
 
 ├── docs                               -- 文档及脚本
     ├── config                         -- dubbo控制台
     ├── img                            -- 系统图片截图  
     ├── sql                            -- sql文件  
      
-├── hdw-common                        -- 提供微服务相关依赖包、工具类、全局异常解析等
-├── hdw-base-mapper                   -- 基础服务Mapper层
-├── hdw-base-api                      -- 基础服务接口
-├── hdw-base-service                  -- 基础服务接口服务提供者服务器[port = 8181]
-├── hdw-base-web                      -- 基础服务接口服务消费者服务器[port = 8182]
+├── hdw-common                        -- 通用模块
+    ├── hdw-common-core                        -- 系统核心包
+    ├── hdw-common-starter-datasource          -- 系统数据库自动装配starter  
+    ├── hdw-common-starter-redis               -- 系统redis自动装配starter
+├── hdw-api-base                      -- 基础服务接口
+├── hdw-server-base                   -- 基础服务提供者服务器[port = 8181]
+├── hdw-api-notice                    -- 系统消息服务接口
+├── hdw-server-notice                 -- 系统消息服务提供者服务器[port = 8182]
+├── hdw-web-base                      -- 服务消费者服务器[port = 8190]
 ├── hdw-monitor                       -- SpringBootAdmin监控服务[port = 8180]
-├── hdw-generator                     -- 代码生成服务器[port = 8183]
 ```
 
 
@@ -50,6 +54,7 @@ hdw-dubbo
     + Nodejs (v10.16.0+)
    
 2. 执行创建数据库hdw_dubbo并执行sql脚本
+    
     + docs/sql/hdw_dubbo.sql
     
 3. 启动Zookeeper服务发现和注册中心
@@ -64,25 +69,26 @@ hdw-dubbo
     ```
 
 6. 本地启动(按顺序启动)
-     1. [必需]MonitorApplication(SpringBootAdmin监控服务)
-     2. [必需]BaseServiceApplication(基础服务接口服务提供者服务器)
-     3. [必需]BaseWebApplication(基础服务接口服务消费者服务器)
+     1. [必需]ServerBaseApplication(基础服务提供者服务器)
+     2. [必需]ServerNoticeApplication(系统消息服务提供者服务器)
+     3. [必需]WebBaseApplication(基础服务消费者服务器)
+     4. [必需]MonitorApplication(SpringBootAdmin监控服务)
      ```
-       + 访问 http://localhost:8182
-       + 访问基础平台API http://localhost:8182/doc.html
+       + 访问 http://localhost:8190
+       + 访问基础平台API http://localhost:8190/doc.html
      ```
-      
+     
 7. 前端启动
     1. 安装淘宝NPM镜像
     ```bush
     npm install -g cnpm --registry=https://registry.npm.taobao.org
     npm config set registry  https://registry.npm.taobao.org
-    ``` 
+    ```
     2. 运行
     ```bush
         cnpm install 
         npm run dev
-    ``` 
+    ```
     访问 http://localhost:8090
     
 8. 项目打包部署  
@@ -93,31 +99,43 @@ hdw-dubbo
 
 9. JVM优化
      ```bush  
-        -Xms128m -Xmx256m  
+        -Xmx256m -Xms256m -Xss1m -Xmn128m -XX:+PrintGCDetails  
      ```
-    
-#### 开发计划
-
-#### 技术交流
-+ hdw-dubbo技术交流群：948405874
 
 #### 系统预览
-![image](https://images.gitee.com/uploads/images/2019/1115/104342_b5ec71f2_381747.png)
-![image](https://images.gitee.com/uploads/images/2019/1115/104223_ab350d2f_381747.png)
-![image](https://images.gitee.com/uploads/images/2019/1115/104223_81f580aa_381747.png)
-![image](https://images.gitee.com/uploads/images/2019/1115/104226_ca90d4ec_381747.png)
-![image](https://images.gitee.com/uploads/images/2019/1115/104223_b419cfa2_381747.png)
-![image](https://images.gitee.com/uploads/images/2019/1115/104223_77c64414_381747.png)
+<table>
+  <tr>
+     <td><img src="docs/images/1.png"/></td>
+     <td><img src="docs/images/2.png"/></td>
+  </tr>
+  <tr>
+     <td><img src="docs/images/3.png"/></td>
+     <td><img src="docs/images/4.png"/></td>
+  </tr>
+  <tr>
+     <td><img src="docs/images/5.png"/></td>
+     <td><img src="docs/images/6.png"/></td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/7.png"/></td>
+    <td><img src="docs/images/8.png"/></td>
+  </tr>
+</table>
 
+#### 技术交流
+加入QQ群和大家一起交流吹水：
+
+![qq](docs/images/QQ.png)
+
+#### 开发计划
 
 #### 更新日志
- ##### v3.0.0 
-  + SpringBoot更新到2.3.1
-  + Dubbo 更新到2.7.6
-  + 加入消息推送功能
-  + 优化自定义分页参数工具类
-  + 优化统一异常拦截
-  + 将代码生成器移入本项目
+ ##### v3.1.0 
+  + SpringBoot更新到2.3.6
+  + Dubbo更新到2.7.8
+  + 层级调整
+  + 优化消息服务
+  + 实现服务提供者之间相互调用
+  + 实现消费者调用多个服务提供者
+  + hdw-web-base去掉数据库连接
   + 优化前端代码
-  + 用户密码加密
-  + 重构代码

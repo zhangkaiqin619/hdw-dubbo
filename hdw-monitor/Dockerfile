@@ -1,12 +1,12 @@
 # hdw-monitor docker配置
 FROM frolvlad/alpine-oraclejdk8
 
-MAINTAINER TuMinglong (tuminglong@126.com)
+MAINTAINER JacksonTu (tuminglong@126.com)
 
 ENV PROJECT_HOME /home/project
 ENV TOMCAT_HOME /home/tomcat/webapps
 ENV OUTPUT_HOME /output
-ENV JAVA_OPTS="-Xms128m -Xmx256m"
+ENV JAVA_OPTS="-Xms256m -Xmx256m -Xss1m -Xmn128m"
 
 RUN mkdir -p "$PROJECT_HOME" && mkdir -p "$OUTPUT_HOME" && mkdir -p "$TOMCAT_HOME"
 

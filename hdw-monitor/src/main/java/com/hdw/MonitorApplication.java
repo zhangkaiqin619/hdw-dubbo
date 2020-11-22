@@ -9,7 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 /**
  * 
  * @description Application
- * @author TuMinglong
+ * @author JacksonTu
  * @date 2017年9月5日下午8:55:08
  *
  */
