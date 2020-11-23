@@ -11,7 +11,7 @@
  Target Server Version : 50730
  File Encoding         : 65001
 
- Date: 22/11/2020 19:50:37
+ Date: 23/11/2020 13:54:19
 */
 
 SET NAMES utf8mb4;
@@ -406,29 +406,27 @@ INSERT INTO `t_sys_dic` VALUES (16, 0, '20184049', '区域', '2018-05-07 20:28:5
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_file`;
 CREATE TABLE `t_sys_file`  (
-  `id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id` bigint(20) NOT NULL,
   `table_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '附件类型(哪个表的附件)',
   `record_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `attachment_group` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表的记录Id下的附件分组的组名',
   `attachment_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '附件名称',
   `attachment_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '附件路径',
   `attachment_type` tinyint(4) NULL DEFAULT NULL COMMENT '附件类型(0-word,1-excel,2-pdf,3-jpg,png,4-其他)',
+  `enterprise_id` bigint(20) NULL DEFAULT NULL,
+  `save_type` tinyint(4) NULL DEFAULT NULL COMMENT '存储类型（0：本地存储，1:fastdfs）',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '记录创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '记录最后修改时间',
   `create_user` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录创建者(用户)',
   `update_user` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录最后修改者(用户)',
-  `is_sync` tinyint(4) NULL DEFAULT NULL COMMENT '数据是否同步(0:是,1:否)',
-  `enterprise_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `save_type` tinyint(4) NULL DEFAULT NULL COMMENT '存储类型（0：本地存储，1:fastdfs）',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `t_sys_file_table_id`(`table_id`) USING BTREE,
-  INDEX `t_sys_file_rrecord_id`(`record_id`) USING BTREE
+  INDEX `table_id`(`table_id`, `record_id`, `attachment_group`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '附件表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of t_sys_file
 -- ----------------------------
-INSERT INTO `t_sys_file` VALUES ('1247838103305990145', 't_enterprise', '1', '企业', '学习笔记.jpg', 'http://localhost:8182//upload/enterprise/20200408/1586342757782.jpg', 3, '2020-04-08 18:46:02', NULL, 'admin', NULL, 0, NULL, 0);
+INSERT INTO `t_sys_file` VALUES (1247838103305990145, 't_enterprise', '1', '企业', '学习笔记.jpg', 'http://localhost:8182//upload/enterprise/20200408/1586342757782.jpg', 3, NULL, 0, '2020-04-08 18:46:02', NULL, 'admin', NULL);
 
 -- ----------------------------
 -- Table structure for t_sys_log
@@ -447,7 +445,7 @@ CREATE TABLE `t_sys_log`  (
   `client_ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '客户端ip',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 469 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of t_sys_log
@@ -963,7 +961,7 @@ CREATE TABLE `t_sys_user`  (
   `create_user_id` bigint(20) NULL DEFAULT NULL COMMENT '记录创建用户ID',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_user_login_name`(`login_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of t_sys_user
@@ -998,7 +996,7 @@ CREATE TABLE `t_sys_user_role`  (
   `role_id` bigint(20) NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_role_ids`(`user_id`, `role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1194058882400137218 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2542 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of t_sys_user_role

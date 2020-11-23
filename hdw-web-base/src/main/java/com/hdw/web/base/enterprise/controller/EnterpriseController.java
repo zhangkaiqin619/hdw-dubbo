@@ -292,7 +292,6 @@ public class EnterpriseController extends UpLoadController {
                         sysFile.setAttachmentType(4);
                     }
                     sysFile.setSaveType(0);
-                    sysFile.setIsSync(0);
                     sysFile.setCreateTime(new Date());
                     sysFile.setCreateUser(ShiroUtil.getUser().getLoginName());
                     sysFileService.save(sysFile);

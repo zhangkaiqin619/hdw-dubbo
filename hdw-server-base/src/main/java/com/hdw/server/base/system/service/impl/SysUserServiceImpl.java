@@ -42,6 +42,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private ISysUserEnterpriseService sysUserEnterpriseService;
     @Autowired
     private ISysResourceService sysResourceService;
+    @Autowired
+    private ThreadPoolExecutor threadPoolExecutor;
 
     @Override
     public SysUser selectByLoginName(String loginName) {
@@ -68,70 +70,44 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveByVo(SysUser user) {
-        /**
-         * 对于CPU密集型任务，最大线程数是CPU线程数+1。对于IO密集型任务，尽量多配点，可以是CPU线程数*2，或者CPU线程数/(1-阻塞系数)。
-         * maxPoolSize=new Double(Math.floor(Runtime.getRuntime().availableProcessors()/(1-0.9))).intValue()
-         */
-        final ExecutorService threadPool = new ThreadPoolExecutor(
-                Runtime.getRuntime().availableProcessors(),
-                new Double(Math.floor(Runtime.getRuntime().availableProcessors() / (1 - 0.9))).intValue(),
-                1l,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(Runtime.getRuntime().availableProcessors()),
-                Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.DiscardPolicy()
-        );
 
         this.baseMapper.insert(user);
         //检查角色是否越权
         checkRole(user);
 
         try {
-            threadPool.submit(() -> {
+            threadPoolExecutor.submit(() -> {
                 //保存用户与角色关系
                 sysUserRoleService.saveOrUpdateUserRole(user.getId(), user.getRoleIdList());
             });
-            threadPool.submit(() -> {
+            threadPoolExecutor.submit(() -> {
                 //保存用户与企业关系关系
                 sysUserEnterpriseService.saveOrUpdateUserEnterprise(user.getId(), user.getEnterpriseIdList());
             });
-        } finally {
-            threadPool.shutdown();
+        }finally {
+
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateByVo(SysUser user) {
-        /**
-         * 对于CPU密集型任务，最大线程数是CPU线程数+1。对于IO密集型任务，尽量多配点，可以是CPU线程数*2，或者CPU线程数/(1-阻塞系数)。
-         * maxPoolSize=new Double(Math.floor(Runtime.getRuntime().availableProcessors()/(1-0.9))).intValue()
-         */
-        final ExecutorService threadPool = new ThreadPoolExecutor(
-                Runtime.getRuntime().availableProcessors(),
-                new Double(Math.floor(Runtime.getRuntime().availableProcessors() / (1 - 0.9))).intValue(),
-                1l,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(Runtime.getRuntime().availableProcessors()),
-                Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.DiscardPolicy()
-        );
 
         this.updateById(user);
         //检查角色是否越权
         checkRole(user);
 
         try {
-            threadPool.submit(() -> {
+            threadPoolExecutor.submit(() -> {
                 //保存用户与角色关系
                 sysUserRoleService.saveOrUpdateUserRole(user.getId(), user.getRoleIdList());
             });
-            threadPool.submit(() -> {
+            threadPoolExecutor.submit(() -> {
                 //保存用户与企业关系关系
                 sysUserEnterpriseService.saveOrUpdateUserEnterprise(user.getId(), user.getEnterpriseIdList());
             });
         } finally {
-            threadPool.shutdown();
+
         }
     }
 

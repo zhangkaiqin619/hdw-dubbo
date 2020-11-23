@@ -1,7 +1,6 @@
 package com.hdw.common.core.task;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -16,7 +15,6 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Author JacksonTu
  * @Date 2020/4/1 23:45
  */
-@Configuration
 @EnableScheduling
 public class ScheduledThreadPoolConfig implements SchedulingConfigurer {
     @Resource

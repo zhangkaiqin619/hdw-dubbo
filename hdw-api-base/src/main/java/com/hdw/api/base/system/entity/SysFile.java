@@ -23,7 +23,7 @@ import java.util.Date;
 public class SysFile implements Serializable {
 
     @TableId(type = IdType.AUTO)
-    private String id;
+    private Long id;
     /**
      * 附件类型(哪个表的附件)
      */
@@ -60,13 +60,18 @@ public class SysFile implements Serializable {
     @ApiModelProperty(value = "附件类型(0-word,1-excel,2-pdf,3-jpg,png,4-其他)")
     @TableField("attachment_type")
     private Integer attachmentType;
-
     /**
      * 存储类型（0：本地存储，1:fastdfs）
      */
     @ApiModelProperty(value = "存储类型（0：本地存储，1:fastdfs）")
     @TableField("save_type")
     private Integer saveType;
+    /**
+     * 存储类型（0：本地存储，1:fastdfs）
+     */
+    @ApiModelProperty(value = "企业ID")
+    @TableField("enterprise_id")
+    private Long enterpriseId;
     /**
      * 记录创建时间
      */
@@ -91,173 +96,61 @@ public class SysFile implements Serializable {
     @ApiModelProperty(value = "记录最后修改者(用户)")
     @TableField("update_user")
     private String updateUser;
-    /**
-     * 数据是否同步(0:是,1:否)
-     */
-    @ApiModelProperty(value = "数据是否同步(0:是,1:否)")
-    @TableField("is_sync")
-    private Integer isSync;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * 获取：附件类型(哪个表的附件)
-     */
     public String getTableId() {
         return tableId;
     }
 
-    /**
-     * 设置：附件类型(哪个表的附件)
-     */
     public void setTableId(String tableId) {
         this.tableId = tableId;
     }
 
-    /**
-     * 获取：附件ID(哪个表的记录Id)
-     */
     public String getRecordId() {
         return recordId;
     }
 
-    /**
-     * 设置：附件ID(哪个表的记录Id)
-     */
     public void setRecordId(String recordId) {
         this.recordId = recordId;
     }
 
-    /**
-     * 获取：表的记录Id下的附件分组的组名
-     */
     public String getAttachmentGroup() {
         return attachmentGroup;
     }
 
-    /**
-     * 设置：表的记录Id下的附件分组的组名
-     */
     public void setAttachmentGroup(String attachmentGroup) {
         this.attachmentGroup = attachmentGroup;
     }
 
-    /**
-     * 获取：附件名称
-     */
     public String getAttachmentName() {
         return attachmentName;
     }
 
-    /**
-     * 设置：附件名称
-     */
     public void setAttachmentName(String attachmentName) {
         this.attachmentName = attachmentName;
     }
 
-    /**
-     * 获取：附件路径
-     */
     public String getAttachmentPath() {
         return attachmentPath;
     }
 
-    /**
-     * 设置：附件路径
-     */
     public void setAttachmentPath(String attachmentPath) {
         this.attachmentPath = attachmentPath;
     }
 
-    /**
-     * 获取：附件类型(0-word,1-excel,2-pdf,3-jpg,png,4-其他)
-     */
     public Integer getAttachmentType() {
         return attachmentType;
     }
 
-    /**
-     * 设置：附件类型(0-word,1-excel,2-pdf,3-jpg,png,4-其他)
-     */
     public void setAttachmentType(Integer attachmentType) {
         this.attachmentType = attachmentType;
-    }
-
-    /**
-     * 获取：记录创建时间
-     */
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置：记录创建时间
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 获取：记录最后修改时间
-     */
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    /**
-     * 设置：记录最后修改时间
-     */
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    /**
-     * 获取：记录创建者(用户)
-     */
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    /**
-     * 设置：记录创建者(用户)
-     */
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    /**
-     * 获取：记录最后修改者(用户)
-     */
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    /**
-     * 设置：记录最后修改者(用户)
-     */
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    /**
-     * 获取：数据是否同步(0:是,1:否)
-     */
-    public Integer getIsSync() {
-        return isSync;
-    }
-
-    /**
-     * 设置：数据是否同步(0:是,1:否)
-     */
-    public void setIsSync(Integer isSync) {
-        this.isSync = isSync;
     }
 
     public Integer getSaveType() {
@@ -266,6 +159,46 @@ public class SysFile implements Serializable {
 
     public void setSaveType(Integer saveType) {
         this.saveType = saveType;
+    }
+
+    public Long getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Long enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
     }
 
     @Override
