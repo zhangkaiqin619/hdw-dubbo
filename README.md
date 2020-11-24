@@ -10,8 +10,16 @@
 + 引入API模板，根据token作为登录令牌，极大的方便了APP接口开发
 + 引入Hibernate Validator校验框架，轻松实现后端校验
 + 引入swagger文档支持，方便编写API接口文档
-+ 前端地址：https://github.com/JacksonTu/hdw-dubbo-ui
 + 演示地址：http://locahost:8090 (账号密码：admin/123456)
+
+
+#### 项目地址
+
+ 平台  | Bright-Cloud（后端） |Bright-Cloud-UI（前端）
+---|---|---
+GitHub | [https://github.com/JacksonTu/hdw-dubbo](https://github.com/JacksonTu/hdw-dubbo) |[https://github.com/JacksonTu/hdw-dubbo-ui](https://github.com/JacksonTu/hdw-dubbo-ui)
+Gitee  | [https://gitee.com/tumao2/hdw-dubbo](https://gitee.com/tumao2/hdw-dubbo) |[https://gitee.com/tumao2/hdw-dubbo-ui](https://gitee.com/tumao2/hdw-dubbo-ui)
+
 
 
 
