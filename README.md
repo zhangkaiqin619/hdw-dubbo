@@ -15,7 +15,7 @@
 
 #### 项目地址
 
- 平台  | Bright-Cloud（后端） |Bright-Cloud-UI（前端）
+ 平台  | hdw-dubbo（后端） |hdw-dubbo-ui（前端）
 ---|---|---
 GitHub | [https://github.com/JacksonTu/hdw-dubbo](https://github.com/JacksonTu/hdw-dubbo) |[https://github.com/JacksonTu/hdw-dubbo-ui](https://github.com/JacksonTu/hdw-dubbo-ui)
 Gitee  | [https://gitee.com/tumao2/hdw-dubbo](https://gitee.com/tumao2/hdw-dubbo) |[https://gitee.com/tumao2/hdw-dubbo-ui](https://gitee.com/tumao2/hdw-dubbo-ui)
