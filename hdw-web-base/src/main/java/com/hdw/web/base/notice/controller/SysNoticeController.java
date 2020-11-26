@@ -94,6 +94,7 @@ public class SysNoticeController {
     @RequiresPermissions("notice/delete")
     public CommonResult deleteSysNotice(@RequestBody String[] ids) {
         try {
+            this.sysNoticeSendService.deleteByNoticeId(ids);
             this.sysNoticeService.deleteSysNotice(ids);
             return CommonResult.success("删除成功");
         } catch (Exception e) {
@@ -194,6 +195,9 @@ public class SysNoticeController {
                 boolean flag = this.sysNoticeService.updateById(notice);
                 if (flag) {
                     message = "成功";
+                    JSONObject obj=new JSONObject();
+                    obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_REVOKE);
+                    webSocket.sendAllMessage(obj.toJSONString());
                 }
             }
             return CommonResult.success(message);

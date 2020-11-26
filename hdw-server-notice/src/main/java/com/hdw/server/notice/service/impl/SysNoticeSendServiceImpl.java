@@ -11,10 +11,10 @@ import com.hdw.api.notice.service.ISysNoticeSendService;
 import com.hdw.common.core.vo.PageVo;
 import com.hdw.server.notice.mapper.SysNoticeSendMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -113,5 +113,16 @@ public class SysNoticeSendServiceImpl extends ServiceImpl<SysNoticeSendMapper, S
             }
         }
 
+    }
+
+    @Override
+    public void deleteByNoticeId(String[] noticeIds) {
+        LambdaQueryWrapper<SysNoticeSend> wrapper = new LambdaQueryWrapper<>();
+        if(noticeIds!=null){
+            for (String noticeId: noticeIds) {
+                wrapper.eq(StringUtils.isNoneBlank(noticeId), SysNoticeSend::getNoticeId, noticeId);
+                this.remove(wrapper);
+            }
+        }
     }
 }

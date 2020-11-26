@@ -49,9 +49,9 @@ public interface WebsocketConstant {
     String CMD_TOPIC = "topic";
 
     /**
-     * 消息类型 home_alarm 首页预警信息
+     * 消息类型 revoke 撤销
      */
-    String CMD_HOME_ALARM = "home_alarm";
+    String CMD_REVOKE = "revoke";
 
     /**
      * 消息类型 email

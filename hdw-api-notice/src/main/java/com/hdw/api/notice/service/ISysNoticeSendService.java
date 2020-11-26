@@ -79,5 +79,12 @@ public interface ISysNoticeSendService extends IService<SysNoticeSend> {
      */
     void updateByUserIdAndNoticeId(SysNoticeSend sysNoticeSend);
 
+    /**
+     * 根据noticeId集合删除
+     *
+     * @param noticeIds
+     */
+    void deleteByNoticeId(String[] noticeIds);
+
 
 }
