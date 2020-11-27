@@ -157,6 +157,12 @@ public class SysNotice implements Serializable {
     private String delFlag;
 
     /**
+     * 通知ID
+     */
+    @TableField(exist = false)
+    private Long noticeId;
+
+    /**
      * 用户ID
      */
     @TableField(exist = false)
@@ -358,5 +364,13 @@ public class SysNotice implements Serializable {
 
     public void setReadFlag(String readFlag) {
         this.readFlag = readFlag;
+    }
+
+    public Long getNoticeId() {
+        return noticeId;
+    }
+
+    public void setNoticeId(Long noticeId) {
+        this.noticeId = noticeId;
     }
 }
