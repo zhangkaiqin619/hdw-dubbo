@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>com.hdw</groupId>
-            <artifactId>hdw-common-starter-redis</artifactId>
+            <artifactId>hdw-common-starter-redisson</artifactId>
             <version>${hdw-common.version}</version>
         </dependency>
 
@@ -48,6 +48,27 @@
             <version>${jjwt.version}</version>
         </dependency>
         <!--JWT end-->
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
 
         <!-- Shiro JWT begin -->
         <dependency>

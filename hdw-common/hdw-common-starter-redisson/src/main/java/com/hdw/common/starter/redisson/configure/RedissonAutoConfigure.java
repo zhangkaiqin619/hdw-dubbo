@@ -1,4 +1,4 @@
-package com.hdw.common.starter.redis.configure;
+package com.hdw.common.starter.redisson.configure;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,8 +17,10 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import com.hdw.common.starter.redis.service.RedisPubService;
-import com.hdw.common.starter.redis.service.RedisService;
+import com.hdw.common.starter.redisson.service.RedisPubService;
+import com.hdw.common.starter.redisson.service.RedisService;
+import org.redisson.api.RedissonClient;
+import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -31,7 +33,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -47,12 +48,12 @@ import java.time.format.DateTimeFormatter;
 
 
 /**
- * @Description Redis配置类
+ * @Description Redisson配置类
  * @Author JacksonTu
  * @Date 2020/3/28 16:58
  */
 @EnableCaching
-public class RedisAutoConfigure extends CachingConfigurerSupport {
+public class RedissonAutoConfigure extends CachingConfigurerSupport {
 
     @Bean
     public Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer() {
@@ -102,18 +103,24 @@ public class RedisAutoConfigure extends CachingConfigurerSupport {
         return jackson2JsonRedisSerializer;
     }
 
+    @Bean
+    public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
+        return new RedissonConnectionFactory(redisson);
+    }
+
+
     /**
      * shiro redis缓存使用的模板
      * 实例化 RedisTemplate 对象
      *
-     * @param redisConnectionFactory
+     * @param redissonConnectionFactory
      * @return
      */
     @Bean(name = "shiroRedisTemplate")
-    public RedisTemplate<String, Object> objectRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> objectRedisTemplate(RedissonConnectionFactory redissonConnectionFactory) {
         ShiroRedisSerializer shiroRedisSerializer = new ShiroRedisSerializer();
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setConnectionFactory(redissonConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(shiroRedisSerializer);
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
@@ -123,9 +130,9 @@ public class RedisAutoConfigure extends CachingConfigurerSupport {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(RedissonConnectionFactory redissonConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setConnectionFactory(redissonConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
@@ -136,8 +143,8 @@ public class RedisAutoConfigure extends CachingConfigurerSupport {
 
 
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-        RedisCacheWriter redisCacheWriter = RedisCacheWriter.lockingRedisCacheWriter(redisConnectionFactory);
+    public CacheManager cacheManager(RedissonConnectionFactory redissonConnectionFactory) {
+        RedisCacheWriter redisCacheWriter = RedisCacheWriter.lockingRedisCacheWriter(redissonConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
 

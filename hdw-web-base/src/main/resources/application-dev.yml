@@ -1,9 +1,9 @@
 spring:
   redis:
     database: 0
-    host: 127.0.0.1
+    host: localhost
     port: 6379
-    password:
+    #password:
     timeout: 3600ms
     #    cluster:
     #      max-redirects: 3
@@ -15,6 +15,8 @@ spring:
         min-idle: 50
         max-wait: 6000ms
       shutdown-timeout: 100ms
+  redisson:
+    file: classpath:redisson-single.yaml
 
   activemq:
     broker-url: tcp://localhost:61616

@@ -54,12 +54,12 @@
         <pdfbox.version>2.0.19</pdfbox.version>
         <knife4j.version>3.0.1</knife4j.version>
         <fastdfs-spring-boot-starter.version>0.2.0</fastdfs-spring-boot-starter.version>
-        <mybatis-plus.version>3.3.2</mybatis-plus.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <dynamic-datasource-spring-boot-starter.version>3.2.1</dynamic-datasource-spring-boot-starter.version>
         <p6spy.version>3.9.1</p6spy.version>
+        <redisson.version>3.14.0</redisson.version>
         <jsoup.version>1.13.1</jsoup.version>
         <jjwt.version>0.9.0</jjwt.version>
-        <redisson.version>3.12.4</redisson.version>
         <shiro.version>1.6.0</shiro.version>
         <pac4j.version>4.0.3</pac4j.version>
         <buji.version>5.0.1</buji.version>

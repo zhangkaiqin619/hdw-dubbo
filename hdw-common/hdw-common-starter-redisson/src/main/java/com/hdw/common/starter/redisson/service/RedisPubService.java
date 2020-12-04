@@ -1,13 +1,13 @@
-package com.hdw.common.core.utils;
+package com.hdw.common.starter.redisson.service;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,26 +17,50 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import org.apache.commons.lang3.StringUtils;
+import com.hdw.common.starter.redisson.entity.RedisSimpleMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
- * @Description Jackson工具类
- * @Author JacksonTu
- * @Date 2020/3/5 19:40
+ * @author JacksonTu
+ * @version 1.0
+ * @description redis消息发布服务
+ * @since 2020/8/15 10:51
  */
-public class JacksonUtil {
-    private static final ObjectMapper objectMapper;
+public class RedisPubService {
 
-    static {
-        objectMapper = new ObjectMapper();
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
+    /**
+     * 推送消息
+     *
+     * @param topicName 主题
+     * @param publisher 发布者
+     * @param content   内容
+     * @param status    状态
+     */
+    public void publish(String topicName, String publisher, String content, int status) {
+        RedisSimpleMessage pushMsg = new RedisSimpleMessage();
+        pushMsg.setPublisher(publisher);
+        pushMsg.setContent(content);
+        pushMsg.setStatus(status);
+        pushMsg.setCreateTime(new Date());
+        ChannelTopic topic = new ChannelTopic(topicName);
+
+        redisTemplate.convertAndSend(topic.getTopic(), toJson(pushMsg));
+    }
+
+    private <T> String toJson(T t) {
+        ObjectMapper objectMapper = new ObjectMapper();
         //序列化时，日期的统一格式
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         //去掉默认的时间戳格式
@@ -77,15 +101,7 @@ public class JacksonUtil {
         javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
         javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
         objectMapper.registerModule(javaTimeModule).registerModule(simpleModule);
-    }
 
-    /**
-     * 将对象序列化json字符串
-     *
-     * @param t 对象可以是 String Map、List
-     * @return json字符串
-     */
-    public static <T> String toJson(T t) {
         if (null == t) {
             return null;
         }
@@ -97,70 +113,4 @@ public class JacksonUtil {
             return null;
         }
     }
-
-    /**
-     * 字符串转Java对象 JsonNode可适用本方法
-     *
-     * @param json
-     * @param clazz
-     * @return t
-     */
-    public static <T> T toObject(String json, Class<T> clazz) {
-        if (StringUtils.isBlank(json) || null == clazz) {
-            return null;
-        }
-
-        try {
-            return clazz.equals(String.class) ? (T) json : objectMapper.readValue(json, clazz);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * json序列化
-     *
-     * @param json
-     * @param typeReference
-     * @return
-     */
-    public static <T> T toCollection(String json, TypeReference<T> typeReference) {
-        if (StringUtils.isBlank(json) || null == typeReference) {
-            return null;
-        }
-        try {
-            return (T) (typeReference.getType().equals(String.class) ? json : objectMapper.readValue(json, typeReference));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * 获取jsonNode对象
-     *
-     * @param json
-     * @return
-     */
-    public static JsonNode getJsonNode(String json) {
-        if (StringUtils.isBlank(json)) {
-            return null;
-        }
-        try {
-            return objectMapper.readValue(json, JsonNode.class);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static ObjectMapper getObjectMapper() {
-        return objectMapper;
-    }
-
 }

@@ -40,6 +40,7 @@ hdw-dubbo
     ├── hdw-common-core                        -- 系统核心包
     ├── hdw-common-starter-datasource          -- 系统数据库自动装配starter  
     ├── hdw-common-starter-redis               -- 系统redis自动装配starter
+    ├── hdw-common-starter-redisson            -- 系统redisson自动装配starter
 ├── hdw-api-base                      -- 基础服务接口
 ├── hdw-server-base                   -- 基础服务提供者服务器[port = 8181]
 ├── hdw-api-notice                    -- 系统消息服务接口

@@ -13,7 +13,7 @@ import com.hdw.api.base.system.service.ISysUserService;
 import com.hdw.common.core.api.CommonResult;
 import com.hdw.common.core.constant.CommonConstant;
 import com.hdw.common.core.vo.LoginUserVo;
-import com.hdw.common.starter.redis.service.RedisService;
+import com.hdw.common.starter.redisson.service.RedisService;
 import com.hdw.web.base.shiro.ShiroUtil;
 import com.hdw.web.base.shiro.jwt.JwtTokenUtil;
 import com.hdw.web.base.system.dto.SysLoginDto;

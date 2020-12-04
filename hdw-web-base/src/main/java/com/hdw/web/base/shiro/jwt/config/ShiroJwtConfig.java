@@ -154,7 +154,7 @@ public class ShiroJwtConfig {
      */
     @Bean
     public CacheManager shiroRedisCacheManager() {
-        ShiroRedisCacheManager redisCacheManager = new ShiroRedisCacheManager(cacheLive * 1000, cacheKeyPrefix + "-shiro-cache-", redisTemplate);
+        ShiroRedisCacheManager redisCacheManager = new ShiroRedisCacheManager(cacheLive * 1000, cacheKeyPrefix + ":shiro-cache:", redisTemplate);
         return redisCacheManager;
 
     }

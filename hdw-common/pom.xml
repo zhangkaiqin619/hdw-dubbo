@@ -22,5 +22,6 @@
         <module>hdw-common-core</module>
         <module>hdw-common-starter-datasource</module>
         <module>hdw-common-starter-redis</module>
+        <module>hdw-common-starter-redisson</module>
     </modules>
 </project>
