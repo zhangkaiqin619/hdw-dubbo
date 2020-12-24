@@ -1,5 +1,6 @@
 package com.hdw.web.base.notice.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hdw.api.notice.dto.NoticeSendDto;
 import com.hdw.api.notice.entity.SysNoticeSend;
 import com.hdw.api.notice.service.ISysNoticeSendService;
@@ -7,12 +8,14 @@ import com.hdw.common.core.api.CommonResult;
 import com.hdw.common.core.constant.WebsocketConstant;
 import com.hdw.common.core.vo.LoginUserVo;
 import com.hdw.web.base.shiro.ShiroUtil;
+import com.hdw.web.base.websocket.CommonWebSocket;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Date;
 
@@ -31,6 +34,9 @@ public class SysNoticeSendController {
 
     @DubboReference
     private ISysNoticeSendService sysNoticeSendService;
+
+    @Resource
+    private CommonWebSocket webSocket;
 
     @GetMapping
     @RequiresPermissions("notice/send/list")
@@ -110,6 +116,9 @@ public class SysNoticeSendController {
             noticeSend.setReadFlag(WebsocketConstant.HAS_READ_FLAG);
             noticeSend.setReadTime(new Date());
             this.sysNoticeSendService.updateByUserIdAndNoticeId(noticeSend);
+            JSONObject obj=new JSONObject();
+            obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_REVOKE);
+            webSocket.sendAllMessage(obj.toJSONString());
             return CommonResult.success("");
         } catch (Exception e) {
             String message = "更新阅读状态失败";
@@ -151,6 +160,9 @@ public class SysNoticeSendController {
             noticeSend.setReadFlag(WebsocketConstant.HAS_READ_FLAG);
             noticeSend.setReadTime(new Date());
             this.sysNoticeSendService.updateByUserIdAndNoticeId(noticeSend);
+            JSONObject obj=new JSONObject();
+            obj.put(WebsocketConstant.MSG_CMD, WebsocketConstant.CMD_REVOKE);
+            webSocket.sendAllMessage(obj.toJSONString());
             return CommonResult.success("");
         } catch (Exception e) {
             String message = "全部已读失败";

@@ -54,7 +54,7 @@ public class EnterpriseJobController {
         LoginUserVo loginUserVo = ShiroUtil.getUser();
         // 不是管理员
         if (loginUserVo.getUserType() != 0) {
-            enterpriseJobDto.setUserId(ShiroUtil.getUser().getId());
+            enterpriseJobDto.setUserId(loginUserVo.getId());
         }
         PageVo<EnterpriseJobVo> page = enterpriseJobService.pageList(enterpriseJobDto);
         return CommonResult.success(page);
@@ -85,7 +85,7 @@ public class EnterpriseJobController {
         try {
             LoginUserVo loginUserVo = ShiroUtil.getUser();
             enterpriseJob.setCreateTime(new Date());
-            enterpriseJob.setCreateUser(ShiroUtil.getUser().getLoginName());
+            enterpriseJob.setCreateUser(loginUserVo.getLoginName());
             enterpriseJobService.save(enterpriseJob);
             return CommonResult.success("添加成功");
         } catch (Exception e) {
@@ -102,7 +102,8 @@ public class EnterpriseJobController {
     @RequiresPermissions("enterprise/enterpriseJob/update")
     public CommonResult update(@Valid @RequestBody EnterpriseJob enterpriseJob) {
         try {
-            enterpriseJob.setUpdateUser(ShiroUtil.getUser().getLoginName());
+            LoginUserVo loginUserVo = ShiroUtil.getUser();
+            enterpriseJob.setUpdateUser(loginUserVo.getLoginName());
             enterpriseJob.setUpdateTime(new Date());
             enterpriseJobService.updateById(enterpriseJob);
             return CommonResult.success("修改成功");

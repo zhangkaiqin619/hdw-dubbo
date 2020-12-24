@@ -23,6 +23,13 @@ public interface IEnterpriseService extends IBaseService<Enterprise> {
      */
     List<Map<String, Object>> selectEnterpriseList(Map<String, Object> par);
 
+    /**
+     * 保存企业信息
+     * @param enterprise
+     * @return
+     */
+    Enterprise saveEnterprise(Enterprise enterprise);
+
 
 }
 

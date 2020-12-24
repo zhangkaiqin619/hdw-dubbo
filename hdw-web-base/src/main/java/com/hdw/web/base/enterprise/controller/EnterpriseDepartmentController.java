@@ -52,7 +52,7 @@ public class EnterpriseDepartmentController {
         LoginUserVo loginUserVo = ShiroUtil.getUser();
         // 不是管理员
         if (loginUserVo.getUserType() != 0) {
-            enterpriseDepartmentDto.setUserId(ShiroUtil.getUser().getId());
+            enterpriseDepartmentDto.setUserId(loginUserVo.getId());
         }
         List<EnterpriseDepartmentVo> list = enterpriseDepartmentService.selectTreeGrid(enterpriseDepartmentDto);
         return CommonResult.success(list);
@@ -83,7 +83,7 @@ public class EnterpriseDepartmentController {
         try {
             LoginUserVo loginUserVo = ShiroUtil.getUser();
             enterpriseDepartment.setCreateTime(new Date());
-            enterpriseDepartment.setCreateUser(ShiroUtil.getUser().getLoginName());
+            enterpriseDepartment.setCreateUser(loginUserVo.getLoginName());
             enterpriseDepartmentService.save(enterpriseDepartment);
             return CommonResult.success("添加成功");
         } catch (Exception e) {
@@ -100,7 +100,8 @@ public class EnterpriseDepartmentController {
     @RequiresPermissions("enterprise/enterpriseDepartment/update")
     public CommonResult update(@Valid @RequestBody EnterpriseDepartment enterpriseDepartment) {
         try {
-            enterpriseDepartment.setUpdateUser(ShiroUtil.getUser().getLoginName());
+            LoginUserVo loginUserVo = ShiroUtil.getUser();
+            enterpriseDepartment.setUpdateUser(loginUserVo.getLoginName());
             enterpriseDepartment.setUpdateTime(new Date());
             enterpriseDepartmentService.updateById(enterpriseDepartment);
             return CommonResult.success("修改成功");
