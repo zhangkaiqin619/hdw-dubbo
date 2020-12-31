@@ -1,6 +1,5 @@
 package com.hdw.server.base.enterprise.service.impl;
 
-
 import com.hdw.api.base.enterprise.entity.Enterprise;
 import com.hdw.api.base.enterprise.service.IEnterpriseService;
 import com.hdw.common.core.service.impl.BaseServiceImpl;
@@ -28,4 +27,12 @@ public class EnterpriseServiceImpl extends BaseServiceImpl<EnterpriseMapper, Ent
         return this.baseMapper.selectEnterpriseList(par);
     }
 
+    @Override
+    public Enterprise saveEnterprise(Enterprise enterprise) {
+        boolean flag=this.save(enterprise);
+        if(flag){
+            return enterprise;
+        }
+        return null;
+    }
 }

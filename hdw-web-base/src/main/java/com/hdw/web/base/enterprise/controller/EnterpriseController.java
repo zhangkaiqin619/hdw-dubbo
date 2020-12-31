@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -96,9 +97,9 @@ public class EnterpriseController extends UpLoadController {
         try {
             enterprise.setCreateTime(new Date());
             enterprise.setCreateUser(ShiroUtil.getUser().getLoginName());
-            boolean b = enterpriseService.save(enterprise);
-            saveFile(enterprise.getId().toString());
-            if (b) {
+            Enterprise enterprise1 = enterpriseService.saveEnterprise(enterprise);
+            if (ObjectUtils.isNotEmpty(enterprise1)) {
+                saveFile(enterprise1.getId().toString());
                 return CommonResult.success("添加成功");
             } else {
                 return CommonResult.failed("添加失败");

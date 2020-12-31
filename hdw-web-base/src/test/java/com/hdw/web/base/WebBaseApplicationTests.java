@@ -1,5 +1,6 @@
 package com.hdw.web.base;
 
+import com.hdw.api.base.enterprise.entity.Enterprise;
 import com.hdw.common.core.constant.CommonConstant;
 import com.hdw.api.base.enterprise.service.IEnterpriseService;
 import com.hdw.web.base.interceptor.InterceptorProperties;
@@ -135,6 +136,14 @@ public class WebBaseApplicationTests {
         mailDto.setContent("测试邮件");
         mailDto.setTos(new String[]{"674717739@qq.com"});
         mailService.sendSimpleEmail(mailDto);
+    }
+
+    @Test
+    public void testSaveEnterprise() {
+        Enterprise enterprise=new Enterprise();
+        enterprise.setEnterpriseName("测试");
+        Enterprise enterprise1= enterpriseService.saveEnterprise(enterprise);
+        System.out.println(enterprise1.getId());
     }
 
 }
