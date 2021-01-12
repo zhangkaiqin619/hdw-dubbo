@@ -52,7 +52,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 
     @Override
     public void clear() throws CacheException {
-        Set keys = this.redisTemplate.keys(this.cacheKeyPrefix + ":");
+        Set keys = this.redisTemplate.keys(this.cacheKeyPrefix + "*");
         if (null != keys && keys.size() > 0) {
             Iterator iterator = keys.iterator();
             this.redisTemplate.delete(iterator.next());
